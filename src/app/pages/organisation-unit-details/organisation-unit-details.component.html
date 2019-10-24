@@ -1,0 +1,55 @@
+<div class="containter">
+  <h4>Details</h4>
+  <p>
+    <span class="label" *ngIf="data.organisationUnit.name">Name</span>
+    {{ data.organisationUnit.name }}
+  </p>
+
+  <p>
+    <span class="label" *ngIf="data.organisationUnit.shortName"
+      >Short name</span
+    >
+    {{ data.organisationUnit.shortName }}
+  </p>
+
+  <p>
+    <span class="label" *ngIf="data.organisationUnit.code">Code</span>
+    {{ data.organisationUnit.code }}
+  </p>
+
+  <p>
+    <span class="label" *ngIf="data.organisationUnit.code">Code</span>
+    {{ data.organisationUnit.code }}
+  </p>
+
+  <p>
+    <span class="label" *ngIf="data.organisationUnit.code">Code</span>
+    {{ data.organisationUnit.code }}
+  </p>
+  
+  <p>
+    <span class="label" *ngIf="data.organisationUnit.created">Created</span>
+    {{ data.organisationUnit.created }}
+  </p>
+
+  <p>
+    <span class="label" *ngIf="data.organisationUnit.lastUpdated"
+      >Last updated</span
+    >
+    {{ data.organisationUnit.lastUpdated }}
+  </p>
+
+  <p>
+    <span class="label" *ngIf="data.organisationUnit.id">id</span>
+    {{ data.organisationUnit.id }}
+  </p>
+
+  <p>
+    <span class="label" *ngIf="data.organisationUnit.url">API url</span>
+    {{ data.organisationUnit.url }}
+  </p>
+
+  <button mat-raised-button (click)="onClose($event)">
+    CANCEL
+  </button>
+</div>

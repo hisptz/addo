@@ -1,0 +1,10 @@
+.row {
+  height: inherit;
+}
+a {
+  color: #000;
+}
+
+.nav-link {
+  font-size:25px;
+}

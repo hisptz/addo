@@ -1,0 +1,81 @@
+<div *ngIf="selectedOrganisationUnitStatus$ | async">
+  <mat-card>
+    <!-- <h4>Selected Organisation unit:</h4> -->
+    <p>Name: {{ (selectedOrganisationUnit$ | async).name }}</p>
+    <p>Level: {{ (selectedOrganisationUnit$ | async).level }}</p>
+  </mat-card>
+
+  <div
+    *ngIf="
+      (organisationUnitChildrenLoaded$ | async) &&
+      !(isLeafOrganisation$ | async)
+    "
+  >
+    <h5 class="header">Children:</h5>
+    <table class="table table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">S/N</th>
+          <th scope="col">Name</th>
+          <th scope="col">Last Updated</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let orgunitChild of organisationUnitChildren$ | async;
+            let count = index
+          "
+        >
+          <td>{{ count + 1 }}</td>
+          <td>{{ orgunitChild.name }}</td>
+          <td>{{ orgunitChild.lastUpdated | date }}</td>
+          <td>
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="menu"
+              aria-label="Example icon-button with a menu"
+            >
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button
+                *ngIf="orgunitChild.leaf"
+                mat-menu-item
+                (click)="onEditChild($event, orgunitChild.id)"
+              >
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+              </button>
+              <button
+                mat-menu-item
+                (click)="onOpenDetails($event, orgunitChild)"
+              >
+                <mat-icon>details</mat-icon>
+                <span>Details</span>
+              </button>
+              <!-- <button
+                *ngIf="orgunitChild.leaf"
+                mat-menu-item
+                (click)="onDeleteChild($event, orgunitChild.id)"
+              >
+                <mat-icon>delete</mat-icon>
+                <span>Delete</span>
+              </button> -->
+            </mat-menu>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!(organisationUnitChildrenLoaded$ | async)">
+    <p><mat-progress-bar mode="query"></mat-progress-bar></p>
+    <p>Loading children</p>
+  </div>
+</div>
+
+<div *ngIf="!(selectedOrganisationUnitStatus$ | async)">
+  <!-- <p>select Organisation unit</p> -->
+</div>
