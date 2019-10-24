@@ -265,7 +265,7 @@ public/
 .dynamodb/
 
 ### VisualStudioCode ###
-.vscode/*
+.vscgit remote add origin git@github.com:hisptz/addo.gitode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -280,3 +280,5 @@ dist
 /dist
 *dist
 # End of https://www.gitignore.io/api/node,linux,angular,visualstudiocode
+
+proxy-config
