@@ -20,13 +20,13 @@ Boilerplate codes to fast track developing DHIS2 applications based on Angular f
 Clone repository
 
 ```bash
- git clone https://github.com/hisptz/ngx-seed-app.git
+ git clone https://github.com/hisptz/addo.git
 ```
 
 Navigate to application root folder
 
 ```bash
-cd ngx-seed-app
+cd addo
 ```
 
 Install all required dependencies for the app
