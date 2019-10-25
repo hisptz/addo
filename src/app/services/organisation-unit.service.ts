@@ -8,7 +8,6 @@ import { OrganisationUnitChildren } from '../models/organisation-unit.model';
 })
 export class OrganisationUnitService {
   constructor(private httpServuice: NgxDhis2HttpClientService) {}
-  s;
   getOrgunitChildren(orgunitId: string): Observable<any> {
     const fields =
       'fields=name,children[id,lastUpdated,contactPerson,level,name,shortName,leaf,displayName,displayShortName,openingDate,parent,path,coordinates,children[id,name,level]]';
