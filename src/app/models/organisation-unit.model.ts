@@ -30,5 +30,6 @@ export interface OrganisationUnitChildren {
   path: string;
   parent: { id: string };
   coordinates: string;
+  facilityDispenser: string;
   childern: OrganisationUnit[];
 }

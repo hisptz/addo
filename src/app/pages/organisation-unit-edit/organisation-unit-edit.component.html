@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-8">
-    <form [formGroup]="organisationUnitForm" class="example-form">
+    <form [formGroup]="organisationUnitForm" class="example-form" #myForm="ngForm">
       <mat-form-field class="example-full-width" MatFormFieldControl="name">
         <input matInput placeholder="Name" formControlName="name" required />
       </mat-form-field>
@@ -130,6 +130,7 @@
         mat-raised-button
         color="primary"
         *ngIf="organisationUnitForm.valid"
+        type="submit"
       >
         SAVE
       </button>
@@ -139,6 +140,7 @@
         *ngIf="organisationUnitForm.valid"
         (click)="onCancel($event)"
         class="cancel"
+        type="button"
       >
         CANCEL
       </button>
