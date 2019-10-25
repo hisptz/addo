@@ -74,7 +74,8 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
       code: new FormControl(this.organisationUnit.code),
       phoneNumber: new FormControl(this.organisationUnit.phoneNumber),
       longitude: new FormControl(this.organisationUnit.longitude),
-      latitude: new FormControl(this.organisationUnit.latitude)
+      latitude: new FormControl(this.organisationUnit.latitude),
+      facilityDispenser: new FormControl(this.organisationUnit.facilityDispenser)
 
     });
   }

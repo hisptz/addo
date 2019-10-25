@@ -6,6 +6,7 @@ export interface OrganisationUnit {
 }
 
 export interface OrganisationUnitChildren {
+  facilityDispenser: any;
   latitude: any;
   longitude: string;
   id: string;
