@@ -9,11 +9,11 @@ import { OrganisationUnitChildren } from "../models/organisation-unit.model";
 export class OrganisationUnitService {
   constructor(private httpServuice: NgxDhis2HttpClientService) {}
   getOrgunitChildren(orgunitId: string): Observable<any> {
-    const fields =
-      'fields=name,children[id,lastUpdated,contactPerson,level,name,shortName,leaf,displayName,displayShortName,openingDate,parent,path,coordinates,children[id,name,level]]';
+    // const fields =
+    //   'fields=name,children[id,lastUpdated,contactPerson,level,name,shortName,leaf,displayName,displayShortName,openingDate,parent,path,coordinates,children[id,name,level]]';
       // "fields=id,name,lastUpdated,phoneNumber,level,attributeValues[value,attribute[id,name]]&filter=path:ilike:6";
     return this.httpServuice.get(
-      `organisationUnits/${orgunitId}.json?fields=${fields}`
+      `organisationUnits.json?fields=id,name,lastUpdated,phoneNumber,level,attributeValues[value,attribute[id,name]]&filter=path:ilike:6&filter=level:eq:6&paging=false`
     );
   }
 
