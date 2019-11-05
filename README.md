@@ -5,9 +5,9 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/dbe97dbdfbd55344c38f/test_coverage)](https://codeclimate.com/github/hisptz/ngx-seed-app/test_coverage)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
-# Angular DHIS2 based seed app
+# ADDO LABS APP
 
-Boilerplate codes to fast track developing DHIS2 applications based on Angular framework
+An application that will simplify Addo & Labs monthly reporting tracking for all facilities in selected regions.
 
 ## Prerequisites
 
