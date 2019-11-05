@@ -42,9 +42,10 @@ export class OrganisationUnitEffects {
       switchMap(action =>
         this.orgunitService.getOrgunitChildren(action.id).pipe(
           map(organisationUnitChildren =>
-            loadOrganisationUnitChildrenSuccess({
-              children: organisationUnitChildren.children
-            })
+           {
+             return loadOrganisationUnitChildrenSuccess({
+              children: organisationUnitChildren['organisationUnits']
+            })}
           ),
           catchError(err =>
             of(loadOrganisationUnitChildrenFail({ error: err }))
