@@ -79,7 +79,7 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  editOrgunit(e) {
+  editOrgunit(e: { stopPropagation: () => void; }) {
     e.stopPropagation();
     this.childSubscription = this.store
       .select(getSelectedOrgunitChildChildren(this.currentOrgunit))
@@ -97,7 +97,7 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
       });
   }
 
-  onCancel(e) {
+  onCancel(e: { stopPropagation: () => void; }) {
     e.stopPropagation();
     this.router.navigate([`/organisationunit/${this.parentId}`]);
   }
