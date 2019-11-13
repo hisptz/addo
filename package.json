@@ -16,7 +16,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^8.0.1",
-    "@angular/cdk": "~8.2.3",
+    "@angular/cdk": "~8.1.4",
     "@angular/common": "^8.0.1",
     "@angular/compiler": "^8.0.1",
     "@angular/core": "^8.0.1",
@@ -27,7 +27,7 @@
     "@angular/pwa": "^0.800.3",
     "@angular/router": "^8.0.1",
     "@angular/service-worker": "^8.0.1",
-    "@iapps/ngx-dhis2-http-client": "^2.0.7",
+    "@iapps/ngx-dhis2-http-client": "^2.0.2",
     "@iapps/ngx-dhis2-menu": "^1.0.9",
     "@iapps/ngx-dhis2-org-unit-filter": "^1.1.21-beta.1",
     "@ngrx/effects": "^8.0.1",
@@ -50,12 +50,12 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.800.0",
-    "@angular/cli": "^8.3.16",
+    "@angular/cli": "^8.0.3",
     "@angular/compiler-cli": "^8.0.1",
     "@angular/language-service": "^8.0.1",
     "@compodoc/compodoc": "^1.1.10",
     "@ngrx/schematics": "^8.0.1",
-    "@types/jasmine": "^3.4.5",
+    "@types/jasmine": "^3.3.13",
     "@types/jasminewd2": "^2.0.6",
     "@types/node": "~12.0.8",
     "codelyzer": "^5.0.1",
@@ -73,7 +73,7 @@
     "protractor": "^5.4.2",
     "ts-node": "~8.3.0",
     "tslint": "~5.17.0",
-    "typescript": "3.5.3"
+    "typescript": "^3.4.5"
   },
   "config": {
     "commitizen": {

@@ -6,8 +6,6 @@ export interface OrganisationUnit {
 }
 
 export interface OrganisationUnitChildren {
-  latitude: any;
-  longitude: string;
   id: string;
   lastUpdated: string;
   created: string;
@@ -30,6 +28,16 @@ export interface OrganisationUnitChildren {
   path: string;
   parent: { id: string };
   coordinates: string;
-  facilityDispenser: string;
   childern: OrganisationUnit[];
+  attributeValues: Array<AttributeValues>;
+}
+
+export interface AttributeValues {
+  value: string;
+  attribute: Attribute;
+}
+
+export interface Attribute {
+  name: string;
+  id: string;
 }

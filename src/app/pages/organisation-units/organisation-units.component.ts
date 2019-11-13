@@ -30,9 +30,6 @@ export class OrganisationUnitsComponent implements OnInit {
   organisationUnitChildrenLoaded$: Observable<boolean>;
   isLeafOrganisation$: Observable<boolean>;
 
-  public year:number = new Date().getFullYear();
-  public month:number = new Date().getMonth();
-
   parentOrgunit: string;
   constructor(
     private store: Store<State>,
@@ -58,21 +55,21 @@ export class OrganisationUnitsComponent implements OnInit {
     this.isLeafOrganisation$ = this.store.select(leafOrgunit);
   }
 
-  onEditChild(e: { stopPropagation: () => void; }, id: string) {
+  onEditChild(e, id: string) {
     e.stopPropagation();
     this.router.navigate([`organisationunit/${this.parentOrgunit}/${id}`]);
   }
 
-  onDeleteChild(e: { stopPropagation: () => void; }, id: string) {
+  onDeleteChild(e, id: string) {
     e.stopPropagation();
     this.store.dispatch(deleteOrganisationUnitChild({ id: id }));
   }
 
-  onOpenDetails(e: { stopPropagation: () => void; }, organisatioUnit: any) {
+  onOpenDetails(e, organisatioUnit) {
     e.stopPropagation();
     this.dialog.open(OrganisationUnitDetailsComponent, {
       data: { organisationUnit: organisatioUnit },
-      height: 'auto',
+      height: '450px',
       width: '500px'
     });
   }

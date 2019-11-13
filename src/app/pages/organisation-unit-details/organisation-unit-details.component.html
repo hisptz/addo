@@ -18,9 +18,20 @@
   </p>
 
   <p>
+    <span class="label" *ngIf="data.organisationUnit.code">Code</span>
+    {{ data.organisationUnit.code }}
+  </p>
+
+  <p>
+    <span class="label" *ngIf="data.organisationUnit.code">Code</span>
+    {{ data.organisationUnit.code }}
+  </p>
+  
+  <p>
     <span class="label" *ngIf="data.organisationUnit.created">Created</span>
     {{ data.organisationUnit.created }}
   </p>
+
   <p>
     <span class="label" *ngIf="data.organisationUnit.lastUpdated"
       >Last updated</span
@@ -34,8 +45,8 @@
   </p>
 
   <p>
-    <span class="label" *ngIf="data.organisationUnit.phoneNumber">Phone Number</span>
-    {{ data.organisationUnit.phoneNumber }}
+    <span class="label" *ngIf="data.organisationUnit.url">API url</span>
+    {{ data.organisationUnit.url }}
   </p>
 
   <button mat-raised-button (click)="onClose($event)">

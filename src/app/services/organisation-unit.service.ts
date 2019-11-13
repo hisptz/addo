@@ -1,19 +1,19 @@
-import { Injectable } from "@angular/core";
-import { NgxDhis2HttpClientService } from "@iapps/ngx-dhis2-http-client";
-import { Observable } from "rxjs";
-import { OrganisationUnitChildren } from "../models/organisation-unit.model";
+import { Injectable } from '@angular/core';
+import { NgxDhis2HttpClientService } from '@iapps/ngx-dhis2-http-client';
+import { Observable } from 'rxjs';
+import { OrganisationUnitChildren } from '../models/organisation-unit.model';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class OrganisationUnitService {
   constructor(private httpServuice: NgxDhis2HttpClientService) {}
+  s;
   getOrgunitChildren(orgunitId: string): Observable<any> {
-    // const fields =
-    //   'fields=name,children[id,lastUpdated,contactPerson,level,name,shortName,leaf,displayName,displayShortName,openingDate,parent,path,coordinates,children[id,name,level]]';
-      // "fields=id,name,lastUpdated,phoneNumber,level,attributeValues[value,attribute[id,name]]&filter=path:ilike:6";
+    const fields =
+      'id,name,lastUpdated,phoneNumber,level,attributeValues[value,attribute[id,name]]';
     return this.httpServuice.get(
-      `organisationUnits.json?fields=id,name,lastUpdated,phoneNumber,level,attributeValues[value,attribute[id,name]]&filter=path:ilike:6&filter=level:eq:6&paging=false`
+      `organisationUnits.json?fields=${fields}&filter=path:ilike:${orgunitId}&filter=level:eq:6&paging=false`
     );
   }
 

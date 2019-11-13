@@ -34,24 +34,16 @@
           >Completeness</a
         >
       </li> -->
-      <!-- <li class="nav-item">
-        <button
-          mat-button
-          [matMenuTriggerFor]="menu"
-          class="nav-link"
-          routerLinkActive="router-link-active"
-        >
-          Tanzania
-        </button>
-        <mat-menu #menu="matMenu"> -->
+      <li class="nav-item">
+       <!-- <mat-menu #menu="matMenu"> -->
           <ngx-dhis2-org-unit-filter
             [orgUnitFilterConfig]="orgUnitFilterConfig"
             (orgUnitUpdate)="onOrgUnitUpdate($event, 'UPDATE')"
             (orgUnitClose)="onOrgUnitUpdate($event, 'CLOSE')"
           >
           </ngx-dhis2-org-unit-filter>
-        <!-- </mat-menu>
-      </li> -->
+        <!-- </mat-menu> -->
+      </li>
     </ul>
   </div>
   <div class="col-10">

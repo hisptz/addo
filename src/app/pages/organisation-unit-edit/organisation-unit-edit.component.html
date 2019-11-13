@@ -1,6 +1,6 @@
-<!-- <div class="row">
+<div class="row">
   <div class="col-md-8">
-    <form [formGroup]="organisationUnitForm" class="example-form" #myForm="ngForm">
+    <form [formGroup]="organisationUnitForm" class="example-form">
       <mat-form-field class="example-full-width" MatFormFieldControl="name">
         <input matInput placeholder="Name" formControlName="name" required />
       </mat-form-field>
@@ -91,46 +91,12 @@
           formControlName="phoneNumber"
         />
       </mat-form-field>
-      <mat-form-field
-        class="example-full-width"
-        MatFormFieldControl="longitude"
-      >
-        <input
-          matInput
-          type="tel"
-          placeholder="Longitude"
-          formControlName="longitude"
-        />
-      </mat-form-field>
-      <mat-form-field
-        class="example-full-width"
-        MatFormFieldControl="latitude"
-      >
-        <input
-          matInput
-          type="tel"
-          placeholder="Latitude"
-          formControlName="latitude"
-        />
-      </mat-form-field>
-      <mat-form-field
-        class="example-full-width"
-        MatFormFieldControl="phoneNumber"
-      >
-        <input
-          matInput
-          type="tel"
-          placeholder="Dispenses Facility Phone NUmber"
-          formControlName="phoneNumber"
-        />
-      </mat-form-field>
 
       <button
         (click)="editOrgunit($event)"
         mat-raised-button
         color="primary"
         *ngIf="organisationUnitForm.valid"
-        type="submit"
       >
         SAVE
       </button>
@@ -140,10 +106,9 @@
         *ngIf="organisationUnitForm.valid"
         (click)="onCancel($event)"
         class="cancel"
-        type="button"
       >
         CANCEL
       </button>
     </form>
   </div>
-</div> -->
+</div>

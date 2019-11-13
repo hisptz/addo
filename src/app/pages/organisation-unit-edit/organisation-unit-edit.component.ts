@@ -72,14 +72,11 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
       email: new FormControl(this.organisationUnit.email, Validators.email),
       contactPerson: new FormControl(this.organisationUnit.contactPerson),
       code: new FormControl(this.organisationUnit.code),
-      phoneNumber: new FormControl(this.organisationUnit.phoneNumber),
-      longitude: new FormControl(this.organisationUnit.longitude),
-      latitude: new FormControl(this.organisationUnit.latitude)
-
+      phoneNumber: new FormControl(this.organisationUnit.phoneNumber)
     });
   }
 
-  editOrgunit(e: { stopPropagation: () => void; }) {
+  editOrgunit(e) {
     e.stopPropagation();
     this.childSubscription = this.store
       .select(getSelectedOrgunitChildChildren(this.currentOrgunit))
@@ -97,7 +94,7 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
       });
   }
 
-  onCancel(e: { stopPropagation: () => void; }) {
+  onCancel(e) {
     e.stopPropagation();
     this.router.navigate([`/organisationunit/${this.parentId}`]);
   }
