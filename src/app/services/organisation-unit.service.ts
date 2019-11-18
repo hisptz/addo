@@ -7,24 +7,24 @@ import { OrganisationUnitChildren } from '../models/organisation-unit.model';
   providedIn: 'root'
 })
 export class OrganisationUnitService {
-  constructor(private httpServuice: NgxDhis2HttpClientService) {}
-  s;
+  constructor(private httpService: NgxDhis2HttpClientService) {}
+
   getOrgunitChildren(orgunitId: string): Observable<any> {
     const fields =
       'id,name,lastUpdated,phoneNumber,level,attributeValues[value,attribute[id,name]]';
-    return this.httpServuice.get(
+    return this.httpService.get(
       `organisationUnits.json?fields=${fields}&filter=path:ilike:${orgunitId}&filter=level:eq:6&paging=false`
     );
   }
 
   editOrgunitChildren(orgunitChild: OrganisationUnitChildren): Observable<any> {
-    return this.httpServuice.put(
+    return this.httpService.put(
       `29/organisationUnits/${orgunitChild.id}?mergeMode=REPLACE`,
       orgunitChild
     );
   }
 
   deleteOrgunitChild(orgunitId): Observable<any> {
-    return this.httpServuice.delete(`organisationUnits/${orgunitId}`);
+    return this.httpService.delete(`organisationUnits/${orgunitId}`);
   }
 }

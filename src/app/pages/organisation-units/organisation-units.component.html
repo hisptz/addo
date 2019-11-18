@@ -12,7 +12,7 @@
     "
   >
     <h5 class="header">Facilities:</h5>
-    <table class="table table-hover">
+    <table mat-table class="table table-hover">
       <thead class="thead-light">
         <tr>
           <th scope="col">S/N</th>
@@ -20,6 +20,8 @@
           <th scope="col">Last Updated</th>
           <th scope="col">Contact Person</th>
           <th scope="col">Dispenser's Contact</th>
+          <th scope="col">Action</th>
+
           <th></th>
         </tr>
       </thead>
@@ -27,15 +29,84 @@
         <tr
           *ngFor="
             let orgunitChild of organisationUnitChildren$ | async;
-            let count = index
+            let count = index;
+            index as i
           "
         >
           <td>{{ count + 1 }}</td>
           <td>{{ orgunitChild.name }}</td>
           <td>{{ orgunitChild.lastUpdated | date }}</td>
-          <td>{{ orgunitChild.phoneNumber }}</td>
-          <td >{{orgunitChild.attributeValues}}</td>
+          <td *ngIf="orgunitChild.phoneNumber">
+            <span *ngIf="enableEditIndex != i">{{
+              orgunitChild.phoneNumber
+            }}</span>
+            <input
+              type="text"
+              [(ngModel)]="orgunitChild.phoneNumber"
+              *ngIf="enableEdit && enableEditIndex == i"
+            />
+          </td>
+          <td *ngIf="!orgunitChild.phoneNumber">
+            <span *ngIf="enableEditIndex != i">No Contact Details</span>
+            <input
+              type="text"
+              [(ngModel)]="!orgunitChild.phoneNumber"
+              *ngIf="enableEdit && enableEditIndex == i"
+            />
+          </td>
+
+          <td *ngIf="orgunitChild.attributeValues[0]">
+            <span *ngIf="enableEditIndex != i">{{
+              orgunitChild.attributeValues[0].value
+            }}</span>
+            <input
+              type="text"
+              [(ngModel)]="orgunitChild.attributeValues[0].value"
+              *ngIf="enableEdit && enableEditIndex == i"
+            />
+          </td>
+          <td *ngIf="!orgunitChild.attributeValues[0]">
+            <span *ngIf="enableEditIndex != i">No Contact Details</span>
+            <input
+              type="text"
+              [(ngModel)]="!orgunitChild.attributeValues[0]"
+              *ngIf="enableEdit && enableEditIndex == i"
+            />
+          </td>
+
           <td>
+            <button
+              *ngIf="enableEdit && enableEditIndex == i"
+              (click)="enableEdit = false; cancel()"
+              class="btn"
+            >
+            <i class="material-icons">
+                cancel
+                </i>
+            </button>
+            <button
+              *ngIf="enableEdit && enableEditIndex == i"
+              (click)="saveSegment()"
+              type="submit"
+              class="btn"
+            >
+            <i class="material-icons">
+                save
+                </i>
+            </button>
+
+            <button
+              *ngIf="i != enableEditIndex || enableEditIndex == null"
+              (click)="enableEditMethod($event, i)"
+              class="btn"
+            >
+              <i class="material-icons">
+                edit
+              </i>
+            </button>
+          </td>
+
+          <!-- <td>
             <button
               mat-icon-button
               [matMenuTriggerFor]="menu"
@@ -60,16 +131,16 @@
                 <mat-icon>details</mat-icon>
                 <span>Details</span>
               </button>
-              <!-- <button
+              <button
                 *ngIf="orgunitChild.leaf"
                 mat-menu-item
                 (click)="onDeleteChild($event, orgunitChild.id)"
               >
                 <mat-icon>delete</mat-icon>
                 <span>Delete</span>
-              </button> -->
+              </button>
             </mat-menu>
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>

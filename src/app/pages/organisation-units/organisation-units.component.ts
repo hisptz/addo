@@ -29,6 +29,8 @@ export class OrganisationUnitsComponent implements OnInit {
   organisationUnitChildren$: Observable<OrganisationUnitChildren[]>;
   organisationUnitChildrenLoaded$: Observable<boolean>;
   isLeafOrganisation$: Observable<boolean>;
+  enableEdit = false;
+  enableEditIndex = null;
 
   parentOrgunit: string;
   constructor(
@@ -70,7 +72,23 @@ export class OrganisationUnitsComponent implements OnInit {
     this.dialog.open(OrganisationUnitDetailsComponent, {
       data: { organisationUnit: organisatioUnit },
       height: '450px',
-      width: '500px'
+      width: '400px'
     });
+  }
+
+  enableEditMethod(e, i, id:string) {
+    this.enableEdit = true;
+    this.enableEditIndex = i;
+    console.log(i, e, id);
+    e.stopPropagation();
+  }
+
+  cancel() {
+    console.log('cancel');
+    this.enableEditIndex = null;
+  }
+
+  saveSegment() {
+    this.enableEditIndex = null;
   }
 }
