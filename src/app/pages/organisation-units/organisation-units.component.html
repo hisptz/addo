@@ -44,6 +44,7 @@
               type="text"
               [(ngModel)]="orgunitChild.phoneNumber"
               *ngIf="enableEdit && enableEditIndex == i"
+              class="inputs"
             />
           </td>
           <td *ngIf="!orgunitChild.phoneNumber">
@@ -52,6 +53,7 @@
               type="text"
               [(ngModel)]="!orgunitChild.phoneNumber"
               *ngIf="enableEdit && enableEditIndex == i"
+              class="inputs"
             />
           </td>
 
@@ -63,6 +65,7 @@
               type="text"
               [(ngModel)]="orgunitChild.attributeValues[0].value"
               *ngIf="enableEdit && enableEditIndex == i"
+              class="inputs"
             />
           </td>
           <td *ngIf="!orgunitChild.attributeValues[0]">
@@ -71,6 +74,7 @@
               type="text"
               [(ngModel)]="!orgunitChild.attributeValues[0]"
               *ngIf="enableEdit && enableEditIndex == i"
+              class="inputs"
             />
           </td>
 

@@ -1,3 +1,23 @@
 .header {
   margin: 2px;
 }
+
+.inputs {
+  border-radius: 15px;
+  border: 2px solid #d3d3d3;
+  background-color: #d3d3d3;
+  text-align: center;
+}
+
+.inputs:focus {
+  outline: none;
+}
+
+.material-icons {
+  color: #d3d3d3
+}
+
+.material-icons:hover{
+  color: black;
+
+}

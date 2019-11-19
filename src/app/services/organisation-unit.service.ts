@@ -27,4 +27,8 @@ export class OrganisationUnitService {
   deleteOrgunitChild(orgunitId): Observable<any> {
     return this.httpService.delete(`organisationUnits/${orgunitId}`);
   }
+
+ getReportingRate(): Observable<any> {
+    return this.httpService.get(`analytics?dimension=dx:t6N3L1IElxb.ACTUAL_REPORTS&dimension=ou:LEVEL-6&dimension=pe:LAST_MONTH`);
+  }
 }
