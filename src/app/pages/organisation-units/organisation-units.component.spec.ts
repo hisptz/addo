@@ -11,7 +11,7 @@ import {
 } from '@angular/material';
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from 'src/app/store/reducers';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 describe('OrganisationUnitsComponent', () => {
@@ -29,6 +29,7 @@ describe('OrganisationUnitsComponent', () => {
         MatProgressBarModule,
         FormsModule,
         HttpClientModule,
+        FormBuilder,
         StoreModule.forRoot(reducers, { metaReducers })
       ],
       declarations: [OrganisationUnitsComponent]
