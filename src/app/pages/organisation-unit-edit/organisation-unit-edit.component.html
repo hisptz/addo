@@ -97,6 +97,7 @@
         mat-raised-button
         color="primary"
         *ngIf="organisationUnitForm.valid"
+        type="submit"
       >
         SAVE
       </button>
@@ -106,6 +107,7 @@
         *ngIf="organisationUnitForm.valid"
         (click)="onCancel($event)"
         class="cancel"
+        type="button"
       >
         CANCEL
       </button>
