@@ -1,10 +1,28 @@
-.row {
-  height: inherit;
+.filter {
+  position: fixed;
+  width: 25vh;
 }
-a {
-  color: #000;
+.content {
+  margin-left: 320px;
+  height: inherit;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
-.nav-link {
-  font-size:25px;
+@media screen and (max-width: 500px) and (min-width: 411px) {
+  .content,
+  .landing {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 411px) {
+  .content,
+  .landing {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
 }

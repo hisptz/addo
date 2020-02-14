@@ -14,11 +14,11 @@ export class OrganisationUnitService {
   s;
   getOrgunitChildren(orgunitId: string): Promise<any> {
     const fields =
-      "id,name,lastUpdated,phoneNumber,level,displayName,displayShortName,openingDate,parent,path,coordinates,attributeValues[value,attribute[id,name]]";
+    "id,name,lastUpdated,phoneNumber,level,displayName,code,shortName,openingDate,parent,path,coordinates,attributeValues[value,attribute[id,name]]";
     return new Promise((resolve, reject) => {
       this.httpService
         .get(
-          `organisationUnits.json?fields=${fields}&filter=path:ilike:${orgunitId}&filter=leaf:eq:true&paging=false`
+          `organisationUnits.json?fields=${fields}&filter=path:ilike:${orgunitId}&filter=level:eq:6&paging=false`
         )
         .subscribe(
           (orgUnits: any) => {
@@ -38,9 +38,13 @@ export class OrganisationUnitService {
           `analytics?dimension=dx:t6N3L1IElxb.ACTUAL_REPORTS&dimension=ou:LEVEL-6&dimension=pe:LAST_MONTH`
         )
         .subscribe(
-          (data: any) =>
+          (analytics: any) =>
             resolve(
-              _.keys(data ? (data.metaData ? data.metaData.items : {}) : {})
+              _.keys(
+                analytics && analytics.metaData && analytics.metaData.dimensions
+                  ? analytics.metaData.dimensions.ou || []
+                  : []
+              )
             ),
           (error: ErrorMessage) => reject(error)
         );
@@ -53,7 +57,7 @@ export class OrganisationUnitService {
         .then((orgunits: OrganisationUnitChildren[]) => {
           this.getReportingRate()
             .then((completedOrgunits: string[]) => {
-              console.log(completedOrgunits);
+              // console.log(completedOrgunits);
               observer.next(
                 _.filter(orgunits, (orgunit: OrganisationUnitChildren) =>
                   _.indexOf(completedOrgunits, orgunit.id) !== -1 ? false : true
