@@ -1,5 +1,6 @@
 .header {
   margin-left: 300px;
+  margin-top: 0px;
 }
 
 .inputs {
@@ -14,10 +15,65 @@
 }
 
 .material-icons {
-  color: #d3d3d3
+  color: #d3d3d3;
 }
 
-.material-icons:hover{
+.material-icons:hover {
   color: black;
+}
 
+.table {
+  width: 100%;
+}
+
+.edit {
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+  position: fixed;
+  padding: 0 16px 16px 0;
+  border-radius: 4px;
+  top: 55px;
+  right: 0;
+  width: 84.5%;
+}
+
+.edit p {
+  margin-left: 50px;
+  display: block;
+  font-weight: 500;
+}
+
+.loader {
+  margin-top: 35vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.thead-light {
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 500px) and (min-width: 411px) {
+  .header {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 75vh;
+    margin-left: 0px;
+    font-size: smaller;
+  }
+}
+
+@media screen and (max-width: 411px) {
+  .header {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 75vh;
+    margin-left: 0px;
+    font-size: small;
+  }
 }
