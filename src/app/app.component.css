@@ -1,3 +1,30 @@
 .application-content {
   margin-top: 50px;
+  overflow-x: hidden;
+}
+
+/* .application-content > * {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1 1 250px;
+} */
+
+@media screen and (max-width: 500px) and (min-width: 411px) {
+  .application-content {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 75vh;
+    margin-left: 0px;
+  }
+}
+
+@media screen and (max-width: 411px) {
+  .application-content {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 75vh;
+    margin-left: 0px;
+  }
 }
