@@ -1,55 +1,43 @@
 <div class="containter">
-  <h4>Details</h4>
+  <h4>Facility Details</h4>
   <p>
-    <span class="label" *ngIf="data.organisationUnit.name">Name</span>
+    <span
+      class="label"
+      *ngIf="data.organisationUnit.name"
+      style="color:black; font: bolder; font-size: 20px;"
+      >Name:
+    </span>
     {{ data.organisationUnit.name }}
   </p>
 
   <p>
-    <span class="label" *ngIf="data.organisationUnit.shortName"
-      >Short name</span
+    <span
+      class="label"
+      *ngIf="data.organisationUnit.displayName"
+      style="color:black; font: bolder; font-size: 20px;"
+      >Short Name:</span
     >
-    {{ data.organisationUnit.shortName }}
+    {{ data.organisationUnit.displayName }}
   </p>
 
   <p>
-    <span class="label" *ngIf="data.organisationUnit.code">Code</span>
-    {{ data.organisationUnit.code }}
-  </p>
-
-  <p>
-    <span class="label" *ngIf="data.organisationUnit.code">Code</span>
-    {{ data.organisationUnit.code }}
-  </p>
-
-  <p>
-    <span class="label" *ngIf="data.organisationUnit.code">Code</span>
-    {{ data.organisationUnit.code }}
-  </p>
-  
-  <p>
-    <span class="label" *ngIf="data.organisationUnit.created">Created</span>
-    {{ data.organisationUnit.created }}
-  </p>
-
-  <p>
-    <span class="label" *ngIf="data.organisationUnit.lastUpdated"
-      >Last updated</span
-    >
+    <span
+      class="label"
+      *ngIf="data.organisationUnit.lastUpdated"
+      style="color:black; font: bolder; font-size: 20px;"
+      >Last Updated:
+    </span>
     {{ data.organisationUnit.lastUpdated }}
   </p>
 
   <p>
-    <span class="label" *ngIf="data.organisationUnit.id">id</span>
-    {{ data.organisationUnit.id }}
+    <button
+      mat-raised-button
+      (click)="onClose($event)"
+      style="margin-top: 40px;"
+      class="btn"
+    >
+      CANCEL
+    </button>
   </p>
-
-  <p>
-    <span class="label" *ngIf="data.organisationUnit.url">API url</span>
-    {{ data.organisationUnit.url }}
-  </p>
-
-  <button mat-raised-button (click)="onClose($event)">
-    CANCEL
-  </button>
 </div>
