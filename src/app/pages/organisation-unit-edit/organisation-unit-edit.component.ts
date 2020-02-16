@@ -72,7 +72,8 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
       email: new FormControl(this.organisationUnit.email, Validators.email),
       contactPerson: new FormControl(this.organisationUnit.contactPerson),
       code: new FormControl(this.organisationUnit.code),
-      phoneNumber: new FormControl(this.organisationUnit.phoneNumber)
+      phoneNumber: new FormControl(this.organisationUnit.phoneNumber),
+      attributeValues: new FormControl(this.organisationUnit.attributeValues[0]?this.organisationUnit.attributeValues[0].value: "")
     });
   }
 

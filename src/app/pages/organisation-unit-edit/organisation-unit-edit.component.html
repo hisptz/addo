@@ -87,10 +87,22 @@
         <input
           matInput
           type="tel"
-          placeholder="Phone number"
+          placeholder="Phone Number"
           formControlName="phoneNumber"
         />
       </mat-form-field>
+
+      <mat-form-field
+      class="example-full-width"
+      MatFormFieldControl="attributeValues"
+    >
+      <input
+        matInput
+        type="tel"
+        placeholder="Dispenses Facility Phone Number"
+        formControlName="attributeValues"
+      />
+    </mat-form-field>
 
       <button
         (click)="editOrgunit($event)"
