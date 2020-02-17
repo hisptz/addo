@@ -79,6 +79,11 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
         this.organisationUnit.attributeValues[0]
           ? this.organisationUnit.attributeValues[0].value
           : []
+      ),
+      attributeValuesName: new FormControl(
+        this.organisationUnit.attributeValues[0]
+          ? this.organisationUnit.attributeValues[1].attribute.name
+          : []
       )
     });
   }
@@ -89,6 +94,7 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
       {
         value: this.organisationUnitForm.value.attributeValues,
         attribute: {
+          name: "Dispenses facility Phone Number",
           id: 'NgmZX27k7gf'
         }
       }
