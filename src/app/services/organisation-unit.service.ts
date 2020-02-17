@@ -14,7 +14,7 @@ export class OrganisationUnitService {
   s;
   getOrgunitChildren(orgunitId: string): Promise<any> {
     const fields =
-    "id,name,lastUpdated,phoneNumber,level,displayName,code,shortName,openingDate,parent,path,coordinates,attributeValues[value,attribute[id,name]]";
+      "id,name,lastUpdated,phoneNumber,level,displayName,code,shortName,openingDate,parent,path,coordinates,attributeValues[value,attribute[id,name]]";
     return new Promise((resolve, reject) => {
       this.httpService
         .get(
@@ -38,13 +38,9 @@ export class OrganisationUnitService {
           `analytics?dimension=dx:t6N3L1IElxb.ACTUAL_REPORTS&dimension=ou:LEVEL-6&dimension=pe:LAST_MONTH`
         )
         .subscribe(
-          (analytics: any) =>
+          (data: any) =>
             resolve(
-              _.keys(
-                analytics && analytics.metaData && analytics.metaData.dimensions
-                  ? analytics.metaData.dimensions.ou || []
-                  : []
-              )
+              _.keys(data ? (data.metaData.dimensions.ou ? data.metaData.rows : {}) : {})
             ),
           (error: ErrorMessage) => reject(error)
         );
@@ -54,7 +50,7 @@ export class OrganisationUnitService {
   getFacilities(orgUnitId): Observable<any> {
     return new Observable(observer => {
       this.getOrgunitChildren(orgUnitId)
-        .then((orgunits: OrganisationUnitChildren[]) => {
+        .then((orgunits: OrganisationUnitChildren[]	) => {
           this.getReportingRate()
             .then((completedOrgunits: string[]) => {
               // console.log(completedOrgunits);
@@ -70,7 +66,18 @@ export class OrganisationUnitService {
     });
   }
 
+  getOrgUnitDetails(id): Observable<any> {
+    return this.httpService.get("organisationUnits/" + id + ".json?fields=id,name,level,parent[id,name]")
+  }
+
+  getAllOrgunitDetails(id): Observable<any> {
+    return this.httpService.get("organisationUnits/" + id + ".json?fields=id,name,level,*")
+  }
+
   editOrgunitChildren(orgunitChild: OrganisationUnitChildren): Observable<any> {
+    if (orgunitChild.attributeValues.length === 0) {
+    }
+    console.log(orgunitChild);
     return this.httpService.put(
       `29/organisationUnits/${orgunitChild.id}?mergeMode=REPLACE`,
       orgunitChild
