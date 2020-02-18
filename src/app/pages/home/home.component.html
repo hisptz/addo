@@ -1,60 +1,13 @@
-<!-- <div class="row">
-  <div class="col-2 nav">
-    <ul class="nav flex-column">
-      <li class="nav-item">
-        <a mat-button>Completeness</a>
-      </li>
-      <li class="nav-item">
-        <button mat-button [matMenuTriggerFor]="menu" class="nav-link">
-          Organisation Unit
-        </button>
-        <mat-menu #menu="matMenu">
-          <ngx-dhis2-org-unit-filter
-            [orgUnitFilterConfig]="orgUnitFilterConfig"
-            (orgUnitUpdate)="onOrgUnitUpdate($event, 'UPDATE')"
-            (orgUnitClose)="onOrgUnitUpdate($event, 'CLOSE')"
-          ></ngx-dhis2-org-unit-filter>
-        </mat-menu>
-      </li>
-    </ul>
+<div class="landingpage">
+  <div class="filter">
+    <ngx-dhis2-org-unit-filter
+      [orgUnitFilterConfig]="orgUnitFilterConfig"
+      (orgUnitUpdate)="onOrgUnitUpdate($event, 'UPDATE')"
+      (orgUnitClose)="onOrgUnitUpdate($event, 'CLOSE')"
+    >
+    </ngx-dhis2-org-unit-filter>
   </div>
-  <div class="application-content col-10">
-    <router-outlet></router-outlet>
-  </div>
-</div> -->
-
-<div class="row">
-  <div class="card-header col-2">
-    <ul class="nav flex-column">
-      <!-- <li class="nav-item">
-        <a
-          class="nav-link"
-          [routerLink]="['/completeness']"
-          routerLinkActive="router-link-active"
-          >Completeness</a
-        >
-      </li> -->
-      <li class="nav-item">
-        <button
-          mat-button
-          [matMenuTriggerFor]="menu"
-          class="nav-link"
-          routerLinkActive="router-link-active"
-        >
-          Tanzania
-        </button>
-        <mat-menu #menu="matMenu">
-          <ngx-dhis2-org-unit-filter
-            [orgUnitFilterConfig]="orgUnitFilterConfig"
-            (orgUnitUpdate)="onOrgUnitUpdate($event, 'UPDATE')"
-            (orgUnitClose)="onOrgUnitUpdate($event, 'CLOSE')"
-          >
-          </ngx-dhis2-org-unit-filter>
-        </mat-menu>
-      </li>
-    </ul>
-  </div>
-  <div class="col-10">
+  <div class="content">
     <router-outlet></router-outlet>
   </div>
 </div>

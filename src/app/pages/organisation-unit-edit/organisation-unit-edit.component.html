@@ -56,9 +56,6 @@
       <mat-form-field class="example-full-width" MatFormFieldControl="comments">
         <input matInput placeholder="Comment" formControlName="comments" />
       </mat-form-field>
-      <mat-form-field class="example-full-width" MatFormFieldControl="url">
-        <input matInput type="url" placeholder="URL" formControlName="url" />
-      </mat-form-field>
       <mat-form-field
         class="example-full-width"
         MatFormFieldControl="contactPerson"
@@ -87,49 +84,29 @@
         <input
           matInput
           type="tel"
-          placeholder="Phone number"
+          placeholder="Phone Number"
           formControlName="phoneNumber"
         />
       </mat-form-field>
+
       <mat-form-field
-        class="example-full-width"
-        MatFormFieldControl="phoneNumber"
-      >
-        <input
-          matInput
-          type="tel"
-          placeholder="Longitude"
-          formControlName="phoneNumber"
-        />
-      </mat-form-field>
-      <mat-form-field
-        class="example-full-width"
-        MatFormFieldControl="phoneNumber"
-      >
-        <input
-          matInput
-          type="tel"
-          placeholder="Latitude"
-          formControlName="phoneNumber"
-        />
-      </mat-form-field>
-      <mat-form-field
-        class="example-full-width"
-        MatFormFieldControl="phoneNumber"
-      >
-        <input
-          matInput
-          type="tel"
-          placeholder="Dispenses Facility Phone NUmber"
-          formControlName="phoneNumber"
-        />
-      </mat-form-field>
+      class="example-full-width"
+      MatFormFieldControl="attributeValues"
+    >
+      <input
+        matInput
+        type="tel"
+        placeholder="Dispenses Facility Phone Number"
+        formControlName="attributeValues"
+      />
+    </mat-form-field>
 
       <button
         (click)="editOrgunit($event)"
         mat-raised-button
         color="primary"
         *ngIf="organisationUnitForm.valid"
+        type="submit"
       >
         SAVE
       </button>
@@ -139,6 +116,7 @@
         *ngIf="organisationUnitForm.valid"
         (click)="onCancel($event)"
         class="cancel"
+        type="button"
       >
         CANCEL
       </button>

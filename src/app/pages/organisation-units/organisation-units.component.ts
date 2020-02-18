@@ -1,27 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from "@angular/core";
+import { Observable } from "rxjs";
 import {
   OrganisationUnit,
   OrganisationUnitChildren
-} from 'src/app/models/organisation-unit.model';
-import { Store } from '@ngrx/store';
-import { State } from 'src/app/store/reducers';
+} from "src/app/models/organisation-unit.model";
+import { Store } from "@ngrx/store";
+import { State } from "src/app/store/reducers";
 import {
   getSelectedOrganisationUnit,
   getSelectedOrganisationUnitStatus,
   getOrganisationUnitChildren,
   getOrganisationUnitChildrenLoadedState,
   leafOrgunit
-} from 'src/app/store/selectors/organisation-unit.selectors';
-import { Router, ActivatedRoute } from '@angular/router';
-import { deleteOrganisationUnitChild } from 'src/app/store/actions';
-import { MatDialog } from '@angular/material';
-import { OrganisationUnitDetailsComponent } from '../organisation-unit-details/organisation-unit-details.component';
+} from "src/app/store/selectors/organisation-unit.selectors";
+import { Router, ActivatedRoute } from "@angular/router";
+import { deleteOrganisationUnitChild } from "src/app/store/actions";
+import { MatDialog } from "@angular/material";
+import { OrganisationUnitDetailsComponent } from "../organisation-unit-details/organisation-unit-details.component";
 
 @Component({
-  selector: 'app-organisation-units',
-  templateUrl: './organisation-units.component.html',
-  styleUrls: ['./organisation-units.component.css']
+  selector: "app-organisation-units",
+  templateUrl: "./organisation-units.component.html",
+  styleUrls: ["./organisation-units.component.css"]
 })
 export class OrganisationUnitsComponent implements OnInit {
   selectedOrganisationUnit$: Observable<OrganisationUnit>;
@@ -29,7 +29,21 @@ export class OrganisationUnitsComponent implements OnInit {
   organisationUnitChildren$: Observable<OrganisationUnitChildren[]>;
   organisationUnitChildrenLoaded$: Observable<boolean>;
   isLeafOrganisation$: Observable<boolean>;
-
+  months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+  date: Date = new Date();
   parentOrgunit: string;
   constructor(
     private store: Store<State>,
@@ -39,7 +53,7 @@ export class OrganisationUnitsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.parentOrgunit = this.route.snapshot.params['parentid'];
+    this.parentOrgunit = this.route.snapshot.params["parentid"]
     this.selectedOrganisationUnit$ = this.store.select(
       getSelectedOrganisationUnit
     );
@@ -69,8 +83,10 @@ export class OrganisationUnitsComponent implements OnInit {
     e.stopPropagation();
     this.dialog.open(OrganisationUnitDetailsComponent, {
       data: { organisationUnit: organisatioUnit },
-      height: '450px',
-      width: '500px'
+      height: "370px",
+      width: "450px"
     });
   }
+  getMonth = this.months[this.date.getMonth() - 1];
+  getYear = this.date.getFullYear();
 }

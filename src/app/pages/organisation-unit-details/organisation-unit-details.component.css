@@ -1,7 +1,10 @@
-.containter {
-  margin: 0 auto;
+mat-form-field {
+  width: 100%;
 }
 
-.label {
-  font-weight: bold;
+button {
+  margin: 5px;
+}
+.cancel {
+  color: rgb(255, 152, 0);
 }

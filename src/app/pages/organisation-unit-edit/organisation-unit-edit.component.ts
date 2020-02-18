@@ -1,25 +1,25 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { State } from 'src/app/store/reducers';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { OrganisationUnitChildren } from 'src/app/models/organisation-unit.model';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { State } from "src/app/store/reducers";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Observable, Subscription } from "rxjs";
+import { OrganisationUnitChildren } from "src/app/models/organisation-unit.model";
 import {
   getSelectedOrgunitChild,
   getSelectedOrgunitChildChildren
-} from 'src/app/store/selectors/organisation-unit.selectors';
+} from "src/app/store/selectors/organisation-unit.selectors";
 import {
   FormBuilder,
   FormGroup,
   FormControl,
   Validators
-} from '@angular/forms';
-import { editOrganisationUnitChild } from 'src/app/store/actions';
+} from "@angular/forms";
+import { editOrganisationUnitChild } from "src/app/store/actions";
 
 @Component({
-  selector: 'app-organisation-unit-edit',
-  templateUrl: './organisation-unit-edit.component.html',
-  styleUrls: ['./organisation-unit-edit.component.css']
+  selector: "app-organisation-unit-edit",
+  templateUrl: "./organisation-unit-edit.component.html",
+  styleUrls: ["./organisation-unit-edit.component.css"]
 })
 export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
   orgunitSubscription: Subscription;
@@ -30,6 +30,8 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
   currentOrgunit: string;
   organisationUnitForm: FormGroup;
   organisationUnit: OrganisationUnitChildren;
+  attributeValuesUpdate: OrganisationUnitChildren;
+
   constructor(
     private store: Store<State>,
     private route: ActivatedRoute,
@@ -38,8 +40,8 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.parentId = this.route.snapshot.params['parentid'];
-    this.currentOrgunit = this.route.snapshot.params['childid'];
+    this.parentId = this.route.snapshot.params["parentid"];
+    this.currentOrgunit = this.route.snapshot.params["childid"];
     this.selectedOrgunitChild$ = this.store.select(
       getSelectedOrgunitChild(this.currentOrgunit)
     );
@@ -73,14 +75,30 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
       contactPerson: new FormControl(this.organisationUnit.contactPerson),
       code: new FormControl(this.organisationUnit.code),
       phoneNumber: new FormControl(this.organisationUnit.phoneNumber),
-      longitude: new FormControl(this.organisationUnit.longitude),
-      latitude: new FormControl(this.organisationUnit.latitude)
-
+      attributeValues: new FormControl(
+        this.organisationUnit.attributeValues[0]
+          ? this.organisationUnit.attributeValues[0].value
+          : []
+      ),
+      attributeValuesName: new FormControl(
+        this.organisationUnit.attributeValues[0]
+          ? this.organisationUnit.attributeValues[1].attribute.name
+          : []
+      )
     });
   }
 
   editOrgunit(e) {
     e.stopPropagation();
+    let attributeValues = [
+      {
+        value: this.organisationUnitForm.value.attributeValues,
+        attribute: {
+          name: "Dispenses facility Phone Number",
+          id: 'NgmZX27k7gf'
+        }
+      }
+    ]
     this.childSubscription = this.store
       .select(getSelectedOrgunitChildChildren(this.currentOrgunit))
       .subscribe(children => {
@@ -88,6 +106,7 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
           ...this.organisationUnitForm.value,
           children: children,
           id: this.currentOrgunit,
+          attributeValues: attributeValues,
           parent: {
             id: this.parentId
           },
