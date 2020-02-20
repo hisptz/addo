@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter
+} from "@angular/core";
 import { Store } from "@ngrx/store";
 import { State } from "src/app/store/reducers";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -14,7 +21,13 @@ import {
   FormControl,
   Validators
 } from "@angular/forms";
-import { editOrganisationUnitChild } from "src/app/store/actions";
+import {
+  editOrganisationUnitChild,
+  loadOrganisationUnitChildren,
+  selectOrganisationUnitSuccess,
+  clearOrganisationUnitChildren
+} from "src/app/store/actions";
+import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
 
 @Component({
   selector: "app-organisation-unit-edit",
@@ -31,21 +44,83 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
   organisationUnitForm: FormGroup;
   organisationUnit: OrganisationUnitChildren;
   attributeValuesUpdate: OrganisationUnitChildren;
+  selectedOrgUnitItems: Array<any> = [];
+  parentOrgUnit: any;
+  isUsertriggered: Boolean = false;
+
+  orgUnitFilterConfig = {
+    singleSelection: true,
+    showUserOrgUnitSection: false,
+    updateOnSelect: true,
+    showOrgUnitLevelGroupSection: false,
+    closeOnDestroy: true,
+  };
 
   constructor(
     private store: Store<State>,
     private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private orgUnitService: OrganisationUnitService
   ) {}
 
   ngOnInit() {
     this.parentId = this.route.snapshot.params["parentid"];
-    this.currentOrgunit = this.route.snapshot.params["childid"];
-    this.selectedOrgunitChild$ = this.store.select(
-      getSelectedOrgunitChild(this.currentOrgunit)
+
+    this.store.dispatch(
+      loadOrganisationUnitChildren({
+        id: this.route.snapshot.params["parentid"]
+      })
     );
-    this.organisationUnitForm = this.generateForm();
+    this.currentOrgunit = this.route.snapshot.params["childid"];
+    this.orgUnitService
+      .getOrgUnitDetails(this.route.snapshot.params["childid"])
+      .subscribe(ouDetails => {
+        if (ouDetails) {
+          this.parentOrgUnit = ouDetails["parent"];
+          this.selectedOrgUnitItems = [];
+          this.selectedOrgUnitItems.push(ouDetails);
+        }
+      });
+    this.selectedOrgunitChild$ = this.orgUnitService.getAllOrgunitDetails(
+      this.route.snapshot.params["childid"]
+    );
+
+    this.selectedOrgunitChild$.subscribe(childInfo => {
+      if (childInfo && childInfo["id"]) {
+        this.organisationUnit = childInfo;
+        this.organisationUnitForm = this.generateForm();
+      }
+    });
+  }
+
+  // onOrgUnitUpdate(emittedObj) {
+  //   console.log("orgunitData ", emittedObj["event"]);
+  //   const selectedOrganisationUnit =
+  //     emittedObj["event"].items.length > 1
+  //       ? emittedObj["event"].items[1]
+  //       : emittedObj["event"].items[0];
+  //   this.store.dispatch(
+  //     selectOrganisationUnitSuccess({
+  //       organisationUnit: selectedOrganisationUnit
+  //     })
+  //   );
+  //   this.router.navigate([`/organisationunit/${selectedOrganisationUnit.id}`]);
+  // }
+
+  onOrgUnitUpdate(orgunitData) {
+    const selectedOrganisationUnit = orgunitData.items[0];
+    this.store.dispatch(clearOrganisationUnitChildren());
+    if (selectedOrganisationUnit.id !== "USER_ORGUNIT") {
+      this.store.dispatch(
+        selectOrganisationUnitSuccess({
+          organisationUnit: selectedOrganisationUnit
+        })
+      );
+      this.router.navigate([
+        `/organisationunit/${selectedOrganisationUnit.id}`
+      ]);
+    }
   }
 
   ngOnDestroy() {
@@ -79,11 +154,6 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
         this.organisationUnit.attributeValues[0]
           ? this.organisationUnit.attributeValues[0].value
           : []
-      ),
-      attributeValuesName: new FormControl(
-        this.organisationUnit.attributeValues[0]
-          ? this.organisationUnit.attributeValues[1].attribute.name
-          : []
       )
     });
   }
@@ -95,10 +165,10 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
         value: this.organisationUnitForm.value.attributeValues,
         attribute: {
           name: "Dispenses facility Phone Number",
-          id: 'NgmZX27k7gf'
+          id: "NgmZX27k7gf"
         }
       }
-    ]
+    ];
     this.childSubscription = this.store
       .select(getSelectedOrgunitChildChildren(this.currentOrgunit))
       .subscribe(children => {
@@ -108,7 +178,7 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
           id: this.currentOrgunit,
           attributeValues: attributeValues,
           parent: {
-            id: this.parentId
+            id: this.parentOrgUnit.id
           },
           path: this.organisationUnit.path
         };
@@ -118,6 +188,6 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
 
   onCancel(e) {
     e.stopPropagation();
-    this.router.navigate([`/organisationunit/${this.parentId}`]);
+    this.router.navigate([`/organisationunit/${this.parentOrgUnit.id}`]);
   }
 }
