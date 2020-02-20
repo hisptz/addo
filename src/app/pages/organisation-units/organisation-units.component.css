@@ -1,3 +1,33 @@
+.filter {
+  position: fixed;
+  width: 25vh;
+}
+.content {
+  margin-left: 320px;
+  height: inherit;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+@media screen and (max-width: 500px) and (min-width: 411px) {
+  .content,
+  .landing {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 411px) {
+  .content,
+  .landing {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
+}
+
+
 .header {
   margin-left: 300px;
   margin-top: 0px;
@@ -44,7 +74,7 @@
 }
 
 .loader {
-  margin-top: 35vh;
+  margin-top: 40vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,4 +106,10 @@
     margin-left: 0px;
     font-size: small;
   }
+}
+
+.loadSlider{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }

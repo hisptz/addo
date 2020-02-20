@@ -7,7 +7,7 @@ export const pages: any[] = [
   HomeComponent,
   OrganisationUnitEditComponent,
   OrganisationUnitDetailsComponent,
-  OrganisationUnitsComponent
+  OrganisationUnitsComponent,
 ];
 
-export * from './home/home.component';
+export * from './organisation-units/organisation-units.component';
