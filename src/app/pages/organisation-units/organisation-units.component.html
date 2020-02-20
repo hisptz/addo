@@ -1,19 +1,5 @@
-<div class="landingpage" *ngIf="currentUser$ | async">
-  <div class="filter">
-    <ngx-dhis2-org-unit-filter
-      [orgUnitFilterConfig]="orgUnitFilterConfig"
-      (orgUnitUpdate)="onOrgUnitUpdate($event, 'UPDATE')"
-      (orgUnitClose)="onOrgUnitUpdate($event, 'CLOSE')"
-    >
-    </ngx-dhis2-org-unit-filter>
-  </div>
-  <div class="content">
-    
-  </div>
-</div>
-
 <div class="row">
-  <div class="col-sm-3">
+  <div class="col-sm-2">
     <ngx-dhis2-org-unit-filter
       [orgUnitFilterConfig]="orgUnitFilterConfig"
       (orgUnitUpdate)="onOrgUnitUpdate($event, 'UPDATE')"
@@ -28,11 +14,6 @@
           Name:
           {{ selectedOrgUnitItems[0] ? selectedOrgUnitItems[0].name : "" }}
         </p>
-        <p>
-          Level:
-          {{ selectedOrgUnitItems[0] ? selectedOrgUnitItems[0].level : "" }}
-        </p>
-
         <h4 class="header">
           Facilities Not Reported in
           {{ selectedOrgUnitItems[0] ? selectedOrgUnitItems[0].name : "" }} for
@@ -41,7 +22,8 @@
         </h4>
       </mat-card>
 
-      <div class="col-sm-12"
+      <div
+        class="col-sm-12"
         *ngIf="
           (organisationUnitChildrenLoaded$ | async) &&
           !(isLeafOrganisation$ | async)
@@ -119,7 +101,10 @@
           <p>Loading Facilities</p>
         </div>
       </div>
-      <div *ngIf="!(organisationUnitChildrenLoaded$ | async)" class="col-sm-12 loader">
+      <div
+        *ngIf="!(organisationUnitChildrenLoaded$ | async)"
+        class="col-sm-12 loader"
+      >
         <img src="/assets/icons/balls-3.svg" />
         <h2 class="loadSlider">
           Loading

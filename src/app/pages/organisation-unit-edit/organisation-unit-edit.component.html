@@ -1,11 +1,12 @@
 <div class="landingpage">
-  <!-- <div class="filter">
+  <div class="filter">
     <ngx-dhis2-org-unit-filter [orgUnitFilterConfig]="orgUnitFilterConfig">
     </ngx-dhis2-org-unit-filter>
-  </div> -->
+  </div>
   <div class="content">
     <div class="row">
       <div class="col-md-8" *ngIf="selectedOrgunitChild$ | async">
+        <h2 style="margin-bottom: 20px;">Editing Details for {{organisationUnit.name}}</h2>
         <form [formGroup]="organisationUnitForm" class="example-form">
           <!-- <mat-form-field class="example-full-width" MatFormFieldControl="name">
             <input
