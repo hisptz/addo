@@ -1,22 +1,31 @@
 <div class="landingpage">
-  <div class="filter">
-    <ngx-dhis2-org-unit-filter
-      [orgUnitFilterConfig]="orgUnitFilterConfig"
-    >
+  <!-- <div class="filter">
+    <ngx-dhis2-org-unit-filter [orgUnitFilterConfig]="orgUnitFilterConfig">
     </ngx-dhis2-org-unit-filter>
-  </div>
+  </div> -->
   <div class="content">
     <div class="row">
       <div class="col-md-8" *ngIf="selectedOrgunitChild$ | async">
         <form [formGroup]="organisationUnitForm" class="example-form">
-          <mat-form-field class="example-full-width" MatFormFieldControl="name">
-            <input matInput placeholder="Name" formControlName="name" required />
+          <!-- <mat-form-field class="example-full-width" MatFormFieldControl="name">
+            <input
+              matInput
+              placeholder="Name"
+              formControlName="name"
+              disabled
+            />
           </mat-form-field>
           <mat-form-field
             class="example-full-width"
             MatFormFieldControl="shortName"
+            disabled
           >
-            <input matInput placeholder="Short Name" formControlName="shortName" />
+            <input
+              matInput
+              placeholder="Short Name"
+              formControlName="shortName"
+              disabled
+            />
           </mat-form-field>
           <mat-form-field class="example-full-width" MatFormFieldControl="code">
             <input matInput placeholder="Code" formControlName="code" />
@@ -42,7 +51,10 @@
               placeholder="Opening date"
               formControlName="openingDate"
             />
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
           <mat-form-field
@@ -61,7 +73,10 @@
             ></mat-datepicker-toggle>
             <mat-datepicker #pickeror></mat-datepicker>
           </mat-form-field>
-          <mat-form-field class="example-full-width" MatFormFieldControl="comments">
+          <mat-form-field
+            class="example-full-width"
+            MatFormFieldControl="comments"
+          >
             <input matInput placeholder="Comment" formControlName="comments" />
           </mat-form-field>
           <mat-form-field
@@ -74,17 +89,23 @@
               formControlName="contactPerson"
             />
           </mat-form-field>
-          <mat-form-field class="example-full-width" MatFormFieldControl="address">
+          <mat-form-field
+            class="example-full-width"
+            MatFormFieldControl="address"
+          >
             <input matInput placeholder="Address" formControlName="address" />
           </mat-form-field>
-          <mat-form-field class="example-full-width" MatFormFieldControl="email">
+          <mat-form-field
+            class="example-full-width"
+            MatFormFieldControl="email"
+          >
             <input
               matInput
               type="email"
               placeholder="Email"
               formControlName="email"
             />
-          </mat-form-field>
+          </mat-form-field> -->
           <mat-form-field
             class="example-full-width"
             MatFormFieldControl="phoneNumber"
@@ -96,19 +117,19 @@
               formControlName="phoneNumber"
             />
           </mat-form-field>
-    
+
           <mat-form-field
-          class="example-full-width"
-          MatFormFieldControl="attributeValues"
-        >
-          <input
-            matInput
-            type="tel"
-            placeholder="Dispenses Facility Phone Number"
-            formControlName="attributeValues"
-          />
-        </mat-form-field>
-    
+            class="example-full-width"
+            MatFormFieldControl="attributeValues"
+          >
+            <input
+              matInput
+              type="tel"
+              placeholder="Dispenses Facility Phone Number"
+              formControlName="attributeValues"
+            />
+          </mat-form-field>
+
           <button
             (click)="editOrgunit($event)"
             mat-raised-button
@@ -118,7 +139,7 @@
           >
             SAVE
           </button>
-    
+
           <button
             mat-raised-button
             *ngIf="organisationUnitForm.valid"
