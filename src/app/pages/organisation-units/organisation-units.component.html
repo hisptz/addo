@@ -8,8 +8,22 @@
     </ngx-dhis2-org-unit-filter>
   </div>
   <div class="content">
-    <div *ngIf="selectedOrganisationUnitStatus$ | async">
-      <mat-card class="edit">
+    
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-3">
+    <ngx-dhis2-org-unit-filter
+      [orgUnitFilterConfig]="orgUnitFilterConfig"
+      (orgUnitUpdate)="onOrgUnitUpdate($event, 'UPDATE')"
+      (orgUnitClose)="onOrgUnitUpdate($event, 'CLOSE')"
+    >
+    </ngx-dhis2-org-unit-filter>
+  </div>
+  <div class="col-sm-9">
+    <div class="row" *ngIf="selectedOrganisationUnitStatus$ | async">
+      <mat-card class="col-sm-12">
         <p>
           Name:
           {{ selectedOrgUnitItems[0] ? selectedOrgUnitItems[0].name : "" }}
@@ -27,13 +41,13 @@
         </h4>
       </mat-card>
 
-      <div
+      <div class="col-sm-12"
         *ngIf="
           (organisationUnitChildrenLoaded$ | async) &&
           !(isLeafOrganisation$ | async)
         "
       >
-        <div class="div-tabl" style="margin-top:130px">
+        <div class="div-tabl" style="margin-top:20px">
           <table mat-table class="table table-hover">
             <thead class="thead-light">
               <tr>
@@ -105,8 +119,8 @@
           <p>Loading Facilities</p>
         </div>
       </div>
-      <div *ngIf="!(organisationUnitChildrenLoaded$ | async)" class="loader">
-        <img src="../../../assets/icons/balls-3.svg" />
+      <div *ngIf="!(organisationUnitChildrenLoaded$ | async)" class="col-sm-12 loader">
+        <img src="/assets/icons/balls-3.svg" />
         <h2 class="loadSlider">
           Loading
           {{ selectedOrgUnitItems[0] ? selectedOrgUnitItems[0].name : "" }}
