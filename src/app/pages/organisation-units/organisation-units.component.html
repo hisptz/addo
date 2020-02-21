@@ -2,8 +2,8 @@
   <div class="col-sm-2">
     <ngx-dhis2-org-unit-filter
       [orgUnitFilterConfig]="orgUnitFilterConfig"
-      (orgUnitUpdate)="onOrgUnitUpdate($event, 'UPDATE')"
-      (orgUnitClose)="onOrgUnitUpdate($event, 'CLOSE')"
+      (orgUnitUpdate)="onOrgUnitUpdate($event)"
+      (orgUnitClose)="onOrgUnitUpdate($event)"
     >
     </ngx-dhis2-org-unit-filter>
   </div>
@@ -105,7 +105,7 @@
         *ngIf="!(organisationUnitChildrenLoaded$ | async)"
         class="col-sm-12 loader"
       >
-        <img src="/assets/icons/balls-3.svg" />
+        <img src="assets/icons/balls-3.svg" />
         <h2 class="loadSlider">
           Loading
           {{ selectedOrgUnitItems[0] ? selectedOrgUnitItems[0].name : "" }}

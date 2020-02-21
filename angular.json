@@ -22,7 +22,11 @@
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webapp",
-              "src/manifest.json"
+              "src/manifest.json",
+              "src/assets/favicon.ico",
+              "src/sitemap.xml",
+              "src/robots.txt",
+              "src/site.webmanifest"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
