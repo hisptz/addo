@@ -98,7 +98,6 @@ export class OrganisationUnitsComponent implements OnInit {
     } else {
       this.currentUser$.subscribe(currentUser => {
         if (currentUser && currentUser["organisationUnits"]) {
-          console.log("starting ", currentUser["organisationUnits"]);
           this.selectedOrgUnitItems = currentUser["organisationUnits"];
           this.store.dispatch(
             selectOrganisationUnitSuccess({

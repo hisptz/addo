@@ -40,7 +40,12 @@ export class OrganisationUnitService {
         .subscribe(
           (data: any) =>
             resolve(
-              _.keys(data ? (data.metaData.dimensions.ou ? data.metaData.rows : {}) : {})
+              // _.keys(
+              //   (data.metaData.dimension.ou = data.metaData.dimensions.ou.filter(
+              //     val => !data.metaData.rows[0].includes(val)
+              //   ))
+              // )
+               _.keys(data ? (data.metaData.dimensions.ou && data.metaData.rows ? data.metaData.items : {}) : {})
             ),
           (error: ErrorMessage) => reject(error)
         );
@@ -50,10 +55,9 @@ export class OrganisationUnitService {
   getFacilities(orgUnitId): Observable<any> {
     return new Observable(observer => {
       this.getOrgunitChildren(orgUnitId)
-        .then((orgunits: OrganisationUnitChildren[]	) => {
+        .then((orgunits: OrganisationUnitChildren[]) => {
           this.getReportingRate()
             .then((completedOrgunits: string[]) => {
-              // console.log(completedOrgunits);
               observer.next(
                 _.filter(orgunits, (orgunit: OrganisationUnitChildren) =>
                   _.indexOf(completedOrgunits, orgunit.id) !== -1 ? false : true
@@ -67,11 +71,15 @@ export class OrganisationUnitService {
   }
 
   getOrgUnitDetails(id): Observable<any> {
-    return this.httpService.get("organisationUnits/" + id + ".json?fields=id,name,level,parent[id,name]")
+    return this.httpService.get(
+      "organisationUnits/" + id + ".json?fields=id,name,level,parent[id,name]"
+    );
   }
 
   getAllOrgunitDetails(id): Observable<any> {
-    return this.httpService.get("organisationUnits/" + id + ".json?fields=id,name,level,*")
+    return this.httpService.get(
+      "organisationUnits/" + id + ".json?fields=id,name,level,*"
+    );
   }
 
   editOrgunitChildren(orgunitChild: OrganisationUnitChildren): Observable<any> {

@@ -10,13 +10,8 @@
   <div class="col-sm-9">
     <div class="row" *ngIf="selectedOrganisationUnitStatus$ | async">
       <mat-card class="col-sm-12">
-        <p>
-          Name:
-          {{ selectedOrgUnitItems[0] ? selectedOrgUnitItems[0].name : "" }}
-        </p>
         <h4 class="header">
-          Facilities Not Reported in
-          {{ selectedOrgUnitItems[0] ? selectedOrgUnitItems[0].name : "" }} for
+          Addos Not Reported in
           {{ getMonth }},
           {{ getYear }}
         </h4>
@@ -30,7 +25,7 @@
         "
       >
         <div class="div-tabl" style="margin-top:20px">
-          <table mat-table class="table table-hover">
+          <table mat-table class="table table-hover table-fixed">
             <thead class="thead-light">
               <tr>
                 <th scope="col">S/N</th>
@@ -98,7 +93,7 @@
 
         <div *ngIf="!(organisationUnitChildrenLoaded$ | async)">
           <p><mat-progress-bar mode="query"></mat-progress-bar></p>
-          <p>Loading Facilities</p>
+          <p>Loading Addos</p>
         </div>
       </div>
       <div
@@ -107,9 +102,7 @@
       >
         <img src="assets/icons/balls-3.svg" />
         <h2 class="loadSlider">
-          Loading
-          {{ selectedOrgUnitItems[0] ? selectedOrgUnitItems[0].name : "" }}
-          Facilities
+          Fetching Addos
         </h2>
       </div>
     </div>
