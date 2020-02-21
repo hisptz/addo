@@ -94,20 +94,6 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  // onOrgUnitUpdate(emittedObj) {
-  //   console.log("orgunitData ", emittedObj["event"]);
-  //   const selectedOrganisationUnit =
-  //     emittedObj["event"].items.length > 1
-  //       ? emittedObj["event"].items[1]
-  //       : emittedObj["event"].items[0];
-  //   this.store.dispatch(
-  //     selectOrganisationUnitSuccess({
-  //       organisationUnit: selectedOrganisationUnit
-  //     })
-  //   );
-  //   this.router.navigate([`/organisationunit/${selectedOrganisationUnit.id}`]);
-  // }
-
   onOrgUnitUpdate(orgunitData) {
     const selectedOrganisationUnit = orgunitData.items[0];
     this.store.dispatch(clearOrganisationUnitChildren());

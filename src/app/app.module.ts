@@ -39,10 +39,13 @@ import {
   MatButtonToggleModule,
   MatDialogModule,
   MatSnackBarModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  
 } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { OrganisationUnitDetailsComponent } from './pages/organisation-unit-details/organisation-unit-details.component';
+import {NgxPaginationModule} from 'ngx-pagination';  
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
 // AoT requires an exported function for factories
@@ -76,6 +79,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatNativeDateModule,
     MatProgressBarModule,
     MatButtonToggleModule,
+    Ng2SearchPipeModule,
+    NgxPaginationModule,
     /**
      * Menu  module
      */
