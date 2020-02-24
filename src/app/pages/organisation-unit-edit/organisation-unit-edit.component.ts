@@ -4,7 +4,9 @@ import {
   OnDestroy,
   Input,
   Output,
-  EventEmitter
+  EventEmitter,
+  Inject,
+  Optional
 } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { State } from "src/app/store/reducers";
@@ -28,13 +30,14 @@ import {
   clearOrganisationUnitChildren
 } from "src/app/store/actions";
 import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: "app-organisation-unit-edit",
   templateUrl: "./organisation-unit-edit.component.html",
   styleUrls: ["./organisation-unit-edit.component.css"]
 })
-export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
+export class OrganisationUnitEditComponent implements OnInit {
   orgunitSubscription: Subscription;
   childSubscription: Subscription;
 
@@ -61,7 +64,9 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private orgUnitService: OrganisationUnitService
+    // @Optional() private dialogRef: MatDialogRef<OrganisationUnitEditComponent>,
+    private orgUnitService: OrganisationUnitService,
+    // @Optional() @Inject(MAT_DIALOG_DATA) public data:OrganisationUnitChildren 
   ) {}
 
   ngOnInit() {
@@ -109,12 +114,12 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.orgunitSubscription.unsubscribe();
-    if (this.childSubscription) {
-      this.childSubscription.unsubscribe();
-    }
-  }
+  // ngOnDestroy() {
+  //   this.orgunitSubscription.unsubscribe();
+  //   if (this.childSubscription) {
+  //     this.childSubscription.unsubscribe();
+  //   }
+  // }
 
   generateForm() {
     this.orgunitSubscription = this.selectedOrgunitChild$.subscribe(
@@ -170,10 +175,12 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
         };
         this.store.dispatch(editOrganisationUnitChild({ child: orgunit }));
       });
+      // this.dialogRef.close();
   }
 
   onCancel(e) {
     e.stopPropagation();
+    // this.dialogRef.close()
     this.router.navigate([`/organisationunit/${this.parentOrgUnit.id}`]);
   }
 }

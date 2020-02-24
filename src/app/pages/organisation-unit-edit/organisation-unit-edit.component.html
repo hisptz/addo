@@ -1,156 +1,54 @@
-<div class="landingpage">
-  <div class="filter">
-    <ngx-dhis2-org-unit-filter [orgUnitFilterConfig]="orgUnitFilterConfig">
-    </ngx-dhis2-org-unit-filter>
-  </div>
-  <div class="content">
-    <div class="row">
-      <div class="col-md-8" *ngIf="selectedOrgunitChild$ | async">
-        <h2 style="margin-bottom: 20px;">Editing Details for {{organisationUnit.name}}</h2>
-        <form [formGroup]="organisationUnitForm" class="example-form">
-          <!-- <mat-form-field class="example-full-width" MatFormFieldControl="name">
-            <input
-              matInput
-              placeholder="Name"
-              formControlName="name"
-              disabled
-            />
-          </mat-form-field>
-          <mat-form-field
-            class="example-full-width"
-            MatFormFieldControl="shortName"
-            disabled
-          >
-            <input
-              matInput
-              placeholder="Short Name"
-              formControlName="shortName"
-              disabled
-            />
-          </mat-form-field>
-          <mat-form-field class="example-full-width" MatFormFieldControl="code">
-            <input matInput placeholder="Code" formControlName="code" />
-          </mat-form-field>
-          <mat-form-field
-            class="example-full-width"
-            MatFormFieldControl="description"
-          >
-            <input
-              matInput
-              placeholder="Description"
-              formControlName="description"
-            />
-          </mat-form-field>
-          <mat-form-field
-            class="example-full-width"
-            MatFormFieldControl="openingDate"
-          >
-            <input
-              matInput
-              required
-              [matDatepicker]="picker"
-              placeholder="Opening date"
-              formControlName="openingDate"
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="picker"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-          <mat-form-field
-            class="example-full-width"
-            MatFormFieldControl="closedDate"
-          >
-            <input
-              matInput
-              [matDatepicker]="pickeror"
-              placeholder="Closed date"
-              formControlName="closedDate"
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="pickeror"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #pickeror></mat-datepicker>
-          </mat-form-field>
-          <mat-form-field
-            class="example-full-width"
-            MatFormFieldControl="comments"
-          >
-            <input matInput placeholder="Comment" formControlName="comments" />
-          </mat-form-field>
-          <mat-form-field
-            class="example-full-width"
-            MatFormFieldControl="contactPerson"
-          >
-            <input
-              matInput
-              placeholder="Contact person"
-              formControlName="contactPerson"
-            />
-          </mat-form-field>
-          <mat-form-field
-            class="example-full-width"
-            MatFormFieldControl="address"
-          >
-            <input matInput placeholder="Address" formControlName="address" />
-          </mat-form-field>
-          <mat-form-field
-            class="example-full-width"
-            MatFormFieldControl="email"
-          >
-            <input
-              matInput
-              type="email"
-              placeholder="Email"
-              formControlName="email"
-            />
-          </mat-form-field> -->
-          <mat-form-field
-            class="example-full-width"
-            MatFormFieldControl="phoneNumber"
-          >
-            <input
-              matInput
-              type="tel"
-              placeholder="Phone Number"
-              formControlName="phoneNumber"
-            />
-          </mat-form-field>
+<div class="content">
+  <div class="row">
+    <div class="col-md-8" *ngIf="selectedOrgunitChild$ | async">
+      <h2 style="margin-bottom: 20px;">
+        Editing Details for {{ organisationUnit.name }}
+      </h2>
+      <form [formGroup]="organisationUnitForm" class="example-form">
+        <mat-form-field
+          class="example-full-width"
+          MatFormFieldControl="phoneNumber"
+        >
+          <input
+            matInput
+            type="tel"
+            placeholder="Phone Number"
+            formControlName="phoneNumber"
+          />
+        </mat-form-field>
 
-          <mat-form-field
-            class="example-full-width"
-            MatFormFieldControl="attributeValues"
-          >
-            <input
-              matInput
-              type="tel"
-              placeholder="Dispenses Facility Phone Number"
-              formControlName="attributeValues"
-            />
-          </mat-form-field>
+        <mat-form-field
+          class="example-full-width"
+          MatFormFieldControl="attributeValues"
+        >
+          <input
+            matInput
+            type="tel"
+            placeholder="Dispenses Facility Phone Number"
+            formControlName="attributeValues"
+          />
+        </mat-form-field>
 
-          <button
-            (click)="editOrgunit($event)"
-            mat-raised-button
-            color="primary"
-            *ngIf="organisationUnitForm.valid"
-            type="submit"
-          >
-            SAVE
-          </button>
+        <button
+          (click)="editOrgunit($event)"
+          mat-raised-button
+          color="primary"
+          *ngIf="organisationUnitForm.valid"
+          type="submit"
+          class="btn btn-success"
+        >
+          SAVE
+        </button>
 
-          <button
-            mat-raised-button
-            (click)="onCancel($event)"
-            class="cancel"
-            type="button"
-          >
-            CANCEL
-          </button>
-        </form>
-      </div>
+        <button
+          mat-raised-button
+          (click)="onCancel($event)"
+          class="cancel"
+          type="button"
+        >
+          CANCEL
+        </button>
+      </form>
     </div>
   </div>
 </div>
