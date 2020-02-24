@@ -1,13 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  Input,
-  Output,
-  EventEmitter,
-  Inject,
-  Optional
-} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { State } from "src/app/store/reducers";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -50,6 +41,7 @@ export class OrganisationUnitEditComponent implements OnInit {
   selectedOrgUnitItems: Array<any> = [];
   parentOrgUnit: any;
   isUsertriggered: Boolean = false;
+  selectedOrgUnit: any;
 
   constructor(
     private store: Store<State>,
@@ -74,8 +66,8 @@ export class OrganisationUnitEditComponent implements OnInit {
       .subscribe(ouDetails => {
         if (ouDetails) {
           this.parentOrgUnit = ouDetails["parent"];
-          this.selectedOrgUnitItems = [];
-          this.selectedOrgUnitItems.push(ouDetails);
+          // this.selectedOrgUnitItems = [];
+          // this.selectedOrgUnitItems.push(ouDetails);
         }
       });
     this.selectedOrgunitChild$ = this.orgUnitService.getAllOrgunitDetails(
@@ -88,21 +80,6 @@ export class OrganisationUnitEditComponent implements OnInit {
         this.organisationUnitForm = this.generateForm();
       }
     });
-  }
-
-  onOrgUnitUpdate(orgunitData) {
-    const selectedOrganisationUnit = orgunitData.items[0];
-    this.store.dispatch(clearOrganisationUnitChildren());
-    if (selectedOrganisationUnit.id !== "USER_ORGUNIT") {
-      this.store.dispatch(
-        selectOrganisationUnitSuccess({
-          organisationUnit: selectedOrganisationUnit
-        })
-      );
-      this.router.navigate([
-        `/organisationunit/${selectedOrganisationUnit.id}`
-      ]);
-    }
   }
 
   generateForm() {
@@ -133,7 +110,7 @@ export class OrganisationUnitEditComponent implements OnInit {
     });
   }
 
-  editOrgunit(e) {
+  saveOrgunit(e) {
     e.stopPropagation();
     let attributeValues = [
       {
@@ -158,11 +135,15 @@ export class OrganisationUnitEditComponent implements OnInit {
           path: this.organisationUnit.path
         };
         this.store.dispatch(editOrganisationUnitChild({ child: orgunit }));
+
+        this.router.navigate([
+          `/organisationunit/${this.parentId}`
+        ]);
       });
   }
 
   onCancel(e) {
     e.stopPropagation();
-    this.router.navigate([`/organisationunit/${this.parentOrgUnit.id}`]);
+    this.router.navigate([`/organisationunit/${this.parentId}`]);
   }
 }
