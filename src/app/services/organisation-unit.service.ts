@@ -85,7 +85,6 @@ export class OrganisationUnitService {
   editOrgunitChildren(orgunitChild: OrganisationUnitChildren): Observable<any> {
     if (orgunitChild.attributeValues.length === 0) {
     }
-    console.log(orgunitChild);
     return this.httpService.put(
       `29/organisationUnits/${orgunitChild.id}?mergeMode=REPLACE`,
       orgunitChild

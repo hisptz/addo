@@ -4,7 +4,9 @@ import {
   OnDestroy,
   Input,
   Output,
-  EventEmitter
+  EventEmitter,
+  Inject,
+  Optional
 } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { State } from "src/app/store/reducers";
@@ -28,13 +30,14 @@ import {
   clearOrganisationUnitChildren
 } from "src/app/store/actions";
 import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 
 @Component({
   selector: "app-organisation-unit-edit",
   templateUrl: "./organisation-unit-edit.component.html",
   styleUrls: ["./organisation-unit-edit.component.css"]
 })
-export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
+export class OrganisationUnitEditComponent implements OnInit {
   orgunitSubscription: Subscription;
   childSubscription: Subscription;
 
@@ -48,20 +51,13 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
   parentOrgUnit: any;
   isUsertriggered: Boolean = false;
 
-  orgUnitFilterConfig = {
-    singleSelection: true,
-    showUserOrgUnitSection: false,
-    updateOnSelect: true,
-    showOrgUnitLevelGroupSection: false,
-    closeOnDestroy: true,
-  };
-
   constructor(
     private store: Store<State>,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private orgUnitService: OrganisationUnitService
+    // @Optional() private dialogRef: MatDialogRef<OrganisationUnitEditComponent>,
+    private orgUnitService: OrganisationUnitService // @Optional() @Inject(MAT_DIALOG_DATA) public data:OrganisationUnitChildren
   ) {}
 
   ngOnInit() {
@@ -106,13 +102,6 @@ export class OrganisationUnitEditComponent implements OnInit, OnDestroy {
       this.router.navigate([
         `/organisationunit/${selectedOrganisationUnit.id}`
       ]);
-    }
-  }
-
-  ngOnDestroy() {
-    this.orgunitSubscription.unsubscribe();
-    if (this.childSubscription) {
-      this.childSubscription.unsubscribe();
     }
   }
 

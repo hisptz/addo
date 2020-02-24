@@ -66,9 +66,6 @@ export class OrganisationUnitEffects {
             this._snackBar.open(`Edited Successfully`, "", {
               duration: 2000
             });
-            this.router.navigate([
-              `/organisationunit/${action.child.parent.id}`
-            ]);
             return editOrganisationUnitChildSuccess({
               child: { id: action.child.id, changes: action.child }
             });
