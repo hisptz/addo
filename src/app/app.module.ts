@@ -46,6 +46,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { OrganisationUnitDetailsComponent } from './pages/organisation-unit-details/organisation-unit-details.component';
 import {NgxPaginationModule} from 'ngx-pagination';  
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { OrganisationUnitEditComponent } from './pages/organisation-unit-edit/organisation-unit-edit.component';
 
 
 // AoT requires an exported function for factories
@@ -117,7 +118,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatCardModule,
     MatIconModule
   ],
-  entryComponents: [OrganisationUnitDetailsComponent],
+  entryComponents: [OrganisationUnitDetailsComponent, OrganisationUnitEditComponent],
   providers: [{ provide: RouterStateSerializer, useClass: RouteSerializer }],
   bootstrap: [AppComponent]
 })
