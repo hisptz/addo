@@ -30,7 +30,7 @@ import {
   clearOrganisationUnitChildren
 } from "src/app/store/actions";
 import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 
 @Component({
   selector: "app-organisation-unit-edit",
@@ -51,22 +51,13 @@ export class OrganisationUnitEditComponent implements OnInit {
   parentOrgUnit: any;
   isUsertriggered: Boolean = false;
 
-  orgUnitFilterConfig = {
-    singleSelection: true,
-    showUserOrgUnitSection: false,
-    updateOnSelect: true,
-    showOrgUnitLevelGroupSection: false,
-    closeOnDestroy: true,
-  };
-
   constructor(
     private store: Store<State>,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     // @Optional() private dialogRef: MatDialogRef<OrganisationUnitEditComponent>,
-    private orgUnitService: OrganisationUnitService,
-    // @Optional() @Inject(MAT_DIALOG_DATA) public data:OrganisationUnitChildren 
+    private orgUnitService: OrganisationUnitService // @Optional() @Inject(MAT_DIALOG_DATA) public data:OrganisationUnitChildren
   ) {}
 
   ngOnInit() {
@@ -113,13 +104,6 @@ export class OrganisationUnitEditComponent implements OnInit {
       ]);
     }
   }
-
-  // ngOnDestroy() {
-  //   this.orgunitSubscription.unsubscribe();
-  //   if (this.childSubscription) {
-  //     this.childSubscription.unsubscribe();
-  //   }
-  // }
 
   generateForm() {
     this.orgunitSubscription = this.selectedOrgunitChild$.subscribe(
@@ -175,12 +159,10 @@ export class OrganisationUnitEditComponent implements OnInit {
         };
         this.store.dispatch(editOrganisationUnitChild({ child: orgunit }));
       });
-      // this.dialogRef.close();
   }
 
   onCancel(e) {
     e.stopPropagation();
-    // this.dialogRef.close()
     this.router.navigate([`/organisationunit/${this.parentOrgUnit.id}`]);
   }
 }
