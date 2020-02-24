@@ -116,7 +116,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatMenuModule,
     MatButtonModule,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   entryComponents: [OrganisationUnitDetailsComponent, OrganisationUnitEditComponent],
   providers: [{ provide: RouterStateSerializer, useClass: RouteSerializer }],
