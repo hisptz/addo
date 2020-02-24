@@ -11,8 +11,8 @@
     <div class="row" *ngIf="selectedOrganisationUnitStatus$ | async">
       <mat-card class="col-sm-12">
         <h4 class="header">
-          Addos Not Reported in
-          {{ getMonth }},
+          Addos Not Reported from
+          {{ (selectedOrganisationUnit$ | async).name }} in {{ getMonth }},
           {{ getYear }}
         </h4>
       </mat-card>
@@ -120,7 +120,7 @@
       >
         <img src="assets/icons/balls-3.svg" />
         <h2 class="loadSlider">
-          Fetching Addos
+          Fetching {{ (selectedOrganisationUnit$ | async).name }} Addos
         </h2>
       </div>
     </div>
