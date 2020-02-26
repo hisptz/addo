@@ -45,7 +45,13 @@ export class OrganisationUnitService {
               //     val => !data.metaData.rows[0].includes(val)
               //   ))
               // )
-               _.keys(data ? (data.metaData.dimensions.ou && data.metaData.rows ? data.metaData.items : {}) : {})
+              _.keys(
+                data
+                  ? data.metaData.dimensions.ou && data.metaData.rows
+                    ? data.metaData.items
+                    : {}
+                  : {}
+              )
             ),
           (error: ErrorMessage) => reject(error)
         );
@@ -80,6 +86,14 @@ export class OrganisationUnitService {
     return this.httpService.get(
       "organisationUnits/" + id + ".json?fields=id,name,level,*"
     );
+  }
+
+  getLegends(): Observable<any> {
+    try {
+      return this.httpService.get(
+        `legendSets?fields=legends[id,startValue,endValue,color]`
+      );
+    } catch (error) {}
   }
 
   editOrgunitChildren(orgunitChild: OrganisationUnitChildren): Observable<any> {
