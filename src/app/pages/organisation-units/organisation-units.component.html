@@ -1,140 +1,151 @@
-<div class="row">
-  <div class="col-sm-3">
-    <ngx-dhis2-org-unit-filter
-      [orgUnitFilterConfig]="orgUnitFilterConfig"
-      (orgUnitUpdate)="onOrgUnitUpdate($event)"
-      (orgUnitClose)="onOrgUnitUpdate($event)"
-    >
-    </ngx-dhis2-org-unit-filter>
-  </div>
-  <div class="col-sm-9">
-    <div class="row" *ngIf="selectedOrganisationUnitStatus$ | async">
-      <mat-card class="col-sm-12">
-        <h4 class="header">
-          Addos Not Reported from
-          {{
-            (selectedOrganisationUnit$ | async)
-              ? (selectedOrganisationUnit$ | async).name
-              : ""
-          }}
-          in {{ getMonth }},
-          {{ getYear }}
-        </h4>
-      </mat-card>
+<mat-tab-group style="margin: 0 0 0 0;">
+  <mat-tab label="Not Reported Addos" style="margin: 0 0 0 0;">
+    <ng-template matTabContent style="margin: 0 0 0 0;">
+      <div class="row">
+        <div class="col-sm-3">
+          <ngx-dhis2-org-unit-filter
+            [orgUnitFilterConfig]="orgUnitFilterConfig"
+            (orgUnitUpdate)="onOrgUnitUpdate($event)"
+            (orgUnitClose)="onOrgUnitUpdate($event)"
+          >
+          </ngx-dhis2-org-unit-filter>
+        </div>
+        <div class="col-sm-9">
+          <div class="row" *ngIf="selectedOrganisationUnitStatus$ | async">
+            <mat-card class="col-sm-12">
+              <h4 class="header">
+                Addos Not Reported from
+                {{
+                  (selectedOrganisationUnit$ | async)
+                    ? (selectedOrganisationUnit$ | async).name
+                    : ""
+                }}
+                in {{ getMonth }},
+                {{ getYear }}
+              </h4>
+            </mat-card>
 
-      <div
-        class="col-sm-12"
-        *ngIf="
-          (organisationUnitChildrenLoaded$ | async) &&
-          !(isLeafOrganisation$ | async)
-        "
-      >
-        <div class="div-tabl" style="margin-top:20px">
-          <div class="col-sm-5" style="padding-bottom:10px;">
-            <input
-              class="form-control"
-              type="text"
-              placeholder="Search......."
-              [(ngModel)]="filter"
-              style="border-bottom: 1px solid black; border-top: none; border-left: none; border-right: none; border-radius: 5px;"
-            />
+            <div
+              class="col-sm-12"
+              *ngIf="
+                (organisationUnitChildrenLoaded$ | async) &&
+                !(isLeafOrganisation$ | async)
+              "
+            >
+              <div class="div-tabl" style="margin-top:20px">
+                <div class="col-sm-5" style="padding-bottom:10px;">
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Search......."
+                    [(ngModel)]="filter"
+                    style="border-bottom: 1px solid black; border-top: none; border-left: none; border-right: none; border-radius: 5px;"
+                  />
+                </div>
+
+                <table mat-table class="table table-hover table-fixed">
+                  <thead class="thead-light">
+                    <tr>
+                      <th scope="col" class="sn">S/N</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Last Updated</th>
+                      <th scope="col">Contact Person</th>
+                      <th scope="col">Dispenser's Contact</th>
+                      <th scope="col"></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let orgunitChild of organisationUnitChildren$
+                          | async
+                          | filter: filter
+                          | paginate: { itemsPerPage: 30, currentPage: p };
+                        let count = index
+                      "
+                    >
+                      <td>{{ count + 1 }}</td>
+                      <td>{{ orgunitChild.name }}</td>
+                      <td>{{ orgunitChild.lastUpdated | date }}</td>
+                      <td *ngIf="orgunitChild.phoneNumber">
+                        {{ orgunitChild.phoneNumber }}
+                      </td>
+                      <td *ngIf="!orgunitChild.phoneNumber">
+                        No Contact Details
+                      </td>
+
+                      <td *ngIf="orgunitChild.attributeValues[0]">
+                        {{ orgunitChild.attributeValues[0].value }}
+                      </td>
+                      <td *ngIf="!orgunitChild.attributeValues[0]">
+                        No Contact Details
+                      </td>
+                      <td>
+                        <button
+                          mat-icon-button
+                          [matMenuTriggerFor]="menu"
+                          aria-label="Example icon-button with a menu"
+                        >
+                          <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                          <button
+                            *ngIf="orgunitChild.level"
+                            mat-menu-item
+                            (click)="onEditChild($event, orgunitChild.id)"
+                          >
+                            <mat-icon>edit</mat-icon>
+                            <span>Edit</span>
+                          </button>
+                          <button
+                            mat-menu-item
+                            (click)="onOpenDetails($event, orgunitChild)"
+                          >
+                            <mat-icon>details</mat-icon>
+                            <span>Details</span>
+                          </button>
+                        </mat-menu>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p class="pagination">
+                  <pagination-controls
+                    (pageChange)="p = $event"
+                  ></pagination-controls>
+                </p>
+              </div>
+
+              <div *ngIf="!(organisationUnitChildrenLoaded$ | async)">
+                <p><mat-progress-bar mode="query"></mat-progress-bar></p>
+                <p>Loading Addos</p>
+              </div>
+            </div>
+            <div
+              *ngIf="!(organisationUnitChildrenLoaded$ | async)"
+              class="col-sm-12 loader"
+            >
+              <img src="assets/icons/balls-3.svg" />
+              <h2 class="loadSlider">
+                Fetching
+                {{
+                  (selectedOrganisationUnit$ | async)
+                    ? (selectedOrganisationUnit$ | async).name
+                    : ""
+                }}
+                Addos
+              </h2>
+            </div>
           </div>
-
-          <table mat-table class="table table-hover table-fixed">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col" class="sn">S/N</th>
-                <th scope="col">Name</th>
-                <th scope="col">Last Updated</th>
-                <th scope="col">Contact Person</th>
-                <th scope="col">Dispenser's Contact</th>
-                <th scope="col"></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="
-                  let orgunitChild of organisationUnitChildren$
-                    | async
-                    | filter: filter
-                    | paginate: { itemsPerPage: 30, currentPage: p };
-                  let count = index
-                "
-              >
-                <td>{{ count + 1 }}</td>
-                <td>{{ orgunitChild.name }}</td>
-                <td>{{ orgunitChild.lastUpdated | date }}</td>
-                <td *ngIf="orgunitChild.phoneNumber">
-                  {{ orgunitChild.phoneNumber }}
-                </td>
-                <td *ngIf="!orgunitChild.phoneNumber">
-                  No Contact Details
-                </td>
-
-                <td *ngIf="orgunitChild.attributeValues[0]">
-                  {{ orgunitChild.attributeValues[0].value }}
-                </td>
-                <td *ngIf="!orgunitChild.attributeValues[0]">
-                  No Contact Details
-                </td>
-                <td>
-                  <button
-                    mat-icon-button
-                    [matMenuTriggerFor]="menu"
-                    aria-label="Example icon-button with a menu"
-                  >
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <button
-                      *ngIf="orgunitChild.level"
-                      mat-menu-item
-                      (click)="onEditChild($event, orgunitChild.id)"
-                    >
-                      <mat-icon>edit</mat-icon>
-                      <span>Edit</span>
-                    </button>
-                    <button
-                      mat-menu-item
-                      (click)="onOpenDetails($event, orgunitChild)"
-                    >
-                      <mat-icon>details</mat-icon>
-                      <span>Details</span>
-                    </button>
-                  </mat-menu>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <p class="pagination">
-            <pagination-controls
-              (pageChange)="p = $event"
-            ></pagination-controls>
-          </p>
-        </div>
-
-        <div *ngIf="!(organisationUnitChildrenLoaded$ | async)">
-          <p><mat-progress-bar mode="query"></mat-progress-bar></p>
-          <p>Loading Addos</p>
+          <div *ngIf="!(selectedOrganisationUnitStatus$ | async)"></div>
         </div>
       </div>
-      <div
-        *ngIf="!(organisationUnitChildrenLoaded$ | async)"
-        class="col-sm-12 loader"
-      >
-        <img src="assets/icons/balls-3.svg" />
-        <h2 class="loadSlider">
-          Fetching
-          {{
-            (selectedOrganisationUnit$ | async)
-              ? (selectedOrganisationUnit$ | async).name
-              : ""
-          }}
-          Addos
-        </h2>
-      </div>
-    </div>
-    <div *ngIf="!(selectedOrganisationUnitStatus$ | async)"></div>
-  </div>
-</div>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="SMS Automation">
+    <ng-template matTabContent>
+      <app-sms></app-sms>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
