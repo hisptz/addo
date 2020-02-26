@@ -47,6 +47,7 @@ import { OrganisationUnitDetailsComponent } from './pages/organisation-unit-deta
 import {NgxPaginationModule} from 'ngx-pagination';  
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { OrganisationUnitEditComponent } from './pages/organisation-unit-edit/organisation-unit-edit.component';
+import { SmsComponent } from './pages/sms/sms.component';
 
 
 // AoT requires an exported function for factories
@@ -55,7 +56,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, ...fromPages.pages],
+  declarations: [AppComponent, ...fromPages.pages, SmsComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
