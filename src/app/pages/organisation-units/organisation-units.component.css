@@ -117,3 +117,13 @@
 input[type="text"] {
   box-shadow: none!important;
 }
+
+.downs {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+tr:hover{
+  cursor: pointer;
+}

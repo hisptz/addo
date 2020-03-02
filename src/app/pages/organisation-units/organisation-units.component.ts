@@ -24,6 +24,8 @@ import { OrganisationUnitDetailsComponent } from "../organisation-unit-details/o
 import { getCurrentUser } from "src/app/store/selectors";
 import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
 import { OrganisationUnitEditComponent } from "../organisation-unit-edit/organisation-unit-edit.component";
+import * as XLSX from "xlsx";
+import * as _ from "lodash";
 
 @Component({
   selector: "app-organisation-units",
@@ -36,6 +38,18 @@ export class OrganisationUnitsComponent implements OnInit {
     showUserOrgUnitSection: false,
     updateOnSelect: true,
     showOrgUnitLevelGroupSection: false
+  };
+  options = {
+    fieldSeparator: ",",
+    quoteStrings: '"',
+    decimalseparator: ".",
+    showLabels: false,
+    headers: ["S/N", "Name", "Contact Person", "Dispenser's Contacts"],
+    showTitle: true,
+    title: "asfasf",
+    useBom: false,
+    removeNewLines: true,
+    keys: ["approved", "age", "name"]
   };
   selectedOrganisationUnit$: Observable<OrganisationUnit>;
   selectedOrganisationUnitStatus$: Observable<boolean>;
@@ -60,6 +74,7 @@ export class OrganisationUnitsComponent implements OnInit {
   parentOrgunit: string;
   currentUser$: Observable<any>;
   selectedOrgUnitItems: Array<any> = [];
+  omitcolumn: any;
 
   constructor(
     private store: Store<State>,
@@ -139,12 +154,11 @@ export class OrganisationUnitsComponent implements OnInit {
   }
 
   onEditChild(e, organisatioUnit) {
-    console.log("Blove:::", organisatioUnit);
     e.stopPropagation();
     this.dialog.open(OrganisationUnitEditComponent, {
       data: { organisationUnit: organisatioUnit },
-      height: "370px",
-      width: "700px"
+      height: "auto",
+      width: "auto"
     });
   }
 
@@ -163,4 +177,22 @@ export class OrganisationUnitsComponent implements OnInit {
   }
   getMonth = this.months[this.date.getMonth() - 1];
   getYear = this.date.getFullYear();
+
+  fileName = "addos.xlsx";
+
+  downloadCSV(): void {
+    let omitcolumn = _.map((c: any) => {
+      return _.omit(c, [""]);
+    });
+
+    let element = document.getElementById("excel-table");
+    var ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, omitcolumn);
+
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "sheet 1");
+
+    /* save to file */
+    XLSX.writeFile(wb, this.fileName);
+  }
 }
