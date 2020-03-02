@@ -23,6 +23,7 @@ import { MatDialog } from "@angular/material";
 import { OrganisationUnitDetailsComponent } from "../organisation-unit-details/organisation-unit-details.component";
 import { getCurrentUser } from "src/app/store/selectors";
 import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
+import { OrganisationUnitEditComponent } from "../organisation-unit-edit/organisation-unit-edit.component";
 
 @Component({
   selector: "app-organisation-units",
@@ -137,9 +138,14 @@ export class OrganisationUnitsComponent implements OnInit {
     }
   }
 
-  onEditChild(e, id: string) {
+  onEditChild(e, organisatioUnit) {
+    console.log("Blove:::", organisatioUnit);
     e.stopPropagation();
-    this.router.navigate([`organisationunit/${this.parentOrgunit}/${id}`]);
+    this.dialog.open(OrganisationUnitEditComponent, {
+      data: { organisationUnit: organisatioUnit },
+      height: "370px",
+      width: "700px"
+    });
   }
 
   onDeleteChild(e, id: string) {
