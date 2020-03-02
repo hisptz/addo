@@ -25,12 +25,14 @@
               </h4>
             </mat-card>
 
+         
             <div
               class="col-sm-12"
               *ngIf="
-                (organisationUnitChildrenLoaded$ | async) &&
-                !(isLeafOrganisation$ | async)
-              "
+              (organisationUnitChildrenLoaded$ | async) &&
+              !(isLeafOrganisation$ | async)
+            "
+             
             >
               <div class="div-tabl" style="margin-top:20px">
                 <div class="col-sm-5" style="padding-bottom:10px;">
@@ -48,7 +50,6 @@
                     <tr>
                       <th scope="col" class="sn">S/N</th>
                       <th scope="col">Name</th>
-                      <th scope="col">Last Updated</th>
                       <th scope="col">Contact Person</th>
                       <th scope="col">Dispenser's Contact</th>
                       <th scope="col"></th>
@@ -67,7 +68,6 @@
                     >
                       <td>{{ count + 1 }}</td>
                       <td>{{ orgunitChild.name }}</td>
-                      <td>{{ orgunitChild.lastUpdated | date }}</td>
                       <td *ngIf="orgunitChild.phoneNumber">
                         {{ orgunitChild.phoneNumber }}
                       </td>

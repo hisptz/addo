@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit, Inject } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { State } from "src/app/store/reducers";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -48,11 +48,16 @@ export class OrganisationUnitEditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    // @Optional() private dialogRef: MatDialogRef<OrganisationUnitEditComponent>,
-    private orgUnitService: OrganisationUnitService // @Optional() @Inject(MAT_DIALOG_DATA) public data:OrganisationUnitChildren
+    private dialogRef: MatDialogRef<OrganisationUnitEditComponent>,
+    private orgUnitService: OrganisationUnitService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit() {
+    this.onView();
+  }
+
+  onView() {
     this.parentId = this.route.snapshot.params["parentid"];
 
     this.store.dispatch(
@@ -60,18 +65,16 @@ export class OrganisationUnitEditComponent implements OnInit {
         id: this.route.snapshot.params["parentid"]
       })
     );
-    this.currentOrgunit = this.route.snapshot.params["childid"];
+    this.currentOrgunit = this.data.organisationUnit;
     this.orgUnitService
-      .getOrgUnitDetails(this.route.snapshot.params["childid"])
+      .getOrgUnitDetails(this.data.organisationUnit)
       .subscribe(ouDetails => {
         if (ouDetails) {
           this.parentOrgUnit = ouDetails["parent"];
-          // this.selectedOrgUnitItems = [];
-          // this.selectedOrgUnitItems.push(ouDetails);
         }
       });
     this.selectedOrgunitChild$ = this.orgUnitService.getAllOrgunitDetails(
-      this.route.snapshot.params["childid"]
+      this.data.organisationUnit
     );
 
     this.selectedOrgunitChild$.subscribe(childInfo => {
@@ -135,15 +138,12 @@ export class OrganisationUnitEditComponent implements OnInit {
           path: this.organisationUnit.path
         };
         this.store.dispatch(editOrganisationUnitChild({ child: orgunit }));
-
-        this.router.navigate([
-          `/organisationunit/${this.parentId}`
-        ]);
+        this.onCancel(e);
       });
   }
 
   onCancel(e) {
     e.stopPropagation();
-    this.router.navigate([`/organisationunit/${this.parentId}`]);
+    this.dialogRef.close();
   }
 }
