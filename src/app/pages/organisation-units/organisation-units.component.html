@@ -12,7 +12,7 @@
         </div>
         <div class="col-sm-9">
           <div class="row" *ngIf="selectedOrganisationUnitStatus$ | async">
-            <mat-card class="col-sm-12">
+            <mat-card class="col-sm-12 downs">
               <h4 class="header">
                 Addos Not Reported from
                 {{
@@ -23,16 +23,20 @@
                 in {{ getMonth }},
                 {{ getYear }}
               </h4>
+              <button
+                class="btn btn-outline-secondary"
+                (click)="downloadCSV($event)"
+              >
+                Save Excel
+              </button>
             </mat-card>
 
-         
             <div
               class="col-sm-12"
               *ngIf="
-              (organisationUnitChildrenLoaded$ | async) &&
-              !(isLeafOrganisation$ | async)
-            "
-             
+                (organisationUnitChildrenLoaded$ | async) &&
+                !(isLeafOrganisation$ | async)
+              "
             >
               <div class="div-tabl" style="margin-top:20px">
                 <div class="col-sm-5" style="padding-bottom:10px;">
@@ -41,11 +45,15 @@
                     type="text"
                     placeholder="Search......."
                     [(ngModel)]="filter"
-                    style="border-bottom: 1px solid black; border-top: none; border-left: none; border-right: none; border-radius: 5px;"
+                    style="border-top: none; border-left: none; border-right: none; border-radius: none;"
                   />
                 </div>
 
-                <table mat-table class="table table-hover table-fixed">
+                <table
+                  mat-table
+                  class="table table-hover table-fixed"
+                  id="excel-table"
+                >
                   <thead class="thead-light">
                     <tr>
                       <th scope="col" class="sn">S/N</th>
@@ -65,6 +73,7 @@
                           | paginate: { itemsPerPage: 30, currentPage: p };
                         let count = index
                       "
+                      (click)="onEditChild($event, orgunitChild.id)"
                     >
                       <td>{{ count + 1 }}</td>
                       <td>{{ orgunitChild.name }}</td>
