@@ -8,22 +8,9 @@ mat-form-field {
   width: 100%;
 }
 
-button {
-  margin: 5px;
-}
-.cancel {
-  color: rgb(255, 152, 0);
-}
-
 .filter {
   position: fixed;
   width: 25vh;
-}
-.content {
-  margin-left: 320px;
-  height: inherit;
-  overflow-y: hidden;
-  overflow-x: hidden;
 }
 
 @media screen and (max-width: 500px) and (min-width: 411px) {
@@ -42,4 +29,11 @@ button {
     flex-flow: column;
     align-items: center;
   }
+}
+
+button {
+  margin: 5px;
+}
+.cancel {
+  color: rgb(255, 152, 0);
 }
