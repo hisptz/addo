@@ -60,8 +60,6 @@
                       <th scope="col">Name</th>
                       <th scope="col">Contact Person</th>
                       <th scope="col">Dispenser's Contact</th>
-                      <th scope="col"></th>
-                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -89,32 +87,6 @@
                       </td>
                       <td *ngIf="!orgunitChild.attributeValues[0]">
                         No Contact Details
-                      </td>
-                      <td>
-                        <button
-                          mat-icon-button
-                          [matMenuTriggerFor]="menu"
-                          aria-label="Example icon-button with a menu"
-                        >
-                          <mat-icon>more_vert</mat-icon>
-                        </button>
-                        <mat-menu #menu="matMenu">
-                          <button
-                            *ngIf="orgunitChild.level"
-                            mat-menu-item
-                            (click)="onEditChild($event, orgunitChild.id)"
-                          >
-                            <mat-icon>edit</mat-icon>
-                            <span>Edit</span>
-                          </button>
-                          <button
-                            mat-menu-item
-                            (click)="onOpenDetails($event, orgunitChild)"
-                          >
-                            <mat-icon>details</mat-icon>
-                            <span>Details</span>
-                          </button>
-                        </mat-menu>
                       </td>
                     </tr>
                   </tbody>
