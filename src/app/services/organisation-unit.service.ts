@@ -38,6 +38,24 @@ export class OrganisationUnitService {
           `analytics?dimension=dx:t6N3L1IElxb.ACTUAL_REPORTS&dimension=ou:LEVEL-6&dimension=pe:LAST_MONTH`
         )
         .subscribe(
+          // (response: any) => {
+          //   const allOU = response.metaData.dimensions.ou
+          //     ? response.metaData.dimensions.ou
+          //     : [];
+          //   const rows = response.rows ? response.rows : [];
+          //   const ouValueIndex = response.headers.findIndex(
+          //     head => head.name === "ou"
+          //   );
+          //   const nonReportingOU = [];
+          //   allOU.forEach(ou => {
+          //     const currentOU = rows.filter(row => row[ouValueIndex] === ou);
+          //     if (currentOU.length === 0) {
+          //       nonReportingOU.push(ou);
+          //     }
+          //   });
+          //   console.log("Bennett NON:::", nonReportingOU);
+          //   return nonReportingOU;
+          //},
           (data: any) =>
             resolve(
               // _.keys(
