@@ -4,22 +4,14 @@ import { State } from "src/app/store/reducers";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Observable, Subscription } from "rxjs";
 import { OrganisationUnitChildren } from "src/app/models/organisation-unit.model";
-import {
-  getSelectedOrgunitChild,
-  getSelectedOrgunitChildChildren
-} from "src/app/store/selectors/organisation-unit.selectors";
+import { getSelectedOrgunitChildChildren } from "src/app/store/selectors/organisation-unit.selectors";
 import {
   FormBuilder,
   FormGroup,
   FormControl,
   Validators
 } from "@angular/forms";
-import {
-  editOrganisationUnitChild,
-  loadOrganisationUnitChildren,
-  selectOrganisationUnitSuccess,
-  clearOrganisationUnitChildren
-} from "src/app/store/actions";
+import { editOrganisationUnitChild } from "src/app/store/actions";
 import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 
@@ -54,27 +46,17 @@ export class OrganisationUnitEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.onView();
-  }
-
-  onView() {
     this.parentId = this.route.snapshot.params["parentid"];
-
-    this.store.dispatch(
-      loadOrganisationUnitChildren({
-        id: this.route.snapshot.params["parentid"]
-      })
-    );
-    this.currentOrgunit = this.data.organisationUnit;
+    this.currentOrgunit = this.data.organisationUnit.id;
     this.orgUnitService
-      .getOrgUnitDetails(this.data.organisationUnit)
+      .getOrgUnitDetails(this.data.organisationUnit.id)
       .subscribe(ouDetails => {
         if (ouDetails) {
           this.parentOrgUnit = ouDetails["parent"];
         }
       });
     this.selectedOrgunitChild$ = this.orgUnitService.getAllOrgunitDetails(
-      this.data.organisationUnit
+      this.data.organisationUnit.id
     );
 
     this.selectedOrgunitChild$.subscribe(childInfo => {
@@ -86,9 +68,7 @@ export class OrganisationUnitEditComponent implements OnInit {
   }
 
   generateForm() {
-    this.orgunitSubscription = this.selectedOrgunitChild$.subscribe(
-      child => (this.organisationUnit = child)
-    );
+    this.orgunitSubscription = this.data.organisationUnit;
     return this.fb.group({
       name: new FormControl(this.organisationUnit.name, Validators.required),
       shortName: new FormControl(this.organisationUnit.shortName),
