@@ -39,18 +39,6 @@ export class OrganisationUnitsComponent implements OnInit {
     updateOnSelect: true,
     showOrgUnitLevelGroupSection: false
   };
-  options = {
-    fieldSeparator: ",",
-    quoteStrings: '"',
-    decimalseparator: ".",
-    showLabels: false,
-    headers: ["S/N", "Name", "Contact Person", "Dispenser's Contacts"],
-    showTitle: true,
-    title: "asfasf",
-    useBom: false,
-    removeNewLines: true,
-    keys: ["approved", "age", "name"]
-  };
   selectedOrganisationUnit$: Observable<OrganisationUnit>;
   selectedOrganisationUnitStatus$: Observable<boolean>;
   organisationUnitChildren$: Observable<OrganisationUnitChildren[]>;
