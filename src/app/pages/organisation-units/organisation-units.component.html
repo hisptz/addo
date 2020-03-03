@@ -9,6 +9,7 @@
             (orgUnitClose)="onOrgUnitUpdate($event)"
           >
           </ngx-dhis2-org-unit-filter>
+          <!-- <ngx-dhis2-period-filter></ngx-dhis2-period-filter> -->
         </div>
         <div class="col-sm-9">
           <div class="row" *ngIf="selectedOrganisationUnitStatus$ | async">
@@ -71,7 +72,7 @@
                           | paginate: { itemsPerPage: 30, currentPage: p };
                         let count = index
                       "
-                      (click)="onEditChild($event, orgunitChild.id)"
+                      (click)="onEditChild($event, orgunitChild)"
                     >
                       <td>{{ count + 1 }}</td>
                       <td>{{ orgunitChild.name }}</td>
@@ -97,7 +98,6 @@
                   ></pagination-controls>
                 </p>
               </div>
-
               <div *ngIf="!(organisationUnitChildrenLoaded$ | async)">
                 <p><mat-progress-bar mode="query"></mat-progress-bar></p>
                 <p>Loading Addos</p>
@@ -119,7 +119,6 @@
               </h2>
             </div>
           </div>
-          <div *ngIf="!(selectedOrganisationUnitStatus$ | async)"></div>
         </div>
       </div>
     </ng-template>
