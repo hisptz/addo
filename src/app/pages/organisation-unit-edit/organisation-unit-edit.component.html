@@ -7,6 +7,22 @@
       <form [formGroup]="organisationUnitForm" class="example-form">
         <mat-form-field
           class="example-full-width"
+          MatFormFieldControl="closedDate"
+        >
+          <input
+            matInput
+            [matDatepicker]="pickeror"
+            placeholder="Closed date"
+            formControlName="closedDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="pickeror"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #pickeror></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field
+          class="example-full-width"
           MatFormFieldControl="phoneNumber"
         >
           <input
