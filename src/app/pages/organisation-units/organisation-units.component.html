@@ -98,10 +98,6 @@
                   ></pagination-controls>
                 </p>
               </div>
-              <div *ngIf="!(organisationUnitChildrenLoaded$ | async)">
-                <p><mat-progress-bar mode="query"></mat-progress-bar></p>
-                <p>Loading Addos</p>
-              </div>
             </div>
             <div
               *ngIf="!(organisationUnitChildrenLoaded$ | async)"
