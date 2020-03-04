@@ -9,6 +9,15 @@
             (orgUnitClose)="onOrgUnitUpdate($event)"
           >
           </ngx-dhis2-org-unit-filter>
+          <mat-form-field>
+            <mat-label>Period</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let period of periods" [value]="period.value">
+                {{ period.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <p>Month selected: {{ selected }}</p>
         </div>
         <div class="col-sm-9">
           <div class="row" *ngIf="selectedOrganisationUnitStatus$ | async">
@@ -58,6 +67,7 @@
                     <tr>
                       <th scope="col" class="sn">S/N</th>
                       <th scope="col">Name</th>
+                      <th scope="col">Code</th>
                       <th scope="col">Contact Person</th>
                       <th scope="col">Dispenser's Contact</th>
                     </tr>
@@ -71,22 +81,24 @@
                           | paginate: { itemsPerPage: 30, currentPage: p };
                         let count = index
                       "
-                      (click)="onEditChild($event, orgunitChild.id)"
+                      (click)="onEditChild($event, orgunitChild)"
                     >
                       <td>{{ count + 1 }}</td>
                       <td>{{ orgunitChild.name }}</td>
+                      <td *ngIf="orgunitChild.code">{{ orgunitChild.code }}</td>
+                      <td *ngIf="!orgunitChild.code">Code Missing</td>
                       <td *ngIf="orgunitChild.phoneNumber">
                         {{ orgunitChild.phoneNumber }}
                       </td>
                       <td *ngIf="!orgunitChild.phoneNumber">
-                        No Contact Details
+                       Missing Contact Details
                       </td>
 
                       <td *ngIf="orgunitChild.attributeValues[0]">
                         {{ orgunitChild.attributeValues[0].value }}
                       </td>
                       <td *ngIf="!orgunitChild.attributeValues[0]">
-                        No Contact Details
+                       Missing Contact Details
                       </td>
                     </tr>
                   </tbody>
@@ -96,11 +108,6 @@
                     (pageChange)="p = $event"
                   ></pagination-controls>
                 </p>
-              </div>
-
-              <div *ngIf="!(organisationUnitChildrenLoaded$ | async)">
-                <p><mat-progress-bar mode="query"></mat-progress-bar></p>
-                <p>Loading Addos</p>
               </div>
             </div>
             <div
@@ -119,7 +126,6 @@
               </h2>
             </div>
           </div>
-          <div *ngIf="!(selectedOrganisationUnitStatus$ | async)"></div>
         </div>
       </div>
     </ng-template>

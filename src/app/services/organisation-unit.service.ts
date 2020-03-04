@@ -14,7 +14,7 @@ export class OrganisationUnitService {
   s;
   getOrgunitChildren(orgunitId: string): Promise<any> {
     const fields =
-      "id,name,lastUpdated,phoneNumber,level,displayName,code,shortName,openingDate,parent,path,coordinates,attributeValues[value,attribute[id,name]]";
+      "id,name,lastUpdated,phoneNumber,level,displayName,code,shortName,openingDate,parent[id,name,parent[id,name,parent[id,name,parent[id,name]]]],path,coordinates,attributeValues[value,attribute[id,name]]";
     return new Promise((resolve, reject) => {
       this.httpService
         .get(
@@ -96,7 +96,7 @@ export class OrganisationUnitService {
 
   getOrgUnitDetails(id): Observable<any> {
     return this.httpService.get(
-      "organisationUnits/" + id + ".json?fields=id,name,level,parent[id,name]"
+      "organisationUnits/" + id + ".json?fields=id,name,level,parent[id,name,parent[id,name,parent[id,name]]]"
     );
   }
 

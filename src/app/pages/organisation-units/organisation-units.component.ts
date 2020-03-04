@@ -24,8 +24,6 @@ import { OrganisationUnitDetailsComponent } from "../organisation-unit-details/o
 import { getCurrentUser } from "src/app/store/selectors";
 import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
 import { OrganisationUnitEditComponent } from "../organisation-unit-edit/organisation-unit-edit.component";
-import * as XLSX from "xlsx";
-import * as _ from "lodash";
 
 @Component({
   selector: "app-organisation-units",
@@ -33,24 +31,13 @@ import * as _ from "lodash";
   styleUrls: ["./organisation-units.component.css"]
 })
 export class OrganisationUnitsComponent implements OnInit {
-  orgUnitFilterConfig = {
-    singleSelection: true,
-    showUserOrgUnitSection: false,
-    updateOnSelect: true,
-    showOrgUnitLevelGroupSection: false
-  };
-  options = {
-    fieldSeparator: ",",
-    quoteStrings: '"',
-    decimalseparator: ".",
-    showLabels: false,
-    headers: ["S/N", "Name", "Contact Person", "Dispenser's Contacts"],
-    showTitle: true,
-    title: "asfasf",
-    useBom: false,
-    removeNewLines: true,
-    keys: ["approved", "age", "name"]
-  };
+  orgUnitFilterConfig: any;
+
+  periods = [
+    { value: "January", viewValue: "January" },
+    { value: "February", viewValue: "February" },
+    { value: "March", viewValue: "March" }
+  ];
   selectedOrganisationUnit$: Observable<OrganisationUnit>;
   selectedOrganisationUnitStatus$: Observable<boolean>;
   organisationUnitChildren$: Observable<OrganisationUnitChildren[]>;
@@ -87,6 +74,16 @@ export class OrganisationUnitsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.orgUnitFilterConfig = {
+      singleSelection: true,
+      showUserOrgUnitSection: false,
+      updateOnSelect: true,
+      showOrgUnitLevelGroupSection: false
+    };
+    this.ngView();
+  }
+
+  ngView() {
     if (this.route.snapshot.params["parentid"]) {
       this.orgUnitService
         .getOrgUnitDetails(this.route.snapshot.params["parentid"])
@@ -126,6 +123,7 @@ export class OrganisationUnitsComponent implements OnInit {
         }
       });
     }
+
     this.selectedOrganisationUnitStatus$ = this.store.select(
       getSelectedOrganisationUnitStatus
     );
@@ -181,18 +179,43 @@ export class OrganisationUnitsComponent implements OnInit {
   fileName = "addos.xlsx";
 
   downloadCSV(): void {
-    let omitcolumn = _.map((c: any) => {
-      return _.omit(c, [""]);
+    this.organisationUnitChildren$.subscribe(childrenGot => {
+      const tableHeader = [
+        "Name",
+        "Contact Person",
+        "Dispenser's Contact",
+        "Code",
+        "Village",
+        "Ward",
+        "District",
+        "Region"
+      ];
+      let csvRows = [];
+
+      csvRows = childrenGot.map(addo => {
+        return [
+          addo.name,
+          addo.phoneNumber,
+          addo.attributeValues[0] ? addo.attributeValues[0].value : "",
+          addo.code,
+          addo.parent.name,
+          addo.parent.parent.name,
+          addo.parent.parent.parent.name,
+          addo.parent.parent.parent.parent.name
+        ];
+      });
+
+      const row = [tableHeader, ...csvRows];
+      let csvContent = "data:text/csv;charset=utf-8,";
+      row.forEach(function(rowArray) {
+        const rowEntry = rowArray.join(",");
+        csvContent += rowEntry + "\r\n";
+      });
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "addos.csv");
+      link.click();
     });
-
-    let element = document.getElementById("excel-table");
-    var ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, omitcolumn);
-
-    /* generate workbook and add the worksheet */
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "sheet 1");
-
-    /* save to file */
-    XLSX.writeFile(wb, this.fileName);
   }
 }

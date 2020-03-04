@@ -41,7 +41,9 @@ import {
   MatSnackBarModule,
   MatProgressBarModule,
   MatTab,
-  MatTabsModule
+  MatTabsModule,
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  MatSelectModule
 } from "@angular/material";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { OrganisationUnitDetailsComponent } from "./pages/organisation-unit-details/organisation-unit-details.component";
@@ -119,6 +121,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatCardModule,
     MatIconModule,
     MatTabsModule,
+    MatSelectModule,
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production
@@ -128,7 +131,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     OrganisationUnitDetailsComponent,
     OrganisationUnitEditComponent
   ],
-  providers: [{ provide: RouterStateSerializer, useClass: RouteSerializer }],
+  providers: [
+    { provide: RouterStateSerializer, useClass: RouteSerializer },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: "fill" }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

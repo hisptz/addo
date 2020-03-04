@@ -1,10 +1,29 @@
 <div class="content">
   <div class="row">
-    <div class="col-md-12" *ngIf="selectedOrgunitChild$ | async">
+    <div *ngIf="!organisationUnit">
+      <img src="assets/icons/balls-3.svg" />
+    </div>
+    <div class="col-md-12" *ngIf="organisationUnit">
       <h2 style="margin-bottom: 20px;">
         Editing Details for {{ organisationUnit.name }}
       </h2>
       <form [formGroup]="organisationUnitForm" class="example-form">
+        <mat-form-field
+          class="example-full-width"
+          MatFormFieldControl="closedDate"
+        >
+          <input
+            matInput
+            [matDatepicker]="pickeror"
+            placeholder="Closed date"
+            formControlName="closedDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="pickeror"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #pickeror></mat-datepicker>
+        </mat-form-field>
         <mat-form-field
           class="example-full-width"
           MatFormFieldControl="phoneNumber"
