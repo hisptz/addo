@@ -39,7 +39,11 @@ export class OrganisationUnitsComponent implements OnInit {
     updateOnSelect: true,
     showOrgUnitLevelGroupSection: false
   };
-  selectedOrganisationUnit$: Observable<OrganisationUnit>;
+  periods = [
+    {value: 'January', viewValue: 'January'},
+    {value: 'February', viewValue: 'February'},
+    {value: 'March', viewValue: 'March'}
+  ];  selectedOrganisationUnit$: Observable<OrganisationUnit>;
   selectedOrganisationUnitStatus$: Observable<boolean>;
   organisationUnitChildren$: Observable<OrganisationUnitChildren[]>;
   organisationUnitChildrenLoaded$: Observable<boolean>;
@@ -169,18 +173,35 @@ export class OrganisationUnitsComponent implements OnInit {
   fileName = "addos.xlsx";
 
   downloadCSV(): void {
-    let omitcolumn = _.map((c: any) => {
-      return _.omit(c, [""]);
+    this.organisationUnitChildren$.subscribe(childrenGot => {
+      const tableHeader = [
+        "Name",
+        "Contact Person",
+        "Dispenser's Contact",
+        "Code"
+      ];
+      let csvRows = [];
+
+      csvRows = childrenGot.map(addo => {
+        return [
+          addo.name,
+          addo.phoneNumber,
+          addo.attributeValues[0] ? addo.attributeValues[0].value : "",
+          addo.code
+        ];
+      });
+      console.log(csvRows);
+      const row = [tableHeader, ...csvRows];
+      let csvContent = "data:text/csv;charset=utf-8,";
+      row.forEach(function(rowArray) {
+        const rowEntry = rowArray.join(",");
+        csvContent += rowEntry + "\r\n";
+      });
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "addos.csv");
+      link.click();
     });
-
-    let element = document.getElementById("excel-table");
-    var ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, omitcolumn);
-
-    /* generate workbook and add the worksheet */
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "sheet 1");
-
-    /* save to file */
-    XLSX.writeFile(wb, this.fileName);
   }
 }

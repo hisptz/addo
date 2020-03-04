@@ -9,7 +9,15 @@
             (orgUnitClose)="onOrgUnitUpdate($event)"
           >
           </ngx-dhis2-org-unit-filter>
-          <!-- <ngx-dhis2-period-filter></ngx-dhis2-period-filter> -->
+          <mat-form-field>
+            <mat-label>Period</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let period of periods" [value]="period.value">
+                {{period.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <p>Month selected: {{ selected }}</p>
         </div>
         <div class="col-sm-9">
           <div class="row" *ngIf="selectedOrganisationUnitStatus$ | async">
