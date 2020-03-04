@@ -11,9 +11,9 @@
           </ngx-dhis2-org-unit-filter>
           <mat-form-field>
             <mat-label>Period</mat-label>
-            <mat-select>
+            <mat-select [(value)]="selected">
               <mat-option *ngFor="let period of periods" [value]="period.value">
-                {{ period.viewValue }}
+                {{ period.value }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -33,8 +33,12 @@
                 {{ getYear }}
               </h4>
               <button
+                *ngIf="
+                  (organisationUnitChildrenLoaded$ | async) &&
+                  !(isLeafOrganisation$ | async)
+                "
                 class="btn btn-outline-secondary"
-                (click)="downloadCSV($event)"
+                (click)="downloadCSV()"
               >
                 Save Excel
               </button>
@@ -91,14 +95,14 @@
                         {{ orgunitChild.phoneNumber }}
                       </td>
                       <td *ngIf="!orgunitChild.phoneNumber">
-                       Missing Contact Details
+                        Missing Contact Details
                       </td>
 
                       <td *ngIf="orgunitChild.attributeValues[0]">
                         {{ orgunitChild.attributeValues[0].value }}
                       </td>
                       <td *ngIf="!orgunitChild.attributeValues[0]">
-                       Missing Contact Details
+                        Missing Contact Details
                       </td>
                     </tr>
                   </tbody>

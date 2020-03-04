@@ -34,9 +34,18 @@ export class OrganisationUnitsComponent implements OnInit {
   orgUnitFilterConfig: any;
 
   periods = [
-    { value: "January", viewValue: "January" },
-    { value: "February", viewValue: "February" },
-    { value: "March", viewValue: "March" }
+    { value: "January", viewValue: "01" },
+    { value: "February", viewValue: "02" },
+    { value: "March", viewValue: "03" },
+    { value: "April", viewValue: "04" },
+    { value: "May", viewValue: "05" },
+    { value: "June", viewValue: "06" },
+    { value: "July", viewValue: "07" },
+    { value: "August", viewValue: "08" },
+    { value: "September", viewValue: "09" },
+    { value: "October", viewValue: 10 },
+    { value: "November", viewValue: 11 },
+    { value: "December", viewValue: 12 }
   ];
   selectedOrganisationUnit$: Observable<OrganisationUnit>;
   selectedOrganisationUnitStatus$: Observable<boolean>;
@@ -179,43 +188,48 @@ export class OrganisationUnitsComponent implements OnInit {
   fileName = "addos.xlsx";
 
   downloadCSV(): void {
+    let x = true;
     this.organisationUnitChildren$.subscribe(childrenGot => {
-      const tableHeader = [
-        "Name",
-        "Contact Person",
-        "Dispenser's Contact",
-        "Code",
-        "Village",
-        "Ward",
-        "District",
-        "Region"
-      ];
-      let csvRows = [];
-
-      csvRows = childrenGot.map(addo => {
-        return [
-          addo.name,
-          addo.phoneNumber,
-          addo.attributeValues[0] ? addo.attributeValues[0].value : "",
-          addo.code,
-          addo.parent.name,
-          addo.parent.parent.name,
-          addo.parent.parent.parent.name,
-          addo.parent.parent.parent.parent.name
+      if (x) {
+        const tableHeader = [
+          "Name",
+          "Contact Person",
+          "Dispenser's Contact",
+          "Code",
+          "Village",
+          "Ward",
+          "District",
+          "Region"
         ];
-      });
+        let csvRows = [];
 
-      const row = [tableHeader, ...csvRows];
-      let csvContent = "data:text/csv;charset=utf-8,";
-      row.forEach(function(rowArray) {
-        const rowEntry = rowArray.join(",");
-        csvContent += rowEntry + "\r\n";
-      });
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "addos.csv");
-      link.click();
+        csvRows = childrenGot.map(addo => {
+          return [
+            addo.name,
+            addo.phoneNumber,
+            addo.attributeValues[0] ? addo.attributeValues[0].value : "",
+            addo.code,
+            addo.parent.name,
+            addo.parent.parent.name,
+            addo.parent.parent.parent.name,
+            addo.parent.parent.parent.parent.name
+          ];
+        });
+
+        const row = [tableHeader, ...csvRows];
+        let csvContent = "data:text/csv;charset=utf-8,";
+        row.forEach(function(rowArray) {
+          const rowEntry = rowArray.join(",");
+          csvContent += rowEntry + "\r\n";
+        });
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "addos.csv");
+        link.click();
+
+        x = false;
+      }
     });
   }
 }
