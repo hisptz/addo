@@ -26,7 +26,19 @@ export interface OrganisationUnitChildren {
   phoneNumber: string;
   url: string;
   path: string;
-  parent: { id: string };
+  parent: {
+    id: string;
+    name: string;
+    parent: {
+      id: string;
+      name: string;
+      parent: {
+        id: string;
+        name: string;
+        parent: { id: string; name: string };
+      };
+    };
+  };
   coordinates: string;
   childern: OrganisationUnit[];
   attributeValues: Array<AttributeValues>;
