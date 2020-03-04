@@ -186,6 +186,7 @@ export class OrganisationUnitsComponent implements OnInit {
         "Dispenser's Contact",
         "Code",
         "Village",
+        "Ward",
         "District",
         "Region"
       ];
