@@ -13,7 +13,7 @@
             <mat-label>Period</mat-label>
             <mat-select>
               <mat-option *ngFor="let period of periods" [value]="period.value">
-                {{period.viewValue}}
+                {{ period.viewValue }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -67,6 +67,7 @@
                     <tr>
                       <th scope="col" class="sn">S/N</th>
                       <th scope="col">Name</th>
+                      <th scope="col">Code</th>
                       <th scope="col">Contact Person</th>
                       <th scope="col">Dispenser's Contact</th>
                     </tr>
@@ -84,18 +85,20 @@
                     >
                       <td>{{ count + 1 }}</td>
                       <td>{{ orgunitChild.name }}</td>
+                      <td *ngIf="orgunitChild.code">{{ orgunitChild.code }}</td>
+                      <td *ngIf="!orgunitChild.code">Code Missing</td>
                       <td *ngIf="orgunitChild.phoneNumber">
                         {{ orgunitChild.phoneNumber }}
                       </td>
                       <td *ngIf="!orgunitChild.phoneNumber">
-                        No Contact Details
+                       Missing Contact Details
                       </td>
 
                       <td *ngIf="orgunitChild.attributeValues[0]">
                         {{ orgunitChild.attributeValues[0].value }}
                       </td>
                       <td *ngIf="!orgunitChild.attributeValues[0]">
-                        No Contact Details
+                       Missing Contact Details
                       </td>
                     </tr>
                   </tbody>
