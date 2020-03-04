@@ -24,8 +24,6 @@ import { OrganisationUnitDetailsComponent } from "../organisation-unit-details/o
 import { getCurrentUser } from "src/app/store/selectors";
 import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
 import { OrganisationUnitEditComponent } from "../organisation-unit-edit/organisation-unit-edit.component";
-import * as XLSX from "xlsx";
-import * as _ from "lodash";
 
 @Component({
   selector: "app-organisation-units",
@@ -33,17 +31,14 @@ import * as _ from "lodash";
   styleUrls: ["./organisation-units.component.css"]
 })
 export class OrganisationUnitsComponent implements OnInit {
-  orgUnitFilterConfig = {
-    singleSelection: true,
-    showUserOrgUnitSection: false,
-    updateOnSelect: true,
-    showOrgUnitLevelGroupSection: false
-  };
+  orgUnitFilterConfig: any;
+
   periods = [
-    {value: 'January', viewValue: 'January'},
-    {value: 'February', viewValue: 'February'},
-    {value: 'March', viewValue: 'March'}
-  ];  selectedOrganisationUnit$: Observable<OrganisationUnit>;
+    { value: "January", viewValue: "January" },
+    { value: "February", viewValue: "February" },
+    { value: "March", viewValue: "March" }
+  ];
+  selectedOrganisationUnit$: Observable<OrganisationUnit>;
   selectedOrganisationUnitStatus$: Observable<boolean>;
   organisationUnitChildren$: Observable<OrganisationUnitChildren[]>;
   organisationUnitChildrenLoaded$: Observable<boolean>;
@@ -79,6 +74,16 @@ export class OrganisationUnitsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.orgUnitFilterConfig = {
+      singleSelection: true,
+      showUserOrgUnitSection: false,
+      updateOnSelect: true,
+      showOrgUnitLevelGroupSection: false
+    };
+    this.ngView();
+  }
+
+  ngView() {
     if (this.route.snapshot.params["parentid"]) {
       this.orgUnitService
         .getOrgUnitDetails(this.route.snapshot.params["parentid"])
@@ -118,6 +123,7 @@ export class OrganisationUnitsComponent implements OnInit {
         }
       });
     }
+
     this.selectedOrganisationUnitStatus$ = this.store.select(
       getSelectedOrganisationUnitStatus
     );
@@ -178,19 +184,29 @@ export class OrganisationUnitsComponent implements OnInit {
         "Name",
         "Contact Person",
         "Dispenser's Contact",
-        "Code"
+        "Code",
+        "Village",
+        "District",
+        "Region"
       ];
       let csvRows = [];
 
       csvRows = childrenGot.map(addo => {
+        console.table(JSON.stringify(addo.parent));
         return [
           addo.name,
           addo.phoneNumber,
           addo.attributeValues[0] ? addo.attributeValues[0].value : "",
-          addo.code
+          addo.code,
+          addo.parent.name,
+          addo.parent.parent.name,
+          addo.parent.parent.parent.name,
+          addo.parent.parent.parent.parent.name
+          // addo.parent.parent.parent.parent.parent.name
         ];
       });
       console.log(csvRows);
+
       const row = [tableHeader, ...csvRows];
       let csvContent = "data:text/csv;charset=utf-8,";
       row.forEach(function(rowArray) {
