@@ -192,7 +192,6 @@ export class OrganisationUnitsComponent implements OnInit {
       let csvRows = [];
 
       csvRows = childrenGot.map(addo => {
-        console.table(JSON.stringify(addo.parent));
         return [
           addo.name,
           addo.phoneNumber,
@@ -202,10 +201,8 @@ export class OrganisationUnitsComponent implements OnInit {
           addo.parent.parent.name,
           addo.parent.parent.parent.name,
           addo.parent.parent.parent.parent.name
-          // addo.parent.parent.parent.parent.parent.name
         ];
       });
-      console.log(csvRows);
 
       const row = [tableHeader, ...csvRows];
       let csvContent = "data:text/csv;charset=utf-8,";
