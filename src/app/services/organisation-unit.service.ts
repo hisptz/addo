@@ -38,55 +38,52 @@ export class OrganisationUnitService {
           `analytics?dimension=dx:t6N3L1IElxb.ACTUAL_REPORTS&dimension=ou:LEVEL-6&dimension=pe:LAST_MONTH`
         )
         .subscribe(
-          // (response: any) => {
-          //   const allOU = response.metaData.dimensions.ou
-          //     ? response.metaData.dimensions.ou
-          //     : [];
-          //   const rows = response.rows ? response.rows : [];
-          //   const ouValueIndex = response.headers.findIndex(
-          //     head => head.name === "ou"
-          //   );
-          //   const nonReportingOU = [];
-          //   allOU.forEach(ou => {
-          //     const currentOU = rows.filter(row => row[ouValueIndex] === ou);
-          //     if (currentOU.length === 0) {
-          //       nonReportingOU.push(ou);
-          //     }
-          //   });
-          //   console.log("Bennett NON:::", nonReportingOU);
-          //   return nonReportingOU;
-          //},
-          (data: any) =>
-            resolve(
-              // _.keys(
-              //   (data.metaData.dimension.ou = data.metaData.dimensions.ou.filter(
-              //     val => !data.metaData.rows[0].includes(val)
-              //   ))
-              // )
-              _.keys(
-                data
-                  ? data.metaData.dimensions.ou && data.metaData.rows
-                    ? data.metaData.items
-                    : {}
-                  : {}
-              )
-            ),
+          (response: any) => {
+            const allOU = response.metaData.dimensions.ou
+              ? response.metaData.dimensions.ou
+              : [];
+            const rows = response.rows ? response.rows : [];
+            const ouValueIndex = response.headers.findIndex(
+              head => head.name === "ou"
+            );
+            const nonReportingOU = [];
+            allOU.forEach(ou => {
+              const currentOU = rows.filter(row => row[ouValueIndex] === ou);
+              if (currentOU.length === 0) {
+                nonReportingOU.push(ou);
+              }
+            });
+            resolve(nonReportingOU);
+          },
           (error: ErrorMessage) => reject(error)
         );
     });
   }
+
+  // let orgUnitChildren = this.getOrgunitChildren(orgUnitId);
+  // //this.nonReportingOU
+  // console.log("Childre::: ", orgUnitChildren);
+  // console.log("NonReporting::: ", this.nonReportingOU);
+
+  // _.each(this.nonReportingOU, nonReportingOuId => {
+  //   _.filter(orgUnitChildren, orgUnitChild => {
+  //     return orgUnitChild.id == nonReportingOuId ? true : false;
+  //   });
+  // });
 
   getFacilities(orgUnitId): Observable<any> {
     return new Observable(observer => {
       this.getOrgunitChildren(orgUnitId)
         .then((orgunits: OrganisationUnitChildren[]) => {
           this.getReportingRate()
-            .then((completedOrgunits: string[]) => {
-              observer.next(
-                _.filter(orgunits, (orgunit: OrganisationUnitChildren) =>
-                  _.indexOf(completedOrgunits, orgunit.id) !== -1 ? false : true
-                )
-              );
+            .then(result => {
+              console.log('resultsGot::::', result)
+                observer.next(
+                  _.filter(orgunits, (orgunit: OrganisationUnitChildren) =>
+                    _.indexOf(result, orgunit.id) !== -1 ? true : false
+                  )
+                );
+
             })
             .catch((error: ErrorMessage) => observer.error(error));
         })
@@ -96,7 +93,9 @@ export class OrganisationUnitService {
 
   getOrgUnitDetails(id): Observable<any> {
     return this.httpService.get(
-      "organisationUnits/" + id + ".json?fields=id,name,level,parent[id,name,parent[id,name,parent[id,name]]]"
+      "organisationUnits/" +
+        id +
+        ".json?fields=id,name,level,parent[id,name,parent[id,name,parent[id,name]]]"
     );
   }
 

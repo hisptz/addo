@@ -188,9 +188,9 @@ export class OrganisationUnitsComponent implements OnInit {
   fileName = "addos.xlsx";
 
   downloadCSV(): void {
-    let x = true;
+    let subscribed = true;
     this.organisationUnitChildren$.subscribe(childrenGot => {
-      if (x) {
+      if (subscribed) {
         const tableHeader = [
           "Name",
           "Contact Person",
@@ -228,8 +228,16 @@ export class OrganisationUnitsComponent implements OnInit {
         link.setAttribute("download", "addos.csv");
         link.click();
 
-        x = false;
+        subscribed = false;
       }
     });
   }
+  onPeriodSelection() {
+    console.log(this.periods);
+  }
+
+  onPeriodSelection1() {
+    console.log(this.periods);
+  }
+
 }
