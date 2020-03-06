@@ -13,8 +13,8 @@ export class OrganisationUnitService {
   constructor(private httpService: NgxDhis2HttpClientService) {}
   s;
   getOrgunitChildren(orgunitId: string): Promise<any> {
-    const fields =
-      "id,name,lastUpdated,phoneNumber,level,displayName,code,shortName,openingDate,parent[id,name,parent[id,name,parent[id,name,parent[id,name]]]],path,coordinates,attributeValues[value,attribute[id,name]]";
+    const fields = `id,name,lastUpdated,phoneNumber,level,displayName,code,shortName,openingDate,parent[id,name,
+        parent[id,name,parent[id,name,parent[id,name]]]],path,coordinates,attributeValues[value,attribute[id,name]]`;
     return new Promise((resolve, reject) => {
       this.httpService
         .get(
@@ -59,31 +59,17 @@ export class OrganisationUnitService {
         );
     });
   }
-
-  // let orgUnitChildren = this.getOrgunitChildren(orgUnitId);
-  // //this.nonReportingOU
-  // console.log("Childre::: ", orgUnitChildren);
-  // console.log("NonReporting::: ", this.nonReportingOU);
-
-  // _.each(this.nonReportingOU, nonReportingOuId => {
-  //   _.filter(orgUnitChildren, orgUnitChild => {
-  //     return orgUnitChild.id == nonReportingOuId ? true : false;
-  //   });
-  // });
-
   getFacilities(orgUnitId): Observable<any> {
     return new Observable(observer => {
       this.getOrgunitChildren(orgUnitId)
         .then((orgunits: OrganisationUnitChildren[]) => {
           this.getReportingRate()
             .then(result => {
-              console.log('resultsGot::::', result)
-                observer.next(
-                  _.filter(orgunits, (orgunit: OrganisationUnitChildren) =>
-                    _.indexOf(result, orgunit.id) !== -1 ? true : false
-                  )
-                );
-
+              observer.next(
+                _.filter(orgunits, (orgunit: OrganisationUnitChildren) =>
+                  _.indexOf(result, orgunit.id) !== -1 ? true : false
+                )
+              );
             })
             .catch((error: ErrorMessage) => observer.error(error));
         })
