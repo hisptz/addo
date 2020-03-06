@@ -11,11 +11,9 @@ branches:
     - develop
 
 addons:
-  apt:
-    sources:
-      - google-chrome
+  chrome: stable
     packages:
-      - google-chrome-stable
+      chrome: stable
 
 before_install:
   - export CHROME_BIN=chromium-browser
