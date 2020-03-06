@@ -10,8 +10,12 @@
           >
           </ngx-dhis2-org-unit-filter>
           <mat-form-field>
-            <mat-label>Period</mat-label>
-            <mat-select [(value)]="selected">
+            <mat-select
+              placeholder="Period"
+              [(value)]="selected"
+              [ngModel]="onPeriodSelection1"
+              (ngModelChange)="onPeriodSelection()"
+            >
               <mat-option *ngFor="let period of periods" [value]="period.value">
                 {{ period.value }}
               </mat-option>
