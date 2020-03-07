@@ -9,7 +9,7 @@
             (orgUnitClose)="onOrgUnitUpdate($event)"
           >
           </ngx-dhis2-org-unit-filter>
-          <mat-form-field>
+          <!-- <mat-form-field>
             <mat-select
               placeholder="Period"
               [(value)]="selected"
@@ -21,7 +21,15 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <p>Month selected: {{ selected }}</p>
+          <p>Month selected: {{ selected }}</p> -->
+          <ngx-dhis2-period-filter
+            [selectedPeriods]="selectedPeriodItems"
+            [periodFilterConfig]="periodFilterConfig"
+            [selectedPeriodType]="Monthly"
+            (update)="onPeriodUpdate($event, 'UPDATE')"
+            (change)="onPeriodUpdate($event, 'CHANGE')"
+            (close)="onPeriodUpdate($event, 'CLOSE')"
+          ></ngx-dhis2-period-filter>
         </div>
         <div class="col-sm-9">
           <div class="row" *ngIf="selectedOrganisationUnitStatus$ | async">

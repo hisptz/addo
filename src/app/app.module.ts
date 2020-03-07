@@ -8,6 +8,7 @@ import { EffectsModule } from "@ngrx/effects";
 
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment";
+import {NgxDhis2PeriodFilterModule} from '@iapps/ngx-dhis2-period-filter'
 
 import { reducers, metaReducers } from "./store/reducers";
 import { effects } from "./store/effects";
@@ -94,6 +95,7 @@ export function HttpLoaderFactory(http: HttpClient) {
      * Organisationunit filter module
      */
     NgxDhis2OrgUnitFilterModule,
+    NgxDhis2PeriodFilterModule,
 
     /**
      * Translation module

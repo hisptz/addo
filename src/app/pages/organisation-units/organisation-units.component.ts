@@ -4,6 +4,8 @@ import {
   OrganisationUnit,
   OrganisationUnitChildren
 } from "src/app/models/organisation-unit.model";
+import { Fn } from "@iapps/function-analytics";
+
 import { Store } from "@ngrx/store";
 import { State } from "src/app/store/reducers";
 import {
@@ -32,21 +34,22 @@ import { OrganisationUnitEditComponent } from "../organisation-unit-edit/organis
 })
 export class OrganisationUnitsComponent implements OnInit {
   orgUnitFilterConfig: any;
+  periodFilterConfig: any
 
-  periods = [
-    { value: "January", viewValue: "01" },
-    { value: "February", viewValue: "02" },
-    { value: "March", viewValue: "03" },
-    { value: "April", viewValue: "04" },
-    { value: "May", viewValue: "05" },
-    { value: "June", viewValue: "06" },
-    { value: "July", viewValue: "07" },
-    { value: "August", viewValue: "08" },
-    { value: "September", viewValue: "09" },
-    { value: "October", viewValue: 10 },
-    { value: "November", viewValue: 11 },
-    { value: "December", viewValue: 12 }
-  ];
+  // periods = [
+  //   { value: "January", viewValue: "01" },
+  //   { value: "February", viewValue: "02" },
+  //   { value: "March", viewValue: "03" },
+  //   { value: "April", viewValue: "04" },
+  //   { value: "May", viewValue: "05" },
+  //   { value: "June", viewValue: "06" },
+  //   { value: "July", viewValue: "07" },
+  //   { value: "August", viewValue: "08" },
+  //   { value: "September", viewValue: "09" },
+  //   { value: "October", viewValue: 10 },
+  //   { value: "November", viewValue: 11 },
+  //   { value: "December", viewValue: 12 }
+  // ];
   selectedOrganisationUnit$: Observable<OrganisationUnit>;
   selectedOrganisationUnitStatus$: Observable<boolean>;
   organisationUnitChildren$: Observable<OrganisationUnitChildren[]>;
@@ -80,14 +83,25 @@ export class OrganisationUnitsComponent implements OnInit {
     private orgUnitService: OrganisationUnitService
   ) {
     this.currentUser$ = this.store.select(getCurrentUser);
+    if (Fn) {
+      Fn.init({
+        baseUrl: "../../../api/"
+      });
+    }
   }
-
+  periodObject: any;
+  action: string;
   ngOnInit() {
     this.orgUnitFilterConfig = {
       singleSelection: true,
       showUserOrgUnitSection: false,
       updateOnSelect: true,
       showOrgUnitLevelGroupSection: false
+    };
+     this.periodFilterConfig = {
+      singleSelection: true,
+      emitOnSelection: false,
+      childrenPeriodSortOrder: "DESC"
     };
     this.ngView();
   }
@@ -182,14 +196,23 @@ export class OrganisationUnitsComponent implements OnInit {
       width: "450px"
     });
   }
+
+  onPeriodUpdate(periodObject, action) {
+    this.periodObject = periodObject;
+    this.action = action;
+    console.log(periodObject)
+  }
   getMonth = this.months[this.date.getMonth() - 1];
   getYear = this.date.getFullYear();
 
-  fileName = "addos.xlsx";
+  fileName = "addos.csv";
 
   downloadCSV(): void {
+    //initialize check for when subscribed to an observable to prevent multiple csv file downloads
     let subscribed = true;
+
     this.organisationUnitChildren$.subscribe(childrenGot => {
+      //check for when subscribed to an observable
       if (subscribed) {
         const tableHeader = [
           "Name",
@@ -227,17 +250,16 @@ export class OrganisationUnitsComponent implements OnInit {
         link.setAttribute("href", encodedUri);
         link.setAttribute("download", "addos.csv");
         link.click();
-
+        //unsubscribed from an observable
         subscribed = false;
       }
     });
   }
-  onPeriodSelection() {
-    console.log(this.periods);
-  }
+  // onPeriodSelection() {
+  //   console.log(this.periods);
+  // }
 
-  onPeriodSelection1() {
-    console.log(this.periods);
-  }
-
+  // onPeriodSelection1() {
+  //   console.log(this.periods);
+  // }
 }
