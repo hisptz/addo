@@ -31,11 +31,11 @@ export class OrganisationUnitService {
     });
   }
 
-  getReportingRate(): Promise<any> {
+  getReportingRate(pe): Promise<any> {
     return new Promise((resolve, reject) => {
       this.httpService
         .get(
-          `analytics?dimension=dx:t6N3L1IElxb.ACTUAL_REPORTS&dimension=ou:LEVEL-6&dimension=pe:LAST_MONTH`
+          `analytics?dimension=dx:t6N3L1IElxb.ACTUAL_REPORTS&dimension=ou:LEVEL-6&dimension=pe:${pe}`
         )
         .subscribe(
           (response: any) => {
@@ -59,11 +59,11 @@ export class OrganisationUnitService {
         );
     });
   }
-  getFacilities(orgUnitId): Observable<any> {
+  getFacilities(orgUnitId, pe): Observable<any> {
     return new Observable(observer => {
       this.getOrgunitChildren(orgUnitId)
         .then((orgunits: OrganisationUnitChildren[]) => {
-          this.getReportingRate()
+          this.getReportingRate(pe)
             .then(result => {
               observer.next(
                 _.filter(orgunits, (orgunit: OrganisationUnitChildren) =>

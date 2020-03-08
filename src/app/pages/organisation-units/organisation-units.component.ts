@@ -120,7 +120,7 @@ export class OrganisationUnitsComponent implements OnInit {
             this.parentOrgunit = this.route.snapshot.params["parentid"];
             this.store.dispatch(
               selectOrganisationUnitSuccess({
-                organisationUnit: ouDetails
+                dimensions: {id: ouDetails.id, pe: "LAST_MONTH"}
               })
             );
             this.router.navigate([
@@ -137,7 +137,7 @@ export class OrganisationUnitsComponent implements OnInit {
           this.selectedOrgUnitItems = currentUser["organisationUnits"];
           this.store.dispatch(
             selectOrganisationUnitSuccess({
-              organisationUnit: currentUser["organisationUnits"][0]
+              dimensions: {id: currentUser["organisationUnits"][0].id, pe: "LAST_MONTH"}
             })
           );
           this.router.navigate([
@@ -165,7 +165,7 @@ export class OrganisationUnitsComponent implements OnInit {
     if (selectedOrganisationUnit.id !== "USER_ORGUNIT") {
       this.store.dispatch(
         selectOrganisationUnitSuccess({
-          organisationUnit: selectedOrganisationUnit
+          dimensions: {id: selectedOrganisationUnit.id, pe: "LAST_MONTH"}
         })
       );
       this.router.navigate([
