@@ -35,21 +35,6 @@ import { OrganisationUnitEditComponent } from "../organisation-unit-edit/organis
 export class OrganisationUnitsComponent implements OnInit {
   orgUnitFilterConfig: any;
   periodFilterConfig: any
-
-  // periods = [
-  //   { value: "January", viewValue: "01" },
-  //   { value: "February", viewValue: "02" },
-  //   { value: "March", viewValue: "03" },
-  //   { value: "April", viewValue: "04" },
-  //   { value: "May", viewValue: "05" },
-  //   { value: "June", viewValue: "06" },
-  //   { value: "July", viewValue: "07" },
-  //   { value: "August", viewValue: "08" },
-  //   { value: "September", viewValue: "09" },
-  //   { value: "October", viewValue: 10 },
-  //   { value: "November", viewValue: 11 },
-  //   { value: "December", viewValue: 12 }
-  // ];
   selectedOrganisationUnit$: Observable<OrganisationUnit>;
   selectedOrganisationUnitStatus$: Observable<boolean>;
   organisationUnitChildren$: Observable<OrganisationUnitChildren[]>;
@@ -200,7 +185,6 @@ export class OrganisationUnitsComponent implements OnInit {
   onPeriodUpdate(periodObject, action) {
     this.periodObject = periodObject;
     this.action = action;
-    console.log(periodObject)
   }
   getMonth = this.months[this.date.getMonth() - 1];
   getYear = this.date.getFullYear();
@@ -216,7 +200,7 @@ export class OrganisationUnitsComponent implements OnInit {
       if (subscribed) {
         const tableHeader = [
           "Name",
-          "Contact Person",
+          "Owner's Contact",
           "Dispenser's Contact",
           "Code",
           "Village",
@@ -255,11 +239,4 @@ export class OrganisationUnitsComponent implements OnInit {
       }
     });
   }
-  // onPeriodSelection() {
-  //   console.log(this.periods);
-  // }
-
-  // onPeriodSelection1() {
-  //   console.log(this.periods);
-  // }
-}
+ }
