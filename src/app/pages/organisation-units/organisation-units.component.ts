@@ -34,7 +34,7 @@ import { OrganisationUnitEditComponent } from "../organisation-unit-edit/organis
 })
 export class OrganisationUnitsComponent implements OnInit {
   favoriteSeason: string;
-  statuses: string[] = ["Reported", "Not Reposted"];
+  statuses: string[] = ["Reported", "Not Reported"];
   orgUnitFilterConfig: any;
   periodFilterConfig: any;
   selectedOrganisationUnit$: Observable<OrganisationUnit>;
