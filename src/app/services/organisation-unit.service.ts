@@ -7,7 +7,7 @@ import * as _ from "lodash";
 import { ErrorMessage } from "../core";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class OrganisationUnitService {
   constructor(private httpService: NgxDhis2HttpClientService) {}
@@ -44,11 +44,11 @@ export class OrganisationUnitService {
               : [];
             const rows = response.rows ? response.rows : [];
             const ouValueIndex = response.headers.findIndex(
-              head => head.name === "ou"
+              (head) => head.name === "ou"
             );
             const nonReportingOU = [];
-            allOU.forEach(ou => {
-              const currentOU = rows.filter(row => row[ouValueIndex] === ou);
+            allOU.forEach((ou) => {
+              const currentOU = rows.filter((row) => row[ouValueIndex] === ou);
               if (currentOU.length === 0) {
                 nonReportingOU.push(ou);
               }
@@ -60,11 +60,11 @@ export class OrganisationUnitService {
     });
   }
   getFacilities(orgUnitId, pe): Observable<any> {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       this.getOrgunitChildren(orgUnitId)
         .then((orgunits: OrganisationUnitChildren[]) => {
           this.getReportingRate(pe)
-            .then(result => {
+            .then((result) => {
               observer.next(
                 _.filter(orgunits, (orgunit: OrganisationUnitChildren) =>
                   _.indexOf(result, orgunit.id) !== -1 ? true : false
@@ -94,9 +94,15 @@ export class OrganisationUnitService {
   getLegends(): Observable<any> {
     try {
       return this.httpService.get(
-        `legendSets?fields=legends[id,startValue,endValue,color]`
+        `legendSets.json?fields=legends[id,startValue,endValue,color]`
       );
     } catch (error) {}
+  }
+
+  getPerformanceSms(): Observable<any> {
+    try {
+      return this.httpService.get(`dataStore/performance/sms`);
+    } catch (e) {}
   }
 
   editOrgunitChildren(orgunitChild: OrganisationUnitChildren): Observable<any> {
