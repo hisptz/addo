@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 import {
   OrganisationUnit,
-  OrganisationUnitChildren
+  OrganisationUnitChildren,
 } from "src/app/models/organisation-unit.model";
 import { Fn } from "@iapps/function-analytics";
 
@@ -13,13 +13,13 @@ import {
   getSelectedOrganisationUnitStatus,
   getOrganisationUnitChildren,
   getOrganisationUnitChildrenLoadedState,
-  leafOrgunit
+  leafOrgunit,
 } from "src/app/store/selectors/organisation-unit.selectors";
 import { Router, ActivatedRoute } from "@angular/router";
 import {
   deleteOrganisationUnitChild,
   selectOrganisationUnitSuccess,
-  clearOrganisationUnitChildren
+  clearOrganisationUnitChildren,
 } from "src/app/store/actions";
 import { MatDialog } from "@angular/material";
 import { OrganisationUnitDetailsComponent } from "../organisation-unit-details/organisation-unit-details.component";
@@ -30,11 +30,13 @@ import { OrganisationUnitEditComponent } from "../organisation-unit-edit/organis
 @Component({
   selector: "app-organisation-units",
   templateUrl: "./organisation-units.component.html",
-  styleUrls: ["./organisation-units.component.css"]
+  styleUrls: ["./organisation-units.component.css"],
 })
 export class OrganisationUnitsComponent implements OnInit {
+  favoriteSeason: string;
+  statuses: string[] = ["Reported", "Not Reposted"];
   orgUnitFilterConfig: any;
-  periodFilterConfig: any
+  periodFilterConfig: any;
   selectedOrganisationUnit$: Observable<OrganisationUnit>;
   selectedOrganisationUnitStatus$: Observable<boolean>;
   organisationUnitChildren$: Observable<OrganisationUnitChildren[]>;
@@ -52,7 +54,7 @@ export class OrganisationUnitsComponent implements OnInit {
     "September",
     "October",
     "November",
-    "December"
+    "December",
   ];
   date: Date = new Date();
   parentOrgunit: string;
@@ -70,7 +72,7 @@ export class OrganisationUnitsComponent implements OnInit {
     this.currentUser$ = this.store.select(getCurrentUser);
     if (Fn) {
       Fn.init({
-        baseUrl: "../../../api/"
+        baseUrl: "../../../api/",
       });
     }
   }
@@ -81,12 +83,12 @@ export class OrganisationUnitsComponent implements OnInit {
       singleSelection: true,
       showUserOrgUnitSection: false,
       updateOnSelect: true,
-      showOrgUnitLevelGroupSection: false
+      showOrgUnitLevelGroupSection: false,
     };
-     this.periodFilterConfig = {
+    this.periodFilterConfig = {
       singleSelection: true,
       emitOnSelection: false,
-      childrenPeriodSortOrder: "DESC"
+      childrenPeriodSortOrder: "DESC",
     };
     this.ngView();
   }
@@ -95,21 +97,21 @@ export class OrganisationUnitsComponent implements OnInit {
     if (this.route.snapshot.params["parentid"]) {
       this.orgUnitService
         .getOrgUnitDetails(this.route.snapshot.params["parentid"])
-        .subscribe(ouDetails => {
+        .subscribe((ouDetails) => {
           if (ouDetails) {
             this.selectedOrgUnitItems = [];
             this.selectedOrgUnitItems.push(ouDetails);
             this.router.navigate([
-              `organisationunit/${this.route.snapshot.params["parentid"]}`
+              `organisationunit/${this.route.snapshot.params["parentid"]}`,
             ]);
             this.parentOrgunit = this.route.snapshot.params["parentid"];
             this.store.dispatch(
               selectOrganisationUnitSuccess({
-                dimensions: {id: ouDetails.id, pe: "LAST_MONTH"}
+                dimensions: { id: ouDetails.id, pe: "LAST_MONTH" },
               })
             );
             this.router.navigate([
-              `/organisationunit/${this.route.snapshot.params["parentid"]}`
+              `/organisationunit/${this.route.snapshot.params["parentid"]}`,
             ]);
             this.selectedOrganisationUnit$ = this.store.select(
               getSelectedOrganisationUnit
@@ -117,16 +119,19 @@ export class OrganisationUnitsComponent implements OnInit {
           }
         });
     } else {
-      this.currentUser$.subscribe(currentUser => {
+      this.currentUser$.subscribe((currentUser) => {
         if (currentUser && currentUser["organisationUnits"]) {
           this.selectedOrgUnitItems = currentUser["organisationUnits"];
           this.store.dispatch(
             selectOrganisationUnitSuccess({
-              dimensions: {id: currentUser["organisationUnits"][0].id, pe: "LAST_MONTH"}
+              dimensions: {
+                id: currentUser["organisationUnits"][0].id,
+                pe: "LAST_MONTH",
+              },
             })
           );
           this.router.navigate([
-            `/organisationunit/${currentUser["organisationUnits"][0].id}`
+            `/organisationunit/${currentUser["organisationUnits"][0].id}`,
           ]);
         }
       });
@@ -150,11 +155,11 @@ export class OrganisationUnitsComponent implements OnInit {
     if (selectedOrganisationUnit.id !== "USER_ORGUNIT") {
       this.store.dispatch(
         selectOrganisationUnitSuccess({
-          dimensions: {id: selectedOrganisationUnit.id, pe: "LAST_MONTH"}
+          dimensions: { id: selectedOrganisationUnit.id, pe: "LAST_MONTH" },
         })
       );
       this.router.navigate([
-        `/organisationunit/${selectedOrganisationUnit.id}`
+        `/organisationunit/${selectedOrganisationUnit.id}`,
       ]);
     }
   }
@@ -164,7 +169,7 @@ export class OrganisationUnitsComponent implements OnInit {
     this.dialog.open(OrganisationUnitEditComponent, {
       data: { organisationUnit: organisatioUnit },
       height: "auto",
-      width: "auto"
+      width: "auto",
     });
   }
 
@@ -178,7 +183,7 @@ export class OrganisationUnitsComponent implements OnInit {
     this.dialog.open(OrganisationUnitDetailsComponent, {
       data: { organisationUnit: organisatioUnit },
       height: "370px",
-      width: "450px"
+      width: "450px",
     });
   }
 
@@ -195,7 +200,7 @@ export class OrganisationUnitsComponent implements OnInit {
     //initialize check for when subscribed to an observable to prevent multiple csv file downloads
     let subscribed = true;
 
-    this.organisationUnitChildren$.subscribe(childrenGot => {
+    this.organisationUnitChildren$.subscribe((childrenGot) => {
       //check for when subscribed to an observable
       if (subscribed) {
         const tableHeader = [
@@ -206,11 +211,11 @@ export class OrganisationUnitsComponent implements OnInit {
           "Village",
           "Ward",
           "District",
-          "Region"
+          "Region",
         ];
         let csvRows = [];
 
-        csvRows = childrenGot.map(addo => {
+        csvRows = childrenGot.map((addo) => {
           return [
             addo.name,
             addo.phoneNumber,
@@ -219,13 +224,13 @@ export class OrganisationUnitsComponent implements OnInit {
             addo.parent.name,
             addo.parent.parent.name,
             addo.parent.parent.parent.name,
-            addo.parent.parent.parent.parent.name
+            addo.parent.parent.parent.parent.name,
           ];
         });
 
         const row = [tableHeader, ...csvRows];
         let csvContent = "data:text/csv;charset=utf-8,";
-        row.forEach(function(rowArray) {
+        row.forEach(function (rowArray) {
           const rowEntry = rowArray.join(",");
           csvContent += rowEntry + "\r\n";
         });
@@ -239,4 +244,4 @@ export class OrganisationUnitsComponent implements OnInit {
       }
     });
   }
- }
+}

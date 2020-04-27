@@ -51,6 +51,18 @@
               "
             >
               <div class="div-tabl" style="margin-top: 20px;">
+                <mat-radio-group
+                  aria-labelledby="example-radio-group-label"
+                  class="radio-group"
+                  [(ngModel)]="favoriteSeason"
+                >
+                  <mat-radio-button
+                    class="radio-button"
+                    *ngFor="let status of statuses"
+                  >
+                    {{ status }}
+                  </mat-radio-button>
+                </mat-radio-group>
                 <div class="col-sm-5" style="padding-bottom: 10px;">
                   <input
                     class="form-control"

@@ -44,7 +44,8 @@ import {
   MatTab,
   MatTabsModule,
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
-  MatSelectModule
+  MatSelectModule,
+  MatRadioModule
 } from "@angular/material";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { OrganisationUnitDetailsComponent } from "./pages/organisation-unit-details/organisation-unit-details.component";
@@ -86,6 +87,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatButtonToggleModule,
     Ng2SearchPipeModule,
     NgxPaginationModule,
+    MatRadioModule,
     /**
      * Menu  module
      */
