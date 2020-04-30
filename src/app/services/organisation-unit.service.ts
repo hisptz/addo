@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { NgxDhis2HttpClientService } from "@iapps/ngx-dhis2-http-client";
-import { Observable } from "rxjs";
+import { Observable, throwError } from "rxjs";
 import { OrganisationUnitChildren } from "../models/organisation-unit.model";
 
 import * as _ from "lodash";
 import { ErrorMessage } from "../core";
+import { map, catchError } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
@@ -93,9 +94,19 @@ export class OrganisationUnitService {
 
   getLegends(): Observable<any> {
     try {
-      return this.httpService.get(
-        `legendSets.json?fields=legends[id,startValue,endValue,color]`
-      );
+      return this.httpService
+        .get(`legendSets.json?fields=legends[id,startValue,endValue,color]`)
+        .pipe(
+          map(
+            (data) => {
+              console.log(data)
+              return data;
+            },
+            catchError((error) => {
+              return throwError(error);
+            })
+          )
+        );
     } catch (error) {}
   }
 
