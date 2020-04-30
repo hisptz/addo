@@ -54,14 +54,17 @@
                 <mat-radio-group
                   aria-labelledby="example-radio-group-label"
                   class="radio-group"
-                  [(ngModel)]="favoriteSeason"
                 >
                   <mat-radio-button
                     class="radio-button"
-                    *ngFor="let status of statuses"
                   >
-                    {{ status }}
+                     Reported
                   </mat-radio-button>
+                  <mat-radio-button
+                  class="radio-button"
+                >
+                  Not Reported
+                </mat-radio-button>
                 </mat-radio-group>
                 <div class="col-sm-5" style="padding-bottom: 10px;">
                   <input

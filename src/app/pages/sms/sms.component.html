@@ -1,0 +1,34 @@
+<div
+  class="table-responsive"
+  *ngFor="let table of legends ? legends['legendSets'] : ''"
+  style="margin: 10px;"
+>
+  <table mat-table class="table" id="excel-table">
+    <thead class="thead-light">
+      <tr>
+        <th>Start Value</th>
+        <th>End Value</th>
+        <th>Color</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of table['legends']">
+        <td>{{ row["startValue"] }}</td>
+        <td>{{ row["endValue"] }}</td>
+        <td [style.background-color]="row['color']"></td>
+        <td (click)="onMessageEdit($event)" class="messagedit">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus,
+            consequuntur architecto, veritatis nobis assumenda nesciunt ratione,
+            nam laboriosam non nisi iusto et! Beatae itaque architecto magni
+            eligendi quaerat nobis quo.Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Ducimus, consequuntur architecto, veritatis nobis
+            assumenda nesciunt ratione, nam laboriosam non nisi iusto et! Beatae
+            itaque architecto magni eligendi quaerat nobis quo.
+          </p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
