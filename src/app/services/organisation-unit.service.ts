@@ -78,6 +78,24 @@ export class OrganisationUnitService {
     });
   }
 
+  getReportedFacilities(orgUnitId, pe): Observable<any> {
+    return new Observable((observer) => {
+      this.getOrgunitChildren(orgUnitId)
+        .then((orgunits: OrganisationUnitChildren[]) => {
+          this.getReportingRate(pe)
+            .then((result) => {
+              observer.next(
+                _.filter(orgunits, (orgunit: OrganisationUnitChildren) =>
+                  _.indexOf(result, orgunit.id) !== -1 ? false : true
+                )
+              );
+            })
+            .catch((error: ErrorMessage) => observer.error(error));
+        })
+        .catch((error: ErrorMessage) => observer.error(error));
+    });
+  }
+
   getOrgUnitDetails(id): Observable<any> {
     return this.httpService.get(
       "organisationUnits/" +
