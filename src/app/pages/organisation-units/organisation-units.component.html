@@ -23,9 +23,7 @@
             <mat-card class="col-sm-12 downs">
               <h4 class="header">
                 Addos Reporting Status for
-                {{
-                  (selectedOrganisationUnit$ | async).name
-                }}
+                {{ (selectedOrganisationUnit$ | async).name }}
                 in {{ getMonth }},
                 {{ getYear }}
               </h4>
@@ -50,7 +48,7 @@
             >
               <div class="div-tabl" style="margin-top: 20px;">
                 <button class="btn btn-primary" (click)="showAddoStatus()">
-                  Show {{ showStatus ? "Not Reported" : "Reported" }} Addos
+                  Show {{ showStatus ? "Reported" : "Not Reported" }} Addos
                 </button>
 
                 <div class="col-sm-5" style="padding-bottom: 10px;">
