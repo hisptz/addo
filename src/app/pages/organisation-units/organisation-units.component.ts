@@ -36,6 +36,7 @@ export class OrganisationUnitsComponent implements OnInit {
   favoriteSeason: string;
   orgUnitFilterConfig: any;
   periodFilterConfig: any;
+  showStatus: boolean = true;
   selectedOrganisationUnit$: Observable<OrganisationUnit>;
   selectedOrganisationUnitStatus$: Observable<boolean>;
   organisationUnitChildren$: Observable<OrganisationUnitChildren[]>;
@@ -106,7 +107,7 @@ export class OrganisationUnitsComponent implements OnInit {
             this.parentOrgunit = this.route.snapshot.params["parentid"];
             this.store.dispatch(
               selectOrganisationUnitSuccess({
-                dimensions: { id: ouDetails.id, pe: "LAST_MONTH" },
+                dimensions: { id: ouDetails.id, pe: "LAST_MONTH", name: ouDetails.name },
               })
             );
             this.router.navigate([
@@ -126,6 +127,7 @@ export class OrganisationUnitsComponent implements OnInit {
               dimensions: {
                 id: currentUser["organisationUnits"][0].id,
                 pe: "LAST_MONTH",
+                name: currentUser["organisationUnits"][0].name
               },
             })
           );
@@ -154,7 +156,7 @@ export class OrganisationUnitsComponent implements OnInit {
     if (selectedOrganisationUnit.id !== "USER_ORGUNIT") {
       this.store.dispatch(
         selectOrganisationUnitSuccess({
-          dimensions: { id: selectedOrganisationUnit.id, pe: "LAST_MONTH" },
+          dimensions: { id: selectedOrganisationUnit.id, pe: "LAST_MONTH", name: selectedOrganisationUnit.name },
         })
       );
       this.router.navigate([
@@ -242,5 +244,8 @@ export class OrganisationUnitsComponent implements OnInit {
         subscribed = false;
       }
     });
+  }
+  showAddoStatus(): void {
+    this.showStatus = !this.showStatus
   }
 }

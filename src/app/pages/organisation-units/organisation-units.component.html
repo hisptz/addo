@@ -22,11 +22,9 @@
           <div class="row" *ngIf="selectedOrganisationUnitStatus$ | async">
             <mat-card class="col-sm-12 downs">
               <h4 class="header">
-                Addos Not Reported from
+                Addos Reporting Status for
                 {{
-                  (selectedOrganisationUnit$ | async)
-                    ? (selectedOrganisationUnit$ | async).name
-                    : ""
+                  (selectedOrganisationUnit$ | async).name
                 }}
                 in {{ getMonth }},
                 {{ getYear }}
@@ -51,21 +49,10 @@
               "
             >
               <div class="div-tabl" style="margin-top: 20px;">
-                <mat-radio-group
-                  aria-labelledby="example-radio-group-label"
-                  class="radio-group"
-                >
-                  <mat-radio-button
-                    class="radio-button"
-                  >
-                     Reported
-                  </mat-radio-button>
-                  <mat-radio-button
-                  class="radio-button"
-                >
-                  Not Reported
-                </mat-radio-button>
-                </mat-radio-group>
+                <button class="btn btn-primary" (click)="showAddoStatus()">
+                  Show {{ showStatus ? "Not Reported" : "Reported" }} Addos
+                </button>
+
                 <div class="col-sm-5" style="padding-bottom: 10px;">
                   <input
                     class="form-control"
@@ -80,57 +67,60 @@
                     "
                   />
                 </div>
+                <div *ngIf="showStatus">
+                  <table
+                    mat-table
+                    class="table table-hover table-fixed"
+                    id="excel-table"
+                  >
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col" class="sn">S/N</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Code</th>
+                        <th scope="col">Owner's Contact</th>
+                        <th scope="col">Dispenser's Contact</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let orgunitChild of organisationUnitChildren$
+                            | async
+                            | filter: filter
+                            | paginate: { itemsPerPage: 30, currentPage: p };
+                          let count = index
+                        "
+                        (click)="onEditChild($event, orgunitChild)"
+                      >
+                        <td>{{ count + 1 }}</td>
+                        <td>{{ orgunitChild.name }}</td>
+                        <td *ngIf="orgunitChild.code">
+                          {{ orgunitChild.code }}
+                        </td>
+                        <td *ngIf="!orgunitChild.code">Code Missing</td>
+                        <td *ngIf="orgunitChild.phoneNumber">
+                          {{ orgunitChild.phoneNumber }}
+                        </td>
+                        <td *ngIf="!orgunitChild.phoneNumber">
+                          Missing Contact Details
+                        </td>
 
-                <table
-                  mat-table
-                  class="table table-hover table-fixed"
-                  id="excel-table"
-                >
-                  <thead class="thead-light">
-                    <tr>
-                      <th scope="col" class="sn">S/N</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Code</th>
-                      <th scope="col">Owner's Contact</th>
-                      <th scope="col">Dispenser's Contact</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      *ngFor="
-                        let orgunitChild of organisationUnitChildren$
-                          | async
-                          | filter: filter
-                          | paginate: { itemsPerPage: 30, currentPage: p };
-                        let count = index
-                      "
-                      (click)="onEditChild($event, orgunitChild)"
-                    >
-                      <td>{{ count + 1 }}</td>
-                      <td>{{ orgunitChild.name }}</td>
-                      <td *ngIf="orgunitChild.code">{{ orgunitChild.code }}</td>
-                      <td *ngIf="!orgunitChild.code">Code Missing</td>
-                      <td *ngIf="orgunitChild.phoneNumber">
-                        {{ orgunitChild.phoneNumber }}
-                      </td>
-                      <td *ngIf="!orgunitChild.phoneNumber">
-                        Missing Contact Details
-                      </td>
-
-                      <td *ngIf="orgunitChild.attributeValues[0]">
-                        {{ orgunitChild.attributeValues[0].value }}
-                      </td>
-                      <td *ngIf="!orgunitChild.attributeValues[0]">
-                        Missing Contact Details
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <p class="pagination">
-                  <pagination-controls
-                    (pageChange)="p = $event"
-                  ></pagination-controls>
-                </p>
+                        <td *ngIf="orgunitChild.attributeValues[0]">
+                          {{ orgunitChild.attributeValues[0].value }}
+                        </td>
+                        <td *ngIf="!orgunitChild.attributeValues[0]">
+                          Missing Contact Details
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p class="pagination">
+                    <pagination-controls
+                      (pageChange)="p = $event"
+                    ></pagination-controls>
+                  </p>
+                </div>
               </div>
             </div>
             <div
@@ -151,6 +141,11 @@
           </div>
         </div>
       </div>
+
+      <!--
+        Another table
+        Supposed to be the not reported Addos Table
+      -->
     </ng-template>
   </mat-tab>
   <mat-tab label="SMS Automation">
