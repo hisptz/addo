@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
 import { MatDialog } from "@angular/material";
+import { SmseditComponent } from '../smsedit/smsedit.component';
 
 @Component({
   selector: "app-sms",
@@ -22,7 +23,7 @@ export class SmsComponent implements OnInit {
   }
   onMessageEdit(e, message) {
     e.stopPropagation();
-    this.dialog.open(SmsComponent, {
+    this.dialog.open(SmseditComponent, {
       data: {message: message},
       height: "auto",
       width: "auto",

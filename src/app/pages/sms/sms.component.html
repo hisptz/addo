@@ -5,7 +5,7 @@
 >
   <table mat-table class="table" id="excel-table">
     <thead class="thead-light">
-      <tr>
+      <tr scope="col">
         <th>Start Value</th>
         <th>End Value</th>
         <th>Color</th>
@@ -13,7 +13,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let row of table['legends']">
+      <tr *ngFor="let row of table['legends']" scope="row">
         <td>{{ row["startValue"] }}</td>
         <td>{{ row["endValue"] }}</td>
         <td [style.background-color]="row['color']"></td>
