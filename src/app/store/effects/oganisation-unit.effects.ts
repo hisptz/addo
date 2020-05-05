@@ -32,7 +32,7 @@ export class OrganisationUnitEffects {
     this.actions$.pipe(
       ofType(selectOrganisationUnitSuccess),
       switchMap(action =>
-        of(loadOrganisationUnitChildren({ id: action.organisationUnit.id }))
+        of(loadOrganisationUnitChildren({ dimensions: action.dimensions }))
       )
     )
   );
@@ -40,7 +40,7 @@ export class OrganisationUnitEffects {
     this.actions$.pipe(
       ofType(loadOrganisationUnitChildren),
       switchMap(action =>
-        this.orgunitService.getFacilities(action.id).pipe(
+        this.orgunitService.getFacilities(action.dimensions.id,action.dimensions.pe).pipe(
           map(organisationUnitChildren =>
             loadOrganisationUnitChildrenSuccess({
               children: organisationUnitChildren ? organisationUnitChildren : []

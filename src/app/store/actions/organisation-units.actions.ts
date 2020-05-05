@@ -11,7 +11,7 @@ import { Update } from '@ngrx/entity';
  */
 export const loadOrganisationUnitChildren = createAction(
   '[ORGANISATION UNIT] load children',
-  props<{ id: string }>()
+  props<{ dimensions: any }>()
 );
 
 export const loadOrganisationUnitChildrenSuccess = createAction(
@@ -62,11 +62,16 @@ export const selectOrganisationUnit = createAction(
   props<{ id: string }>()
 );
 
+export const selectPeriod = createAction(
+  '[PERIOD] select Period',
+  props<{ pe: string }>()
+);
+
 export const selectOrganisationUnitFail = createAction(
   '[ORGANISATION UNIT] select Organisation unit Fail'
 );
 
 export const selectOrganisationUnitSuccess = createAction(
   '[ORGANISATION UNIT] select Organisation unit Success',
-  props<{ organisationUnit: OrganisationUnit }>()
+  props<{ dimensions: any }>()
 );

@@ -1,5 +1,5 @@
 <mat-tab-group style="margin: 0 0 0 0;">
-  <mat-tab label="Not Reported Addos" style="margin: 0 0 0 0;">
+  <mat-tab label="Addos Reporting Status" style="margin: 0 0 0 0;">
     <ng-template matTabContent style="margin: 0 0 0 0;">
       <div class="row">
         <div class="col-sm-3">
@@ -9,30 +9,21 @@
             (orgUnitClose)="onOrgUnitUpdate($event)"
           >
           </ngx-dhis2-org-unit-filter>
-          <mat-form-field>
-            <mat-select
-              placeholder="Period"
-              [(value)]="selected"
-              [ngModel]="onPeriodSelection1"
-              (ngModelChange)="onPeriodSelection()"
-            >
-              <mat-option *ngFor="let period of periods" [value]="period.value">
-                {{ period.value }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <p>Month selected: {{ selected }}</p>
+          <ngx-dhis2-period-filter
+            [selectedPeriods]="selectedPeriodItems"
+            [periodFilterConfig]="periodFilterConfig"
+            [selectedPeriodType]="Monthly"
+            (update)="onPeriodUpdate($event, 'UPDATE')"
+            (change)="onPeriodUpdate($event, 'CHANGE')"
+            (close)="onPeriodUpdate($event, 'CLOSE')"
+          ></ngx-dhis2-period-filter>
         </div>
         <div class="col-sm-9">
           <div class="row" *ngIf="selectedOrganisationUnitStatus$ | async">
             <mat-card class="col-sm-12 downs">
               <h4 class="header">
-                Addos Not Reported from
-                {{
-                  (selectedOrganisationUnit$ | async)
-                    ? (selectedOrganisationUnit$ | async).name
-                    : ""
-                }}
+                Addos Reporting Status for
+                {{ (selectedOrganisationUnit$ | async).name }}
                 in {{ getMonth }},
                 {{ getYear }}
               </h4>
@@ -55,67 +46,79 @@
                 !(isLeafOrganisation$ | async)
               "
             >
-              <div class="div-tabl" style="margin-top:20px">
-                <div class="col-sm-5" style="padding-bottom:10px;">
+              <div class="div-tabl" style="margin-top: 20px;">
+                <button class="btn btn-primary" (click)="showAddoStatus()">
+                  Show {{ showStatus ? "Reported" : "Not Reported" }} Addos
+                </button>
+
+                <div class="col-sm-5" style="padding-bottom: 10px;">
                   <input
                     class="form-control"
                     type="text"
                     placeholder="Search......."
                     [(ngModel)]="filter"
-                    style="border-top: none; border-left: none; border-right: none; border-radius: none;"
+                    style="
+                      border-top: none;
+                      border-left: none;
+                      border-right: none;
+                      border-radius: none;
+                    "
                   />
                 </div>
+                <div *ngIf="showStatus">
+                  <table
+                    mat-table
+                    class="table table-hover table-fixed"
+                    id="excel-table"
+                  >
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col" class="sn">S/N</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Code</th>
+                        <th scope="col">Owner's Contact</th>
+                        <th scope="col">Dispenser's Contact</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let orgunitChild of organisationUnitChildren$
+                            | async
+                            | filter: filter
+                            | paginate: { itemsPerPage: 30, currentPage: p };
+                          let count = index
+                        "
+                        (click)="onEditChild($event, orgunitChild)"
+                      >
+                        <td>{{ count + 1 }}</td>
+                        <td>{{ orgunitChild.name }}</td>
+                        <td *ngIf="orgunitChild.code">
+                          {{ orgunitChild.code }}
+                        </td>
+                        <td *ngIf="!orgunitChild.code">Code Missing</td>
+                        <td *ngIf="orgunitChild.phoneNumber">
+                          {{ orgunitChild.phoneNumber }}
+                        </td>
+                        <td *ngIf="!orgunitChild.phoneNumber">
+                          Missing Contact Details
+                        </td>
 
-                <table
-                  mat-table
-                  class="table table-hover table-fixed"
-                  id="excel-table"
-                >
-                  <thead class="thead-light">
-                    <tr>
-                      <th scope="col" class="sn">S/N</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Code</th>
-                      <th scope="col">Contact Person</th>
-                      <th scope="col">Dispenser's Contact</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      *ngFor="
-                        let orgunitChild of organisationUnitChildren$
-                          | async
-                          | filter: filter
-                          | paginate: { itemsPerPage: 30, currentPage: p };
-                        let count = index
-                      "
-                      (click)="onEditChild($event, orgunitChild)"
-                    >
-                      <td>{{ count + 1 }}</td>
-                      <td>{{ orgunitChild.name }}</td>
-                      <td *ngIf="orgunitChild.code">{{ orgunitChild.code }}</td>
-                      <td *ngIf="!orgunitChild.code">Code Missing</td>
-                      <td *ngIf="orgunitChild.phoneNumber">
-                        {{ orgunitChild.phoneNumber }}
-                      </td>
-                      <td *ngIf="!orgunitChild.phoneNumber">
-                        Missing Contact Details
-                      </td>
-
-                      <td *ngIf="orgunitChild.attributeValues[0]">
-                        {{ orgunitChild.attributeValues[0].value }}
-                      </td>
-                      <td *ngIf="!orgunitChild.attributeValues[0]">
-                        Missing Contact Details
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <p class="pagination">
-                  <pagination-controls
-                    (pageChange)="p = $event"
-                  ></pagination-controls>
-                </p>
+                        <td *ngIf="orgunitChild.attributeValues[0]">
+                          {{ orgunitChild.attributeValues[0].value }}
+                        </td>
+                        <td *ngIf="!orgunitChild.attributeValues[0]">
+                          Missing Contact Details
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p class="pagination">
+                    <pagination-controls
+                      (pageChange)="p = $event"
+                    ></pagination-controls>
+                  </p>
+                </div>
               </div>
             </div>
             <div
@@ -136,6 +139,11 @@
           </div>
         </div>
       </div>
+
+      <!--
+        Another table
+        Supposed to be the not reported Addos Table
+      -->
     </ng-template>
   </mat-tab>
   <mat-tab label="SMS Automation">

@@ -31,9 +31,9 @@ import {
  */
 export const orgunitReducer = createReducer(
   initialSelectedOrgunitState,
-  on(selectOrganisationUnitSuccess, (state, { organisationUnit }) => ({
+  on(selectOrganisationUnitSuccess, (state, { dimensions }) => ({
     ...state,
-    selectedOrgunit: organisationUnit,
+    selectedOrgunit: dimensions,
     selected: true
   })),
   on(selectOrganisationUnitFail, state => ({ ...state, selected: false }))

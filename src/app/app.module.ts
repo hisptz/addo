@@ -8,6 +8,7 @@ import { EffectsModule } from "@ngrx/effects";
 
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment";
+import {NgxDhis2PeriodFilterModule} from '@iapps/ngx-dhis2-period-filter'
 
 import { reducers, metaReducers } from "./store/reducers";
 import { effects } from "./store/effects";
@@ -43,7 +44,8 @@ import {
   MatTab,
   MatTabsModule,
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
-  MatSelectModule
+  MatSelectModule,
+  MatRadioModule
 } from "@angular/material";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { OrganisationUnitDetailsComponent } from "./pages/organisation-unit-details/organisation-unit-details.component";
@@ -51,6 +53,7 @@ import { NgxPaginationModule } from "ngx-pagination";
 import { Ng2SearchPipeModule } from "ng2-search-filter";
 import { OrganisationUnitEditComponent } from "./pages/organisation-unit-edit/organisation-unit-edit.component";
 import { SmsComponent } from "./pages/sms/sms.component";
+import { SmseditComponent } from './pages/smsedit/smsedit.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -58,7 +61,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, ...fromPages.pages, SmsComponent],
+  declarations: [AppComponent, ...fromPages.pages, SmsComponent, SmseditComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -85,6 +88,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatButtonToggleModule,
     Ng2SearchPipeModule,
     NgxPaginationModule,
+    MatRadioModule,
     /**
      * Menu  module
      */
@@ -94,6 +98,7 @@ export function HttpLoaderFactory(http: HttpClient) {
      * Organisationunit filter module
      */
     NgxDhis2OrgUnitFilterModule,
+    NgxDhis2PeriodFilterModule,
 
     /**
      * Translation module
