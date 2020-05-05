@@ -33,7 +33,7 @@ export const orgunitReducer = createReducer(
   initialSelectedOrgunitState,
   on(selectOrganisationUnitSuccess, (state, { dimensions }) => ({
     ...state,
-    selectedOrgunit: dimensions.id,
+    selectedOrgunit: dimensions,
     selected: true
   })),
   on(selectOrganisationUnitFail, state => ({ ...state, selected: false }))
