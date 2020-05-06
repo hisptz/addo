@@ -3,12 +3,6 @@
     <ng-template matTabContent style="margin: 0 0 0 0;">
       <div class="row">
         <div class="col-sm-3">
-          <ngx-dhis2-org-unit-filter
-            [orgUnitFilterConfig]="orgUnitFilterConfig"
-            (orgUnitUpdate)="onOrgUnitUpdate($event)"
-            (orgUnitClose)="onOrgUnitUpdate($event)"
-          >
-          </ngx-dhis2-org-unit-filter>
           <ngx-dhis2-period-filter
             [selectedPeriods]="selectedPeriodItems"
             [periodFilterConfig]="periodFilterConfig"
@@ -17,15 +11,28 @@
             (change)="onPeriodUpdate($event, 'CHANGE')"
             (close)="onPeriodUpdate($event, 'CLOSE')"
           ></ngx-dhis2-period-filter>
+
+          <ngx-dhis2-org-unit-filter
+            [orgUnitFilterConfig]="orgUnitFilterConfig"
+            (orgUnitUpdate)="onOrgUnitUpdate($event)"
+            (orgUnitClose)="onOrgUnitUpdate($event)"
+          >
+          </ngx-dhis2-org-unit-filter>
         </div>
         <div class="col-sm-9">
           <div class="row" *ngIf="selectedOrganisationUnitStatus$ | async">
             <mat-card class="col-sm-12 downs">
               <h4 class="header">
                 Addos Reporting Status for
-                {{ (selectedOrganisationUnit$ | async).name }}
-                in {{ getMonth }},
-                {{ getYear }}
+                {{
+                  (selectedOrganisationUnit$ | async)
+                    ? (selectedOrganisationUnit$ | async).name
+                    : ""
+                }}
+                in
+                {{
+                  periodObject ? periodObject["items"][0].name : "Last Month"
+                }}
               </h4>
               <button
                 *ngIf="
@@ -119,6 +126,65 @@
                     ></pagination-controls>
                   </p>
                 </div>
+
+                <!-- Beginning of Reported Facilities-->
+
+                <div *ngIf="!showStatus">
+                  <table
+                    mat-table
+                    class="table table-hover table-fixed"
+                    id="excel-table"
+                  >
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col" class="sn">S/N</th>
+                        <th scope="col">Name</th>
+                        <!-- <th scope="col">Code</th> -->
+                        <th scope="col">Owner's Contact</th>
+                        <th scope="col">Dispenser's Contact</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let orgunitChild of organisationUnitChildren$
+                            | async
+                            | filter: filter
+                            | paginate: { itemsPerPage: 30, currentPage: p };
+                          let count = index
+                        "
+                        (click)="onEditChild($event, orgunitChild)"
+                      >
+                        <td>{{ count + 1 }}</td>
+                        <td>{{ orgunitChild.name }}</td>
+                        <!-- <td *ngIf="orgunitChild.code">
+                          {{ orgunitChild.code }}
+                        </td>
+                        <td *ngIf="!orgunitChild.code">Code Missing</td> -->
+                        <td *ngIf="orgunitChild.phoneNumber">
+                          {{ orgunitChild.phoneNumber }}
+                        </td>
+                        <td *ngIf="!orgunitChild.phoneNumber">
+                          Missing Contact Details
+                        </td>
+
+                        <td *ngIf="orgunitChild.attributeValues[0]">
+                          {{ orgunitChild.attributeValues[0].value }}
+                        </td>
+                        <td *ngIf="!orgunitChild.attributeValues[0]">
+                          Missing Contact Details
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p class="pagination">
+                    <pagination-controls
+                      (pageChange)="p = $event"
+                    ></pagination-controls>
+                  </p>
+                </div>
+
+                <!--End of Reported Facilities-->
               </div>
             </div>
             <div
@@ -139,11 +205,6 @@
           </div>
         </div>
       </div>
-
-      <!--
-        Another table
-        Supposed to be the not reported Addos Table
-      -->
     </ng-template>
   </mat-tab>
   <mat-tab label="SMS Automation">

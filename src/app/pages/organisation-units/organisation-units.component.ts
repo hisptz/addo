@@ -92,6 +92,10 @@ export class OrganisationUnitsComponent implements OnInit {
     };
     this.ngView();
   }
+  onPeriodUpdate(periodObject, action) {
+    this.periodObject = periodObject;
+    this.action = action;
+  }
 
   ngView() {
     if (this.route.snapshot.params["parentid"]) {
@@ -99,6 +103,9 @@ export class OrganisationUnitsComponent implements OnInit {
         .getOrgUnitDetails(this.route.snapshot.params["parentid"])
         .subscribe((ouDetails) => {
           if (ouDetails) {
+            const period = this.periodObject
+              ? this.periodObject["items"][0].id
+              : "LAST_MONTH";
             this.selectedOrgUnitItems = [];
             this.selectedOrgUnitItems.push(ouDetails);
             this.router.navigate([
@@ -107,7 +114,11 @@ export class OrganisationUnitsComponent implements OnInit {
             this.parentOrgunit = this.route.snapshot.params["parentid"];
             this.store.dispatch(
               selectOrganisationUnitSuccess({
-                dimensions: { id: ouDetails.id, pe: "LAST_MONTH", name: ouDetails.name },
+                dimensions: {
+                  id: ouDetails.id,
+                  pe: period,
+                  name: ouDetails.name,
+                },
               })
             );
             this.router.navigate([
@@ -121,13 +132,16 @@ export class OrganisationUnitsComponent implements OnInit {
     } else {
       this.currentUser$.subscribe((currentUser) => {
         if (currentUser && currentUser["organisationUnits"]) {
+          const period = this.periodObject
+            ? this.periodObject["items"][0].id
+            : "LAST_MONTH";
           this.selectedOrgUnitItems = currentUser["organisationUnits"];
           this.store.dispatch(
             selectOrganisationUnitSuccess({
               dimensions: {
                 id: currentUser["organisationUnits"][0].id,
-                pe: "LAST_MONTH",
-                name: currentUser["organisationUnits"][0].name
+                pe: period,
+                name: currentUser["organisationUnits"][0].name,
               },
             })
           );
@@ -152,11 +166,18 @@ export class OrganisationUnitsComponent implements OnInit {
 
   onOrgUnitUpdate(orgunitData) {
     const selectedOrganisationUnit = orgunitData.items[0];
+    const period = this.periodObject
+      ? this.periodObject["items"][0].id
+      : "LAST_MONTH";
     this.store.dispatch(clearOrganisationUnitChildren());
     if (selectedOrganisationUnit.id !== "USER_ORGUNIT") {
       this.store.dispatch(
         selectOrganisationUnitSuccess({
-          dimensions: { id: selectedOrganisationUnit.id, pe: "LAST_MONTH", name: selectedOrganisationUnit.name },
+          dimensions: {
+            id: selectedOrganisationUnit.id,
+            pe: period,
+            name: selectedOrganisationUnit.name,
+          },
         })
       );
       this.router.navigate([
@@ -188,10 +209,6 @@ export class OrganisationUnitsComponent implements OnInit {
     });
   }
 
-  onPeriodUpdate(periodObject, action) {
-    this.periodObject = periodObject;
-    this.action = action;
-  }
   getMonth = this.months[this.date.getMonth() - 1];
   getYear = this.date.getFullYear();
 
@@ -246,6 +263,6 @@ export class OrganisationUnitsComponent implements OnInit {
     });
   }
   showAddoStatus(): void {
-    this.showStatus = !this.showStatus
+    this.showStatus = !this.showStatus;
   }
 }
