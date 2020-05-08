@@ -42,21 +42,6 @@ export class OrganisationUnitsComponent implements OnInit {
   organisationUnitChildren$: Observable<OrganisationUnitChildren[]>;
   organisationUnitChildrenLoaded$: Observable<boolean>;
   isLeafOrganisation$: Observable<boolean>;
-  months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  date: Date = new Date();
   parentOrgunit: string;
   currentUser$: Observable<any>;
   selectedOrgUnitItems: Array<any> = [];
@@ -95,7 +80,10 @@ export class OrganisationUnitsComponent implements OnInit {
   onPeriodUpdate(periodObject, action) {
     this.periodObject = periodObject;
     this.action = action;
-  }
+    this.router.navigate([
+        `/organisationunit/${this.route.snapshot.params["parentid"]}`,
+      ]);
+    }
 
   ngView() {
     if (this.route.snapshot.params["parentid"]) {
@@ -208,9 +196,6 @@ export class OrganisationUnitsComponent implements OnInit {
       width: "450px",
     });
   }
-
-  getMonth = this.months[this.date.getMonth() - 1];
-  getYear = this.date.getFullYear();
 
   fileName = "addos.csv";
 

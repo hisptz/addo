@@ -127,13 +127,7 @@ input[type="text"] {
 tr:hover{
   cursor: pointer;
 }
-.radio-group {
-  display: flex;
-  flex-direction: row;
-  align-content: space-between;
-  margin: 15px 30px;
-}
-
-.radio-button {
-  margin: 5px;
+.period {
+  width: auto;
+  height: 100px;
 }
