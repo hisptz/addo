@@ -110,28 +110,49 @@ export class OrganisationUnitService {
     );
   }
 
-  getLegends(): Observable<any> {
-    try {
-      return this.httpService
-        .get(`legendSets.json?fields=legends[id,startValue,endValue,color]`)
-        .pipe(
-          map(
-            (data) => {
-              console.log(data)
-              return data;
-            },
-            catchError((error) => {
-              return throwError(error);
-            })
-          )
-        );
-    } catch (error) {}
+  getLegends(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      try {
+        this.httpService
+          .get(`legendSets.json?fields=legends[id,startValue,endValue,color]`)
+          .subscribe(
+            (data) => resolve(data),
+            (error) => reject(error)
+          );
+      } catch (error) {}
+    });
   }
 
-  getPerformanceSms(): Observable<any> {
-    try {
-      return this.httpService.get(`dataStore/performance/sms`);
-    } catch (e) {}
+  getPerformanceSms(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      try {
+        this.httpService.get(`dataStore/performance/sms`).subscribe(
+          (data) => resolve(data),
+          (error) => reject(error)
+        );
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getLegendWithMessage(): Observable<any> {
+    return new Observable((observer) => {
+      this.getLegends().then(
+        (legends) => {
+          this.getPerformanceSms().then(
+            (messages) => {
+              // TODO Put the logics for checking message here!
+              console.log(messages);
+              console.log(legends);
+              observer.next(legends);
+            },
+            (error) => observer.error(error)
+          );
+        },
+        (error) => observer.error(error)
+      );
+    });
   }
 
   editOrgunitChildren(orgunitChild: OrganisationUnitChildren): Observable<any> {
