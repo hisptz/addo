@@ -80,7 +80,10 @@ export class OrganisationUnitsComponent implements OnInit {
   onPeriodUpdate(periodObject, action) {
     this.periodObject = periodObject;
     this.action = action;
-  }
+    this.router.navigate([
+        `/organisationunit/${this.route.snapshot.params["parentid"]}`,
+      ]);
+    }
 
   ngView() {
     if (this.route.snapshot.params["parentid"]) {

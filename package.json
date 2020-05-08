@@ -86,5 +86,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "resolutions": {
+    "@babel/preset-env": "7.5.5"
   }
 }
