@@ -80,6 +80,8 @@ export class OrganisationUnitsComponent implements OnInit {
   onPeriodUpdate(periodObject, action) {
     this.periodObject = periodObject;
     this.action = action;
+
+    //get details of orgunit when period is updated
     this.orgUnitService
       .getOrgUnitDetails(this.route.snapshot.params["parentid"])
       .subscribe((ouDetails) => {
