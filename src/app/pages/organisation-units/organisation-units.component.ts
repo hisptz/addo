@@ -15,7 +15,7 @@ import {
   getOrganisationUnitChildrenLoadedState,
   leafOrgunit,
 } from "src/app/store/selectors/organisation-unit.selectors";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 import {
   deleteOrganisationUnitChild,
   selectOrganisationUnitSuccess,
@@ -73,17 +73,22 @@ export class OrganisationUnitsComponent implements OnInit {
     this.periodFilterConfig = {
       singleSelection: true,
       emitOnSelection: false,
-      childrenPeriodSortOrder: "DESC",
+      updateOnSelect: true,
     };
     this.ngView();
   }
   onPeriodUpdate(periodObject, action) {
     this.periodObject = periodObject;
     this.action = action;
-    this.router.navigate([
-        `/organisationunit/${this.route.snapshot.params["parentid"]}`,
-      ]);
-    }
+    this.orgUnitService
+      .getOrgUnitDetails(this.route.snapshot.params["parentid"])
+      .subscribe((ouDetails) => {
+        const orgunitData: {} = {
+          items: [{ id: ouDetails.id, name: ouDetails.name }],
+        };
+        this.onOrgUnitUpdate(orgunitData);
+      });
+  }
 
   ngView() {
     if (this.route.snapshot.params["parentid"]) {

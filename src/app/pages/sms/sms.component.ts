@@ -14,9 +14,10 @@ export class SmsComponent implements OnInit {
   constructor(private legendService: OrganisationUnitService, private dialog: MatDialog) {}
 
   ngOnInit() {
-    this.legendService.getLegends().subscribe(
+    this.legendService.getLegendWithMessage().subscribe(
       (data) => {
         this.legends = data;
+        console.log('Legends wit Message',data)
       },
       (err: any) => console.log(err)
     );
@@ -25,8 +26,8 @@ export class SmsComponent implements OnInit {
     e.stopPropagation();
     this.dialog.open(SmseditComponent, {
       data: {message: message},
-      height: "auto",
-      width: "auto",
+      height: "370px",
+      width: "400px",
     });
   }
 }
