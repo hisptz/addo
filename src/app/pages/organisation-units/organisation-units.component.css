@@ -127,7 +127,3 @@ input[type="text"] {
 tr:hover{
   cursor: pointer;
 }
-.period {
-  width: auto;
-  height: 100px;
-}
