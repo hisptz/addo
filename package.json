@@ -1,10 +1,10 @@
 {
-  "name": "ngx-seed-app",
+  "name": "addo-labs",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --aot && cd dist/ngx-seed-app && zip -r -D ngx-seed-app.zip .",
+    "build": "ng build --prod --aot && cd dist/addo-labs && zip -r -D addo-labs.zip .",
     "test": "ng test",
     "test:travis": "ng test -- --no-watch --no-progress --code-coverage --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
