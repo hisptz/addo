@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --aot && cd dist/addo-labs && zip -r -D addo-labs.zip .",
+    "build": "ng build --prod --aot && cd dist && zip -r -D addo-labs.zip .",
     "test": "ng test",
     "test:travis": "ng test -- --no-watch --no-progress --code-coverage --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
