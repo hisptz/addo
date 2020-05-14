@@ -140,6 +140,15 @@ export class OrganisationUnitService {
     return new Observable((observer) => {
       this.getLegends().then(
         (legends) => {
+          let ObjectOfLegends:{} = {}
+          _.each(legends, (legendSet: {}) => {
+            _.each(legendSet["legends"], (legend: {}) => {
+              ObjectOfLegends[legend["id"]] = {
+                setid: legendSet["id"],
+                color: legend["color"],
+              };
+            });
+          });
           this.getPerformanceSms().then(
             (messages) => {
               // TODO Put the logics for checking message here!
