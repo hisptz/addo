@@ -21,7 +21,7 @@ import {
   selectOrganisationUnitSuccess,
   clearOrganisationUnitChildren,
 } from "src/app/store/actions";
-import { MatDialog } from "@angular/material";
+import { MatDialog } from "@angular/material/dialog";
 import { OrganisationUnitDetailsComponent } from "../organisation-unit-details/organisation-unit-details.component";
 import { getCurrentUser } from "src/app/store/selectors";
 import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
