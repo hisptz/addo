@@ -53,6 +53,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatSelectModule } from "@angular/material/select";
+import { NgxDhis2HttpClientModule } from '@iapps/ngx-dhis2-http-client';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -102,6 +103,15 @@ export function HttpLoaderFactory(http: HttpClient) {
      * Organisationunit filter module
      */
     NgxDhis2OrgUnitFilterModule,
+    NgxDhis2HttpClientModule.forRoot({
+      version: 1,
+      namespace: 'addo',
+      models: {
+        organisationUnits: 'id,level',
+        organisationUnitLevels: 'id,level',
+        organisationUnitGroups: 'id',
+      },
+    }),
     NgxDhis2PeriodFilterModule,
 
     /**

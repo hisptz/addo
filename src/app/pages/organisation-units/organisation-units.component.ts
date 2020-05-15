@@ -72,7 +72,7 @@ export class OrganisationUnitsComponent implements OnInit {
     };
     this.periodFilterConfig = {
       singleSelection: true,
-      emitOnSelection: false,
+      emitOnSelection: true,
       updateOnSelect: true,
     };
     this.ngView();
