@@ -12,7 +12,7 @@ export const loadSystemInfo = createAction('[SystemInfo] Load System info');
 
 export const addSystemInfo = createAction(
   '[SystemInfo] Add System info',
-  props<{ systemInfo: SystemInfo }>()
+  props<{ systemInfo: any }>()
 );
 
 export const loadSystemInfoFail = createAction(
