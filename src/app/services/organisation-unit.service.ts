@@ -138,23 +138,56 @@ export class OrganisationUnitService {
 
   getLegendWithMessage(): Observable<any> {
     return new Observable((observer) => {
+      let legendSets = {};
+      let dataStorePerformance = [];
       this.getLegends().then(
         (legends) => {
-          let ObjectOfLegends:{} = {}
-          _.each(legends, (legendSet: {}) => {
-            _.each(legendSet["legends"], (legend: {}) => {
-              ObjectOfLegends[legend["id"]] = {
-                setid: legendSet["id"],
-                color: legend["color"],
-              };
-            });
-          });
           this.getPerformanceSms().then(
             (messages) => {
-              // TODO Put the logics for checking message here!
-              console.log(messages);
-              console.log(legends);
-              observer.next(legends);
+              legendSets = Object.assign({}, legends);
+              dataStorePerformance = [...messages];
+              function appendLengedMessage(legendSets, dataStorePerformance) {
+                const updatedLegendSets = (legendSets["legendSets"] || []).map(
+                  (legendSetItem) => {
+                    const currentLegends = (legendSetItem.legends || []).map(
+                      (legend) => {
+                        return {
+                          ...legend,
+                          message: legendMessage(
+                            legend.id,
+                            dataStorePerformance
+                          ),
+                        };
+                      }
+                    );
+                    return { legends: currentLegends };
+                  }
+                );
+                return { legendSets: updatedLegendSets };
+              }
+
+              function legendMessage(legendUid, dataStorePerformance) {
+                // let legendMessageInfo = "No Performance Message for this Particular Indicator";
+                let legendMessageInfo: string;
+                (dataStorePerformance || []).forEach((dataStore) => {
+                  const allConditions = (dataStore.conditions || []).concat(
+                    Object.values(dataStore.otherConditions) || []
+                  );
+                  const flatternConditions = [].concat.apply([], allConditions);
+                  const filteredWithLegendUid = flatternConditions.filter(
+                    (item) => item === legendUid
+                  );
+                  if (filteredWithLegendUid.length > 0) {
+                    legendMessageInfo = dataStore.message
+                      ? dataStore.message
+                      : "";
+                  }
+                });
+                return legendMessageInfo;
+              }
+              observer.next(
+                appendLengedMessage(legendSets, dataStorePerformance)
+              );
             },
             (error) => observer.error(error)
           );
