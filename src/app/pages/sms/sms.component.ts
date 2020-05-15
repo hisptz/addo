@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
-import { MatDialog } from "@angular/material";
+import { MatDialog } from "@angular/material/dialog";
 import { SmseditComponent } from '../smsedit/smsedit.component';
 
 @Component({

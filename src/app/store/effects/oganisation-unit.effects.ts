@@ -17,7 +17,7 @@ import { ErrorMessage } from "src/app/core/models/error-message.model";
 import { switchMap, map, catchError } from "rxjs/operators";
 import { of } from "rxjs";
 import { Router } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Injectable()
 export class OrganisationUnitEffects {

@@ -13,7 +13,7 @@ import {
 } from "@angular/forms";
 import { editOrganisationUnitChild } from "src/app/store/actions";
 import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 @Component({
   selector: "app-organisation-unit-edit",
