@@ -1,6 +1,12 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import {
+  MatFormFieldModule,
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+} from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatDatepickerModule } from "@angular/material/datepicker";
 
 import { AppComponent } from "./app.component";
 import { StoreModule } from "@ngrx/store";
@@ -8,14 +14,14 @@ import { EffectsModule } from "@ngrx/effects";
 
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment";
-import {NgxDhis2PeriodFilterModule} from '@iapps/ngx-dhis2-period-filter'
+import { NgxDhis2PeriodFilterModule } from "@iapps/ngx-dhis2-period-filter";
 
 import { reducers, metaReducers } from "./store/reducers";
 import { effects } from "./store/effects";
 
 import {
   RouterStateSerializer,
-  StoreRouterConnectingModule
+  StoreRouterConnectingModule,
 } from "@ngrx/router-store";
 import { RouteSerializer, CoreModule } from "./core";
 import { RoutingModule } from "./app.routes";
@@ -28,32 +34,25 @@ import { NgxDhis2MenuModule } from "@iapps/ngx-dhis2-menu";
 import { NgxDhis2OrgUnitFilterModule } from "@iapps/ngx-dhis2-org-unit-filter";
 import * as fromPages from "./pages";
 import { ServiceWorkerModule } from "@angular/service-worker";
-import {
-  MatMenuModule,
-  MatButtonModule,
-  MatCardModule,
-  MatIconModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatButtonToggleModule,
-  MatDialogModule,
-  MatSnackBarModule,
-  MatProgressBarModule,
-  MatTab,
-  MatTabsModule,
-  MAT_FORM_FIELD_DEFAULT_OPTIONS,
-  MatSelectModule,
-  MatRadioModule
-} from "@angular/material";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { OrganisationUnitDetailsComponent } from "./pages/organisation-unit-details/organisation-unit-details.component";
 import { NgxPaginationModule } from "ngx-pagination";
 import { Ng2SearchPipeModule } from "ng2-search-filter";
 import { OrganisationUnitEditComponent } from "./pages/organisation-unit-edit/organisation-unit-edit.component";
 import { SmsComponent } from "./pages/sms/sms.component";
-import { SmseditComponent } from './pages/smsedit/smsedit.component';
+import { SmseditComponent } from "./pages/smsedit/smsedit.component";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatNativeDateModule } from "@angular/material/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { MatRadioModule } from "@angular/material/radio";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatCardModule } from "@angular/material/card";
+import { MatIconModule } from "@angular/material/icon";
+import { MatTabsModule } from "@angular/material/tabs";
+import { MatSelectModule } from "@angular/material/select";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -61,7 +60,12 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, ...fromPages.pages, SmsComponent, SmseditComponent],
+  declarations: [
+    AppComponent,
+    ...fromPages.pages,
+    SmsComponent,
+    SmseditComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -70,8 +74,8 @@ export function HttpLoaderFactory(http: HttpClient) {
       namespace: "iapps",
       version: 1,
       models: {
-        users: "id"
-      }
+        users: "id",
+      },
     }),
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers, { metaReducers }),
@@ -107,8 +111,8 @@ export function HttpLoaderFactory(http: HttpClient) {
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
+        deps: [HttpClient],
+      },
     }),
 
     /**
@@ -119,7 +123,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
     ServiceWorkerModule.register("ngsw-worker.js", {
-      enabled: environment.production
+      enabled: environment.production,
     }),
     MatMenuModule,
     MatButtonModule,
@@ -129,20 +133,20 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatSelectModule,
     StoreDevtoolsModule.instrument({
       maxAge: 25,
-      logOnly: environment.production
-    })
+      logOnly: environment.production,
+    }),
   ],
   entryComponents: [
     OrganisationUnitDetailsComponent,
-    OrganisationUnitEditComponent
+    OrganisationUnitEditComponent,
   ],
   providers: [
     { provide: RouterStateSerializer, useClass: RouteSerializer },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: { appearance: "fill" }
-    }
+      useValue: { appearance: "fill" },
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
