@@ -22,13 +22,13 @@
           <div class="row" *ngIf="selectedOrganisationUnitStatus$ | async">
             <mat-card class="col-sm-12 downs">
               <h4 class="header">
-                Addos Reporting Status for
+                Addos Reporting Status in
                 {{
                   (selectedOrganisationUnit$ | async)
                     ? (selectedOrganisationUnit$ | async).name
                     : ""
                 }}
-                in
+                for
                 {{
                   periodObject ? periodObject["items"][0].name : "Last Month"
                 }}
