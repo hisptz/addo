@@ -46,6 +46,7 @@ export class OrganisationUnitsComponent implements OnInit {
   currentUser$: Observable<any>;
   selectedOrgUnitItems: Array<any> = [];
   omitcolumn: any;
+  reportedAddos: any;
 
   constructor(
     private store: Store<State>,
@@ -179,6 +180,12 @@ export class OrganisationUnitsComponent implements OnInit {
         `/organisationunit/${selectedOrganisationUnit.id}`,
       ]);
     }
+    this.orgUnitService
+      .getReportedFacilities(selectedOrganisationUnit.id, period)
+      .subscribe((reportedOrgunits) => {
+        this.reportedAddos = reportedOrgunits;
+        console.log('Reported Orgunits', reportedOrgunits)
+      });
   }
 
   onEditChild(e, organisatioUnit) {
