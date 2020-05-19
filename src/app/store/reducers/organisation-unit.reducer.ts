@@ -1,11 +1,11 @@
-import { createReducer, on } from '@ngrx/store';
+import { createReducer, on } from "@ngrx/store";
 import {
   initialSelectedOrgunitState,
   SelectedOrgunitState,
   initialOrganisationUnitChildrenState,
   adapter,
-  OrganisationUnitChildrenState
-} from '../states/organisation-unit.sate';
+  OrganisationUnitChildrenState,
+} from "../states/organisation-unit.sate";
 import {
   selectOrganisationUnitSuccess,
   selectOrganisationUnitFail,
@@ -18,13 +18,13 @@ import {
   deleteOrganisationUnitChildSuccess,
   editOrganisationUnitChild,
   editOrganisationUnitChildFail,
-  editOrganisationUnitChildSuccess
-} from '../actions';
+  editOrganisationUnitChildSuccess,
+} from "../actions";
 import {
   loadingBaseState,
   loadedBaseState,
-  errorBaseState
-} from '../states/base.state';
+  errorBaseState,
+} from "../states/base.state";
 
 /**
  * selected orgunit reducer
@@ -34,9 +34,9 @@ export const orgunitReducer = createReducer(
   on(selectOrganisationUnitSuccess, (state, { dimensions }) => ({
     ...state,
     selectedOrgunit: dimensions,
-    selected: true
+    selected: true,
   })),
-  on(selectOrganisationUnitFail, state => ({ ...state, selected: false }))
+  on(selectOrganisationUnitFail, (state) => ({ ...state, selected: false }))
 );
 
 export function selectedOrganisationUnitReducer(
@@ -46,14 +46,28 @@ export function selectedOrganisationUnitReducer(
   return orgunitReducer(state, action);
 }
 
+export function selectStatus(state, action) {
+  switch (action.type) {
+    case "SHOW_REPORTED":
+      console.log('Existing State::', state)
+      console.log('Action State::', state)
+      return {
+        ...state,
+        showReported: action.payload,
+      };
+      default:
+      return state
+  }
+}
+
 /**
  * orgunit children reducer
  */
 export const orgunitChildrenReducer = createReducer(
   initialOrganisationUnitChildrenState,
-  on(loadOrganisationUnitChildren, state => ({
+  on(loadOrganisationUnitChildren, (state) => ({
     ...state,
-    ...loadingBaseState
+    ...loadingBaseState,
   })),
   on(loadOrganisationUnitChildrenSuccess, (state, { children }) =>
     adapter.addMany(children, { ...state, ...loadedBaseState })
@@ -61,35 +75,35 @@ export const orgunitChildrenReducer = createReducer(
   on(loadOrganisationUnitChildrenFail, (state, { error }) => ({
     ...state,
     ...errorBaseState,
-    error
+    error,
   })),
-  on(clearOrganisationUnitChildren, state => adapter.removeAll(state)),
-  on(deleteOrganisationUnitChild, state => ({
+  on(clearOrganisationUnitChildren, (state) => adapter.removeAll(state)),
+  on(deleteOrganisationUnitChild, (state) => ({
     ...state,
     deleted: false,
-    deleting: false
+    deleting: false,
   })),
   on(deleteOrganisationUnitChildFail, (state, { error }) => ({
     ...state,
     deleted: false,
     deleting: false,
     hasError: true,
-    error
+    error,
   })),
   on(deleteOrganisationUnitChildSuccess, (state, { id }) =>
     adapter.removeOne(id, { ...state, deleted: true, deleting: false })
   ),
-  on(editOrganisationUnitChild, state => ({
+  on(editOrganisationUnitChild, (state) => ({
     ...state,
     edited: false,
-    editing: true
+    editing: true,
   })),
   on(editOrganisationUnitChildFail, (state, { error }) => ({
     ...state,
     hasError: true,
     edited: false,
     editing: false,
-    error
+    error,
   })),
   on(editOrganisationUnitChildSuccess, (state, { child }) =>
     adapter.updateOne(child, { ...state, edited: true, editing: false })
