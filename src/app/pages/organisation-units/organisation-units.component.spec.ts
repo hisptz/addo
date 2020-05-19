@@ -1,18 +1,22 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { OrganisationUnitsComponent } from './organisation-units.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import {
-  MatCardModule,
-  MatIconModule,
-  MatMenuModule,
-  MatDialogModule,
-  MatProgressBarModule
-} from '@angular/material';
-import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from 'src/app/store/reducers';
+import { OrganisationUnitsComponent } from "./organisation-units.component";
+import { RouterTestingModule } from "@angular/router/testing";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatNativeDateModule } from "@angular/material/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { MatRadioModule } from "@angular/material/radio";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatCardModule } from "@angular/material/card";
+import { MatIconModule } from "@angular/material/icon";
+import { MatTabsModule } from "@angular/material/tabs";
+import { StoreModule } from "@ngrx/store";
+import { reducers, metaReducers } from "src/app/store/reducers";
 
-describe('OrganisationUnitsComponent', () => {
+describe("OrganisationUnitsComponent", () => {
   let component: OrganisationUnitsComponent;
   let fixture: ComponentFixture<OrganisationUnitsComponent>;
 
@@ -25,9 +29,9 @@ describe('OrganisationUnitsComponent', () => {
         MatMenuModule,
         MatDialogModule,
         MatProgressBarModule,
-        StoreModule.forRoot(reducers, { metaReducers })
+        StoreModule.forRoot(reducers, { metaReducers }),
       ],
-      declarations: [OrganisationUnitsComponent]
+      declarations: [OrganisationUnitsComponent],
     }).compileComponents();
   }));
 
@@ -37,7 +41,7 @@ describe('OrganisationUnitsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

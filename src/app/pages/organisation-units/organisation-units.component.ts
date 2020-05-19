@@ -184,7 +184,6 @@ export class OrganisationUnitsComponent implements OnInit {
       .getReportedFacilities(selectedOrganisationUnit.id, period)
       .subscribe((reportedOrgunits) => {
         this.reportedAddos = reportedOrgunits;
-        console.log('Reported Orgunits', reportedOrgunits)
       });
   }
 
