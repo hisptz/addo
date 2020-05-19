@@ -1,3 +1,11 @@
 .messagedit:hover {
   cursor: pointer;
 }
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+/* th, td {
+  overflow: hidden;
+  white-space: nowrap;
+} */

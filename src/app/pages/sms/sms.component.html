@@ -3,13 +3,16 @@
   *ngFor="let table of legends ? legends['legendSets'] : ''"
   style="margin: 10px;"
 >
-  <table mat-table class="table" id="excel-table">
+  <table
+  mat-table
+  class="table table-hover table-fixed"
+  id="excel-table">
     <thead class="thead-light">
       <tr scope="col">
-        <th>Start Value</th>
-        <th>End Value</th>
-        <th>Color</th>
-        <th>Message</th>
+        <th scope="col">Start Value</th>
+        <th scope="col">End Value</th>
+        <th scope="col">Color</th>
+        <th scope="col">Message</th>
       </tr>
     </thead>
     <tbody>

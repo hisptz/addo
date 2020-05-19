@@ -167,8 +167,8 @@ export class OrganisationUnitService {
               }
 
               function legendMessage(legendUid, dataStorePerformance) {
-                // let legendMessageInfo = "No Performance Message for this Particular Indicator";
-                let legendMessageInfo: string;
+                let legendMessageInfo = "No Performance Message for this Particular Indicator";
+                // let legendMessageInfo: string;
                 (dataStorePerformance || []).forEach((dataStore) => {
                   const allConditions = (dataStore.conditions || []).concat(
                     Object.values(dataStore.otherConditions) || []
