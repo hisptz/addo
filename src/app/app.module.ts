@@ -55,6 +55,8 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { MatSelectModule } from "@angular/material/select";
 import { MatTableModule } from "@angular/material/table";
 import { NgxDhis2HttpClientModule } from "@iapps/ngx-dhis2-http-client";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatSortModule } from "@angular/material/sort";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -96,6 +98,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgxPaginationModule,
     MatRadioModule,
     MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
     /**
      * Menu  module
      */
