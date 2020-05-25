@@ -228,6 +228,9 @@ export class OrganisationUnitsComponent implements OnInit {
   }
   onSearchClear() {
     this.searchKey = "";
+    if(this.reportedAddos){
+      this.reportedAddos.filter = this.searchKey.trim().toLowerCase();
+    }    this.orgunitchildren.filter = this.searchKey.trim().toLowerCase();
   }
 
   applySearch() {
@@ -235,9 +238,10 @@ export class OrganisationUnitsComponent implements OnInit {
   }
 
   searchReported() {
+    if(this.reportedAddos){
     this.reportedAddos.filter = this.searchKey.trim().toLowerCase();
   }
-
+  }
   onOpenDetails(e, organisatioUnit) {
     e.stopPropagation();
     this.dialog.open(OrganisationUnitDetailsComponent, {
