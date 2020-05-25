@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, Input } from "@angular/core";
 import { Observable } from "rxjs";
 import {
   OrganisationUnit,
@@ -27,6 +27,7 @@ import { OrganisationUnitDetailsComponent } from "../organisation-unit-details/o
 import { getCurrentUser } from "src/app/store/selectors";
 import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
 import { OrganisationUnitEditComponent } from "../organisation-unit-edit/organisation-unit-edit.component";
+import { MatPaginator } from "@angular/material/paginator";
 
 @Component({
   selector: "app-organisation-units",
@@ -38,6 +39,7 @@ export class OrganisationUnitsComponent implements OnInit {
   orgUnitFilterConfig: any;
   periodFilterConfig: any;
   showStatus: boolean = true;
+  test: boolean;
   selectedOrganisationUnit$: Observable<OrganisationUnit>;
   selectedOrganisationUnitStatus$: Observable<boolean>;
   organisationUnitChildren$: Observable<OrganisationUnitChildren[]>;
@@ -49,8 +51,16 @@ export class OrganisationUnitsComponent implements OnInit {
   omitcolumn: any;
   reportedAddos: MatTableDataSource<OrganisationUnit>;
   orgunitchildren: MatTableDataSource<OrganisationUnit>;
-  displayColumns: String[] = ["Name", "Code", "Owner", "Dispenser"];
-  showColumns: String[] = ["Name", "Code", "Owner", "Dispenser", "Update"];
+  displayColumns: String[] = ["SN", "Name", "Code", "Owner", "Dispenser"];
+  showColumns: String[] = [
+    "SN",
+    "Name",
+    "Code",
+    "Owner",
+    "Dispenser",
+    "Update",
+  ];
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   constructor(
     private store: Store<State>,
@@ -69,6 +79,7 @@ export class OrganisationUnitsComponent implements OnInit {
   periodObject: any;
   action: string;
   ngOnInit() {
+    this.test = true;
     this.orgUnitFilterConfig = {
       singleSelection: true,
       showUserOrgUnitSection: false,
@@ -159,7 +170,8 @@ export class OrganisationUnitsComponent implements OnInit {
       getOrganisationUnitChildren
     );
     this.store.select(getOrganisationUnitChildren).subscribe((children) => {
-      this.orgunitchildren = new MatTableDataSource(children);
+      this.orgunitchildren = new MatTableDataSource<OrganisationUnit>(children);
+      this.orgunitchildren.paginator = this.paginator;
     });
     this.organisationUnitChildrenLoaded$ = this.store.select(
       getOrganisationUnitChildrenLoadedState
@@ -193,7 +205,10 @@ export class OrganisationUnitsComponent implements OnInit {
         period ? period : "LAST_MONTH"
       )
       .subscribe((reportedOrgunits) => {
-        this.reportedAddos = new MatTableDataSource(reportedOrgunits);
+        this.reportedAddos = new MatTableDataSource<OrganisationUnit>(
+          reportedOrgunits
+        );
+        this.reportedAddos.paginator = this.paginator;
       });
   }
 
