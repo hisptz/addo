@@ -21,6 +21,7 @@ import {
   selectOrganisationUnitSuccess,
   clearOrganisationUnitChildren,
 } from "src/app/store/actions";
+import { MatTableDataSource } from "@angular/material/table";
 import { MatDialog } from "@angular/material/dialog";
 import { OrganisationUnitDetailsComponent } from "../organisation-unit-details/organisation-unit-details.component";
 import { getCurrentUser } from "src/app/store/selectors";
@@ -47,6 +48,8 @@ export class OrganisationUnitsComponent implements OnInit {
   selectedOrgUnitItems: Array<any> = [];
   omitcolumn: any;
   reportedAddos: any;
+  orgunitchildren: MatTableDataSource<OrganisationUnit>;
+  displayColumns: String[] = ["Name", "Code", "Owner", "Dispenser"];
 
   constructor(
     private store: Store<State>,
@@ -151,9 +154,9 @@ export class OrganisationUnitsComponent implements OnInit {
     this.selectedOrganisationUnitStatus$ = this.store.select(
       getSelectedOrganisationUnitStatus
     );
-    this.organisationUnitChildren$ = this.store.select(
-      getOrganisationUnitChildren
-    );
+    this.store.select(getOrganisationUnitChildren).subscribe((children) => {
+      this.orgunitchildren = new MatTableDataSource(children);
+    });
     this.organisationUnitChildrenLoaded$ = this.store.select(
       getOrganisationUnitChildrenLoadedState
     );
