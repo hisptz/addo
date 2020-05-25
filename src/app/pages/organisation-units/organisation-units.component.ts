@@ -21,6 +21,7 @@ import {
   selectOrganisationUnitSuccess,
   clearOrganisationUnitChildren,
 } from "src/app/store/actions";
+import { MatTableDataSource } from "@angular/material/table";
 import { MatDialog } from "@angular/material/dialog";
 import { OrganisationUnitDetailsComponent } from "../organisation-unit-details/organisation-unit-details.component";
 import { getCurrentUser } from "src/app/store/selectors";
@@ -46,7 +47,11 @@ export class OrganisationUnitsComponent implements OnInit {
   currentUser$: Observable<any>;
   selectedOrgUnitItems: Array<any> = [];
   omitcolumn: any;
-  reportedAddos: any;
+  reportedAddos: MatTableDataSource<OrganisationUnit>;
+  orgunitchildren: MatTableDataSource<OrganisationUnit>;
+  displayColumns: String[] = ["Name", "Code", "Owner", "Dispenser"];
+  showColumns: String[] = ["Name", "Code", "Owner", "Dispenser", "Update"];
+
 
   constructor(
     private store: Store<State>,
@@ -154,6 +159,9 @@ export class OrganisationUnitsComponent implements OnInit {
     this.organisationUnitChildren$ = this.store.select(
       getOrganisationUnitChildren
     );
+    this.store.select(getOrganisationUnitChildren).subscribe((children) => {
+      this.orgunitchildren = new MatTableDataSource(children);
+    });
     this.organisationUnitChildrenLoaded$ = this.store.select(
       getOrganisationUnitChildrenLoadedState
     );
@@ -183,7 +191,7 @@ export class OrganisationUnitsComponent implements OnInit {
     this.orgUnitService
       .getReportedFacilities(selectedOrganisationUnit.id, period)
       .subscribe((reportedOrgunits) => {
-        this.reportedAddos = reportedOrgunits;
+        this.reportedAddos = new MatTableDataSource(reportedOrgunits);
       });
   }
 
