@@ -50,6 +50,8 @@ export class OrganisationUnitsComponent implements OnInit {
   reportedAddos: MatTableDataSource<OrganisationUnit>;
   orgunitchildren: MatTableDataSource<OrganisationUnit>;
   displayColumns: String[] = ["Name", "Code", "Owner", "Dispenser"];
+  showColumns: String[] = ["Name", "Code", "Owner", "Dispenser", "Update"];
+
 
   constructor(
     private store: Store<State>,
