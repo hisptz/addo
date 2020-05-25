@@ -47,7 +47,7 @@ export class OrganisationUnitsComponent implements OnInit {
   currentUser$: Observable<any>;
   selectedOrgUnitItems: Array<any> = [];
   omitcolumn: any;
-  reportedAddos: any;
+  reportedAddos: MatTableDataSource<OrganisationUnit>;
   orgunitchildren: MatTableDataSource<OrganisationUnit>;
   displayColumns: String[] = ["Name", "Code", "Owner", "Dispenser"];
 
@@ -154,6 +154,9 @@ export class OrganisationUnitsComponent implements OnInit {
     this.selectedOrganisationUnitStatus$ = this.store.select(
       getSelectedOrganisationUnitStatus
     );
+    this.organisationUnitChildren$ = this.store.select(
+      getOrganisationUnitChildren
+    );
     this.store.select(getOrganisationUnitChildren).subscribe((children) => {
       this.orgunitchildren = new MatTableDataSource(children);
     });
@@ -186,7 +189,7 @@ export class OrganisationUnitsComponent implements OnInit {
     this.orgUnitService
       .getReportedFacilities(selectedOrganisationUnit.id, period)
       .subscribe((reportedOrgunits) => {
-        this.reportedAddos = reportedOrgunits;
+        this.reportedAddos = new MatTableDataSource(reportedOrgunits);
       });
   }
 
