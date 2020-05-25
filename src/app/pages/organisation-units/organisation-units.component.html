@@ -10,9 +10,7 @@
           >
           </ngx-dhis2-org-unit-filter>
           <ngx-dhis2-period-filter
-            [selectedPeriods]="selectedPeriodItems"
             [periodFilterConfig]="periodFilterConfig"
-            [selectedPeriodType]="Monthly"
             (update)="onPeriodUpdate($event, 'UPDATE')"
             (change)="onPeriodUpdate($event, 'CHANGE')"
             (close)="onPeriodUpdate($event, 'CLOSE')"
@@ -58,17 +56,17 @@
                 </button>
                 <div *ngIf="showStatus">
                   <div class="mat-elevation-z8">
-                    <mat-table [dataSource]="orgunitchildren">
+                    <mat-table [dataSource]="orgunitchildren" matSort>
                       <ng-container matColumnDef="Name">
                         <mat-header-cell *matHeaderCellDef
-                          >Name</mat-header-cell
+                          mat-sort-header>Name</mat-header-cell
                         >
                         <mat-cell *matCellDef="let child">{{
                           child.name
                         }}</mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="Code">
-                        <mat-header-cell *matHeaderCellDef
+                        <mat-header-cell *matHeaderCellDef mat-sort-header
                           >Code</mat-header-cell
                         >
                         <mat-cell *matCellDef="let child">{{
@@ -76,7 +74,7 @@
                         }}</mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="Owner">
-                        <mat-header-cell *matHeaderCellDef
+                        <mat-header-cell *matHeaderCellDef mat-sort-header
                           >Owner's Contact</mat-header-cell
                         >
                         <mat-cell
@@ -91,7 +89,7 @@
                         >
                       </ng-container>
                       <ng-container matColumnDef="Dispenser">
-                        <mat-header-cell *matHeaderCellDef
+                        <mat-header-cell *matHeaderCellDef mat-sort-header
                           >Dispenser's Contact</mat-header-cell
                         >
                         <mat-cell
@@ -128,9 +126,9 @@
 
                 <div *ngIf="!showStatus">
                   <div class="mat-elevation-z8">
-                    <mat-table [dataSource]="reportedAddos">
+                    <mat-table [dataSource]="reportedAddos" matSort>
                       <ng-container matColumnDef="Name">
-                        <mat-header-cell *matHeaderCellDef
+                        <mat-header-cell *matHeaderCellDef mat-sort-header
                           >Name</mat-header-cell
                         >
                         <mat-cell *matCellDef="let child">{{
@@ -138,7 +136,7 @@
                         }}</mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="Code">
-                        <mat-header-cell *matHeaderCellDef
+                        <mat-header-cell *matHeaderCellDef mat-sort-header
                           >Code</mat-header-cell
                         >
                         <mat-cell *matCellDef="let child">{{
@@ -146,7 +144,7 @@
                         }}</mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="Owner">
-                        <mat-header-cell *matHeaderCellDef
+                        <mat-header-cell *matHeaderCellDef mat-sort-header
                           >Owner's Contact</mat-header-cell
                         >
                         <mat-cell
@@ -161,7 +159,7 @@
                         >
                       </ng-container>
                       <ng-container matColumnDef="Dispenser">
-                        <mat-header-cell *matHeaderCellDef
+                        <mat-header-cell *matHeaderCellDef mat-sort-header
                           >Dispenser's Contact</mat-header-cell
                         >
                         <mat-cell
@@ -176,7 +174,7 @@
                         >
                       </ng-container>
                       <ng-container matColumnDef="Update">
-                        <mat-header-cell *matHeaderCellDef
+                        <mat-header-cell *matHeaderCellDef mat-sort-header
                           >Last Update</mat-header-cell
                         >
                         <mat-cell *matCellDef="let child">{{
