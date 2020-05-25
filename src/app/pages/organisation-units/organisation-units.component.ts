@@ -52,7 +52,6 @@ export class OrganisationUnitsComponent implements OnInit {
   displayColumns: String[] = ["Name", "Code", "Owner", "Dispenser"];
   showColumns: String[] = ["Name", "Code", "Owner", "Dispenser", "Update"];
 
-
   constructor(
     private store: Store<State>,
     private router: Router,
@@ -189,7 +188,10 @@ export class OrganisationUnitsComponent implements OnInit {
       ]);
     }
     this.orgUnitService
-      .getReportedFacilities(selectedOrganisationUnit.id, period)
+      .getReportedFacilities(
+        selectedOrganisationUnit.id,
+        period ? period : "LAST_MONTH"
+      )
       .subscribe((reportedOrgunits) => {
         this.reportedAddos = new MatTableDataSource(reportedOrgunits);
       });

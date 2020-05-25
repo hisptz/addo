@@ -79,21 +79,36 @@
                         <mat-header-cell *matHeaderCellDef
                           >Owner's Contact</mat-header-cell
                         >
-                        <mat-cell *matCellDef="let child">{{
-                          child.phoneNumber
-                            ? child.phoneNumber
-                            : "Missing Contact Details"
-                        }}</mat-cell>
+                        <mat-cell
+                          *matCellDef="let child"
+                          (click)="onEditChild($event, child)"
+                          class="editchild"
+                          >{{
+                            child.phoneNumber
+                              ? child.phoneNumber
+                              : "Missing Contact Details"
+                          }}</mat-cell
+                        >
                       </ng-container>
                       <ng-container matColumnDef="Dispenser">
                         <mat-header-cell *matHeaderCellDef
                           >Dispenser's Contact</mat-header-cell
                         >
-                        <mat-cell *matCellDef="let child">{{
-                          child.attributeValues[0]
-                            ? child.attributeValues[0].value
-                            : "Missing Contact Details"
-                        }}</mat-cell>
+                        <mat-cell
+                          *matCellDef="let child"
+                          (click)="onEditChild($event, child)"
+                          class="editchild"
+                          >{{
+                            child.attributeValues[0]
+                              ? child.attributeValues[0].value
+                              : "Missing Contact Details"
+                          }}</mat-cell
+                        >
+                      </ng-container>
+                      <ng-container matColumnDef="noData">
+                        <mat-footer-cell *matFooterCellDef colspan="6"
+                          >All Addos Reported 🤩</mat-footer-cell
+                        >
                       </ng-container>
                       <mat-header-row
                         *matHeaderRowDef="displayColumns"
@@ -101,6 +116,10 @@
                       <mat-row
                         *matRowDef="let row; columns: displayColumns"
                       ></mat-row>
+                      <mat-footer-row
+                        *matFooterRowDef="['noData']"
+                        [ngClass]="{ hide: orgunitchildren != null }"
+                      ></mat-footer-row>
                     </mat-table>
                   </div>
                 </div>
@@ -130,21 +149,31 @@
                         <mat-header-cell *matHeaderCellDef
                           >Owner's Contact</mat-header-cell
                         >
-                        <mat-cell *matCellDef="let child">{{
-                          child.phoneNumber
-                            ? child.phoneNumber
-                            : "Missing Contact Details"
-                        }}</mat-cell>
+                        <mat-cell
+                          *matCellDef="let child"
+                          (click)="onEditChild($event, child)"
+                          class="editchild"
+                          >{{
+                            child.phoneNumber
+                              ? child.phoneNumber
+                              : "Missing Contact Details"
+                          }}</mat-cell
+                        >
                       </ng-container>
                       <ng-container matColumnDef="Dispenser">
                         <mat-header-cell *matHeaderCellDef
                           >Dispenser's Contact</mat-header-cell
                         >
-                        <mat-cell *matCellDef="let child">{{
-                          child.attributeValues[0]
-                            ? child.attributeValues[0].value
-                            : "Missing Contact Details"
-                        }}</mat-cell>
+                        <mat-cell
+                          *matCellDef="let child"
+                          (click)="onEditChild($event, child)"
+                          class="editchild"
+                          >{{
+                            child.attributeValues[0]
+                              ? child.attributeValues[0].value
+                              : "Missing Contact Details"
+                          }}</mat-cell
+                        >
                       </ng-container>
                       <ng-container matColumnDef="Update">
                         <mat-header-cell *matHeaderCellDef
@@ -154,12 +183,26 @@
                           child.lastUpdated | date
                         }}</mat-cell>
                       </ng-container>
+                      <ng-container matColumnDef="noData">
+                        <mat-footer-cell *matFooterCellDef colspan="6"
+                          >No Addo that Reported  😢</mat-footer-cell
+                        >
+                      </ng-container>
                       <mat-header-row
                         *matHeaderRowDef="showColumns"
                       ></mat-header-row>
                       <mat-row
                         *matRowDef="let row; columns: showColumns"
                       ></mat-row>
+                      <mat-footer-row
+                        *matFooterRowDef="['noData']"
+                        [ngClass]="{
+                          hide: !(
+                            reportedAddos != null &&
+                            reportedAddos.data.length == 0
+                          )
+                        }"
+                      ></mat-footer-row>
                     </mat-table>
                   </div>
                 </div>
