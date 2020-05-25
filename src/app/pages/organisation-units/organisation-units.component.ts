@@ -61,6 +61,7 @@ export class OrganisationUnitsComponent implements OnInit {
     "Update",
   ];
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  searchKey: string;
 
   constructor(
     private store: Store<State>,
@@ -224,6 +225,17 @@ export class OrganisationUnitsComponent implements OnInit {
   onDeleteChild(e, id: string) {
     e.stopPropagation();
     this.store.dispatch(deleteOrganisationUnitChild({ id: id }));
+  }
+  onSearchClear() {
+    this.searchKey = "";
+  }
+
+  applySearch() {
+    this.orgunitchildren.filter = this.searchKey.trim().toLowerCase();
+  }
+
+  searchReported() {
+    this.reportedAddos.filter = this.searchKey.trim().toLowerCase();
   }
 
   onOpenDetails(e, organisatioUnit) {
