@@ -248,12 +248,12 @@
               <!--End of Reported Facilities-->
             </div>
           </div>
-          <div class="col-sm-12 loader">
+          <div
+            class="col-sm-12 loader"
+            [hidden]="organisationUnitChildrenLoaded$ | async"
+          >
             <img src="assets/icons/balls-3.svg" />
-            <h2
-              class="loadSlider"
-              [hidden]="organisationUnitChildrenLoaded$ | async"
-            >
+            <h2 class="loadSlider">
               {{
                 (selectedOrganisationUnit$ | async)
                   ? (selectedOrganisationUnit$ | async).name +
