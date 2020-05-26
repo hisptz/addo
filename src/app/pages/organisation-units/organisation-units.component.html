@@ -63,7 +63,8 @@
                     type="text"
                     placeholder="Search"
                     [(ngModel)]="searchKey"
-                    (keyup)="applySearch() || searchReported()"
+                    (keyup)="applySearch()"
+                    (keyup)="searchReported()"
                     style="
                       border-top: none;
                       border-left: none;
@@ -87,7 +88,9 @@
                 <mat-table [dataSource]="orgunitchildren">
                   <ng-container matColumnDef="SN">
                     <mat-header-cell *matHeaderCellDef>S/N</mat-header-cell>
-                    <mat-cell *matCellDef="let child"></mat-cell>
+                    <mat-cell *matCellDef="let child; let i = index">{{
+                      i + 1
+                    }}</mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="Name">
                     <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
@@ -161,7 +164,9 @@
                 <mat-table [dataSource]="reportedAddos">
                   <ng-container matColumnDef="SN">
                     <mat-header-cell *matHeaderCellDef>S/N</mat-header-cell>
-                    <mat-cell *matCellDef="let child"></mat-cell>
+                    <mat-cell *matCellDef="let child; let i = index">{{
+                      i + 1
+                    }}</mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="Name">
                     <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
@@ -243,19 +248,19 @@
               <!--End of Reported Facilities-->
             </div>
           </div>
-          <div
-            *ngIf="!(organisationUnitChildrenLoaded$ | async)"
-            class="col-sm-12 loader"
-          >
+          <div class="col-sm-12 loader">
             <img src="assets/icons/balls-3.svg" />
-            <h2 class="loadSlider">
-              Fetching
+            <h2
+              class="loadSlider"
+              [hidden]="organisationUnitChildrenLoaded$ | async"
+            >
               {{
                 (selectedOrganisationUnit$ | async)
-                  ? (selectedOrganisationUnit$ | async).name
-                  : ""
+                  ? (selectedOrganisationUnit$ | async).name +
+                    " " +
+                    "Addos Loading"
+                  : "Select Period and Organisationunit"
               }}
-              Addos
             </h2>
           </div>
         </div>
