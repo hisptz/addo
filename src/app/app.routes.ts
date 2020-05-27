@@ -2,11 +2,12 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { OrganisationUnitsComponent } from './pages/organisation-units/organisation-units.component';
 import { OrganisationUnitEditComponent } from './pages/organisation-unit-edit/organisation-unit-edit.component';
+import { SmsComponent } from './pages/sms/sms.component';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: "facilities",
+    redirectTo: "one",
     pathMatch: 'full',
   },
 
@@ -18,7 +19,8 @@ export const routes: Routes = [
   {
     path: 'organisationunit/:parentid/:childid',
     component: OrganisationUnitEditComponent
-  }
+  },
+  {path: 'performancesms', component: SmsComponent}
 ];
 
 @NgModule({
