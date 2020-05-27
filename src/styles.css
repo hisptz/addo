@@ -3,6 +3,7 @@
 html,
 body {
   height: auto;
+  overflow-x: hidden !important;
 }
 body {
   margin: 0;
@@ -23,4 +24,7 @@ body {
     margin-left: 0px;
     font-size: small;
   }
+}
+.blue-snackbar {
+  background: green;
 }
