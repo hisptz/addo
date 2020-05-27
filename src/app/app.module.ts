@@ -155,6 +155,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   entryComponents: [
     OrganisationUnitDetailsComponent,
     OrganisationUnitEditComponent,
+    SmseditComponent,
   ],
   providers: [
     { provide: RouterStateSerializer, useClass: RouteSerializer },
