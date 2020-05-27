@@ -1,10 +1,9 @@
-<!-- <div
+<div
   class="table-responsive"
   *ngFor="let table of legends ? legends['legendSets'] : ''"
   style="margin: 10px;"
 >
   <table
-  mat-table
   class="table table-hover table-fixed"
   id="excel-table">
     <thead class="thead-light">
@@ -26,72 +25,4 @@
       </tr>
     </tbody>
   </table>
-</div> -->
-
-<div
-  class="mat-elevation-z8"
-  *ngFor="let table of legends ? legends['legendSets'] : ''"
->
-  <mat-table [dataSource]="legends">
-    <ng-container matColumnDef="Start">
-      <mat-header-cell *matHeaderCellDef>Start Value</mat-header-cell>
-      <mat-cell *matCellDef="let perfomance">
-        <ng-container *ngFor="let row of table['legends']">{{
-          row["StartValue"]
-        }}</ng-container>
-      </mat-cell>
-    </ng-container>
-    <mat-header-row *matHeaderRowDef="performanceColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: performanceColumns"></mat-row>
-    <!-- <ng-container matColumnDef="Name">
-    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-    <mat-cell *matCellDef="let child">{{
-      child.name
-    }}</mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="Code">
-    <mat-header-cell *matHeaderCellDef>Code</mat-header-cell>
-    <mat-cell *matCellDef="let child">{{
-      child.code ? child.code : "Missing Code"
-    }}</mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="Owner">
-    <mat-header-cell *matHeaderCellDef
-      >Owner's Contact</mat-header-cell
-    >
-    <mat-cell
-      *matCellDef="let child"
-      (click)="onEditChild($event, child)"
-      class="editchild"
-      >{{
-        child.phoneNumber
-          ? child.phoneNumber
-          : "Missing Contact Details"
-      }}</mat-cell
-    >
-  </ng-container>
-  <ng-container matColumnDef="Dispenser">
-    <mat-header-cell *matHeaderCellDef
-      >Dispenser's Contact</mat-header-cell
-    >
-    <mat-cell
-      *matCellDef="let child"
-      (click)="onEditChild($event, child)"
-      class="editchild"
-      >{{
-        child.attributeValues[0]
-          ? child.attributeValues[0].value
-          : "Missing Contact Details"
-      }}</mat-cell
-    >
-  </ng-container>
-  <ng-container matColumnDef="Update">
-    <mat-header-cell *matHeaderCellDef
-      >Last Update</mat-header-cell
-    >
-    <mat-cell *matCellDef="let child">{{
-      child.lastUpdated | date
-    }}</mat-cell>
-  </ng-container> -->
-  </mat-table>
 </div>

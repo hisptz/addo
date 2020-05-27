@@ -1,8 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
 import { MatDialog } from "@angular/material/dialog";
-import { SmseditComponent } from '../smsedit/smsedit.component';
-import { MatTableDataSource } from '@angular/material/table';
+import { SmseditComponent } from "../smsedit/smsedit.component";
 
 @Component({
   selector: "app-sms",
@@ -10,15 +9,17 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ["./sms.component.css"],
 })
 export class SmsComponent implements OnInit {
-  public legends:  MatTableDataSource<any>;
-  performanceColumns: String[] = ["Start"];
+  public legends: any;
 
-  constructor(private legendService: OrganisationUnitService, private dialog: MatDialog) {}
+  constructor(
+    private legendService: OrganisationUnitService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.legendService.getLegendWithMessage().subscribe(
       (data) => {
-        this.legends = new MatTableDataSource(data);
+        this.legends = data;
       },
       (err: any) => console.log(err)
     );
@@ -26,7 +27,7 @@ export class SmsComponent implements OnInit {
   onMessageEdit(e, message) {
     e.stopPropagation();
     this.dialog.open(SmseditComponent, {
-      data: {message: message},
+      data: { message: message },
       height: "370px",
       width: "400px",
     });
