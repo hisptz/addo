@@ -11,7 +11,7 @@ import {
   editOrganisationUnitChildFail,
   deleteOrganisationUnitChild,
   deleteOrganisationUnitChildSuccess,
-  deleteOrganisationUnitChildFail
+  deleteOrganisationUnitChildFail,
 } from "../actions";
 import { ErrorMessage } from "src/app/core/models/error-message.model";
 import { switchMap, map, catchError } from "rxjs/operators";
@@ -31,7 +31,7 @@ export class OrganisationUnitEffects {
   selectOrganisationUnit$ = createEffect(() =>
     this.actions$.pipe(
       ofType(selectOrganisationUnitSuccess),
-      switchMap(action =>
+      switchMap((action) =>
         of(loadOrganisationUnitChildren({ dimensions: action.dimensions }))
       )
     )
@@ -39,17 +39,21 @@ export class OrganisationUnitEffects {
   loadOrganisationUnitChildren$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadOrganisationUnitChildren),
-      switchMap(action =>
-        this.orgunitService.getFacilities(action.dimensions.id,action.dimensions.pe).pipe(
-          map(organisationUnitChildren =>
-            loadOrganisationUnitChildrenSuccess({
-              children: organisationUnitChildren ? organisationUnitChildren : []
-            })
-          ),
-          catchError(err =>
-            of(loadOrganisationUnitChildrenFail({ error: err }))
+      switchMap((action) =>
+        this.orgunitService
+          .getFacilities(action.dimensions.id, action.dimensions.pe)
+          .pipe(
+            map((organisationUnitChildren) =>
+              loadOrganisationUnitChildrenSuccess({
+                children: organisationUnitChildren
+                  ? organisationUnitChildren
+                  : [],
+              })
+            ),
+            catchError((err) =>
+              of(loadOrganisationUnitChildrenFail({ error: err }))
+            )
           )
-        )
       )
     )
   );
@@ -57,22 +61,23 @@ export class OrganisationUnitEffects {
   editOrganisationUnitChild$ = createEffect(() =>
     this.actions$.pipe(
       ofType(editOrganisationUnitChild),
-      switchMap(action => {
+      switchMap((action) => {
         this._snackBar.open(`Editing ${action.child.name}`, "", {
-          duration: 2000
+          duration: 2000,
         });
         return this.orgunitService.editOrgunitChildren(action.child).pipe(
           map(() => {
             this._snackBar.open(`Edited Successfully`, "", {
-              duration: 2000
+              duration: 2000,
+              panelClass: ["blue-snackbar"],
             });
             return editOrganisationUnitChildSuccess({
-              child: { id: action.child.id, changes: action.child }
+              child: { id: action.child.id, changes: action.child },
             });
           }),
-          catchError(error => {
+          catchError((error) => {
             this._snackBar.open(`Filed To Edit`, "", {
-              duration: 2000
+              duration: 2000,
             });
             return of(editOrganisationUnitChildFail({ error: error }));
           })
@@ -84,20 +89,20 @@ export class OrganisationUnitEffects {
   deleteOrganisationUnitChild$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteOrganisationUnitChild),
-      switchMap(action => {
+      switchMap((action) => {
         this._snackBar.open(`Deleting Organisation Unit`, "", {
-          duration: 1000
+          duration: 1000,
         });
         return this.orgunitService.deleteOrgunitChild(action.id).pipe(
           map(() => {
             this._snackBar.open(`Deleted Successfully`, "", {
-              duration: 2000
+              duration: 2000,
             });
             return deleteOrganisationUnitChildSuccess({ id: action.id });
           }),
           catchError((error: ErrorMessage) => {
             this._snackBar.open(error.message, "", {
-              duration: 2000
+              duration: 2000,
             });
             return of(deleteOrganisationUnitChildFail({ error: error }));
           })
