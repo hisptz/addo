@@ -17,7 +17,6 @@ export class SmsComponent implements OnInit {
     this.legendService.getLegendWithMessage().subscribe(
       (data) => {
         this.legends = data;
-        console.log('Legends wit Message',data)
       },
       (err: any) => console.log(err)
     );
@@ -26,8 +25,8 @@ export class SmsComponent implements OnInit {
     e.stopPropagation();
     this.dialog.open(SmseditComponent, {
       data: {message: message},
-      height: "370px",
-      width: "400px",
+      height: "auto",
+      width: "auto",
     });
   }
 }
