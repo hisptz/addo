@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OrganisationUnitDetailsComponent } from './organisation-unit-details.component';
@@ -10,7 +11,7 @@ describe('OrganisationUnitDetailsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MatDialogModule],
-      declarations: [OrganisationUnitDetailsComponent]
+      declarations: [OrganisationUnitDetailsComponent],
     }).compileComponents();
   }));
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
 import { User } from '../models/user.model';

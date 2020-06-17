@@ -1,24 +1,26 @@
-import { Component, OnInit, AfterViewInit, Inject } from "@angular/core";
-import { Store } from "@ngrx/store";
-import { State } from "src/app/store/reducers";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Observable, Subscription } from "rxjs";
-import { OrganisationUnitChildren } from "src/app/models/organisation-unit.model";
-import { getSelectedOrgunitChildChildren } from "src/app/store/selectors/organisation-unit.selectors";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import { Component, OnInit, Inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { State } from 'src/app/store/reducers';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
+import { OrganisationUnitChildren } from 'src/app/models/organisation-unit.model';
+import { getSelectedOrgunitChildChildren } from 'src/app/store/selectors/organisation-unit.selectors';
 import {
   FormBuilder,
   FormGroup,
   FormControl,
-  Validators
-} from "@angular/forms";
-import { editOrganisationUnitChild } from "src/app/store/actions";
-import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+  Validators,
+} from '@angular/forms';
+import { editOrganisationUnitChild } from 'src/app/store/actions';
+import { OrganisationUnitService } from 'src/app/services/organisation-unit.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: "app-organisation-unit-edit",
-  templateUrl: "./organisation-unit-edit.component.html",
-  styleUrls: ["./organisation-unit-edit.component.css"]
+  selector: 'app-organisation-unit-edit',
+  templateUrl: './organisation-unit-edit.component.html',
+  styleUrls: ['./organisation-unit-edit.component.css'],
 })
 export class OrganisationUnitEditComponent implements OnInit {
   orgunitSubscription: Subscription;
@@ -32,7 +34,7 @@ export class OrganisationUnitEditComponent implements OnInit {
   attributeValuesUpdate: OrganisationUnitChildren;
   selectedOrgUnitItems: Array<any> = [];
   parentOrgUnit: any;
-  isUsertriggered: Boolean = false;
+  isUsertriggered = false;
   selectedOrgUnit: any;
 
   constructor(
@@ -46,21 +48,21 @@ export class OrganisationUnitEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.parentId = this.route.snapshot.params["parentid"];
+    this.parentId = this.route.snapshot.params['parentid'];
     this.currentOrgunit = this.data.organisationUnit.id;
     this.orgUnitService
       .getOrgUnitDetails(this.data.organisationUnit.id)
-      .subscribe(ouDetails => {
+      .subscribe((ouDetails) => {
         if (ouDetails) {
-          this.parentOrgUnit = ouDetails["parent"];
+          this.parentOrgUnit = ouDetails['parent'];
         }
       });
     this.selectedOrgunitChild$ = this.orgUnitService.getAllOrgunitDetails(
       this.data.organisationUnit.id
     );
 
-    this.selectedOrgunitChild$.subscribe(childInfo => {
-      if (childInfo && childInfo["id"]) {
+    this.selectedOrgunitChild$.subscribe((childInfo) => {
+      if (childInfo && childInfo['id']) {
         this.organisationUnit = childInfo;
         this.organisationUnitForm = this.generateForm();
       }
@@ -89,33 +91,33 @@ export class OrganisationUnitEditComponent implements OnInit {
         this.organisationUnit.attributeValues[0]
           ? this.organisationUnit.attributeValues[0].value
           : []
-      )
+      ),
     });
   }
 
   saveOrgunit(e) {
     e.stopPropagation();
-    let attributeValues = [
+    const attributeValues = [
       {
         value: this.organisationUnitForm.value.attributeValues,
         attribute: {
-          name: "Dispenses facility Phone Number",
-          id: "NgmZX27k7gf"
-        }
-      }
+          name: 'Dispenses facility Phone Number',
+          id: 'NgmZX27k7gf',
+        },
+      },
     ];
     this.childSubscription = this.store
       .select(getSelectedOrgunitChildChildren(this.currentOrgunit))
-      .subscribe(children => {
+      .subscribe((children) => {
         const orgunit = {
           ...this.organisationUnitForm.value,
           children: children,
           id: this.currentOrgunit,
           attributeValues: attributeValues,
           parent: {
-            id: this.parentOrgUnit.id
+            id: this.parentOrgUnit.id,
           },
-          path: this.organisationUnit.path
+          path: this.organisationUnit.path,
         };
         this.store.dispatch(editOrganisationUnitChild({ child: orgunit }));
         this.onCancel(e);

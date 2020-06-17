@@ -1,14 +1,16 @@
-import { Injectable } from "@angular/core";
-import { NgxDhis2HttpClientService } from "@iapps/ngx-dhis2-http-client";
-import { Observable, throwError } from "rxjs";
-import { OrganisationUnitChildren } from "../models/organisation-unit.model";
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable prefer-spread */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Injectable } from '@angular/core';
+import { NgxDhis2HttpClientService } from '@iapps/ngx-dhis2-http-client';
+import { Observable } from 'rxjs';
+import { OrganisationUnitChildren } from '../models/organisation-unit.model';
 
-import * as _ from "lodash";
-import { ErrorMessage } from "../core";
-import { map, catchError } from "rxjs/operators";
+import * as _ from 'lodash';
+import { ErrorMessage } from '../core';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class OrganisationUnitService {
   constructor(private httpService: NgxDhis2HttpClientService) {}
@@ -32,7 +34,7 @@ export class OrganisationUnitService {
     });
   }
 
-  getReportingRate(pe): Promise<any> {
+  getReportingRate(pe: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.httpService
         .get(
@@ -45,7 +47,7 @@ export class OrganisationUnitService {
               : [];
             const rows = response.rows ? response.rows : [];
             const ouValueIndex = response.headers.findIndex(
-              (head) => head.name === "ou"
+              (head) => head.name === 'ou'
             );
             const nonReportingOU = [];
             allOU.forEach((ou) => {
@@ -98,15 +100,15 @@ export class OrganisationUnitService {
 
   getOrgUnitDetails(id): Observable<any> {
     return this.httpService.get(
-      "organisationUnits/" +
+      'organisationUnits/' +
         id +
-        ".json?fields=id,name,level,parent[id,name,parent[id,name,parent[id,name]]]"
+        '.json?fields=id,name,level,parent[id,name,parent[id,name,parent[id,name]]]'
     );
   }
 
   getAllOrgunitDetails(id): Observable<any> {
     return this.httpService.get(
-      "organisationUnits/" + id + ".json?fields=id,name,level,*"
+      'organisationUnits/' + id + '.json?fields=id,name,level,*'
     );
   }
 
@@ -119,7 +121,9 @@ export class OrganisationUnitService {
             (data) => resolve(data),
             (error) => reject(error)
           );
-      } catch (error) {}
+      } catch (error) {
+        throw new error(error);
+      }
     });
   }
 
@@ -147,7 +151,7 @@ export class OrganisationUnitService {
               legendSets = Object.assign({}, legends);
               dataStorePerformance = [...messages];
               function appendLengedMessage(legendSets, dataStorePerformance) {
-                const updatedLegendSets = (legendSets["legendSets"] || []).map(
+                const updatedLegendSets = (legendSets['legendSets'] || []).map(
                   (legendSetItem) => {
                     const currentLegends = (legendSetItem.legends || []).map(
                       (legend) => {
@@ -166,8 +170,12 @@ export class OrganisationUnitService {
                 return { legendSets: updatedLegendSets };
               }
 
-              function legendMessage(legendUid, dataStorePerformance) {
-                let legendMessageInfo = "No Performance Message for this Particular Indicator";
+              function legendMessage(
+                legendUid: any,
+                dataStorePerformance: any
+              ) {
+                let legendMessageInfo =
+                  'No Performance Message for this Particular Indicator';
                 // let legendMessageInfo: string;
                 (dataStorePerformance || []).forEach((dataStore) => {
                   const allConditions = (dataStore.conditions || []).concat(
@@ -180,7 +188,7 @@ export class OrganisationUnitService {
                   if (filteredWithLegendUid.length > 0) {
                     legendMessageInfo = dataStore.message
                       ? dataStore.message
-                      : "";
+                      : '';
                   }
                 });
                 return legendMessageInfo;
@@ -199,6 +207,7 @@ export class OrganisationUnitService {
 
   editOrgunitChildren(orgunitChild: OrganisationUnitChildren): Observable<any> {
     if (orgunitChild.attributeValues.length === 0) {
+      console.error('Orgunit uneditable');
     }
     return this.httpService.put(
       `29/organisationUnits/${orgunitChild.id}?mergeMode=REPLACE`,
