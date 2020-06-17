@@ -1,11 +1,12 @@
-import { createReducer, on } from "@ngrx/store";
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import { createReducer, on } from '@ngrx/store';
 import {
   initialSelectedOrgunitState,
   SelectedOrgunitState,
   initialOrganisationUnitChildrenState,
   adapter,
   OrganisationUnitChildrenState,
-} from "../states/organisation-unit.sate";
+} from '../states/organisation-unit.sate';
 import {
   selectOrganisationUnitSuccess,
   selectOrganisationUnitFail,
@@ -19,12 +20,12 @@ import {
   editOrganisationUnitChild,
   editOrganisationUnitChildFail,
   editOrganisationUnitChildSuccess,
-} from "../actions";
+} from '../actions';
 import {
   loadingBaseState,
   loadedBaseState,
   errorBaseState,
-} from "../states/base.state";
+} from '../states/base.state';
 
 /**
  * selected orgunit reducer
@@ -48,15 +49,15 @@ export function selectedOrganisationUnitReducer(
 
 export function selectStatus(state, action) {
   switch (action.type) {
-    case "SHOW_REPORTED":
-      console.log('Existing State::', state)
-      console.log('Action State::', state)
+    case 'SHOW_REPORTED':
+      console.log('Existing State::', state);
+      console.log('Action State::', state);
       return {
         ...state,
         showReported: action.payload,
       };
-      default:
-      return state
+    default:
+      return state;
   }
 }
 

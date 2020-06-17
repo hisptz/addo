@@ -1,12 +1,16 @@
-import { Component, OnInit, Inject } from "@angular/core";
-import { FormGroup, FormControl } from "@angular/forms";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Component, OnInit, Inject } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { OrganisationUnitService } from 'src/app/services/organisation-unit.service';
 
 @Component({
-  selector: "app-smsedit",
-  templateUrl: "./smsedit.component.html",
-  styleUrls: ["./smsedit.component.css"],
+  selector: 'app-smsedit',
+  templateUrl: './smsedit.component.html',
+  styleUrls: ['./smsedit.component.css'],
 })
 export class SmseditComponent implements OnInit {
   smsForm: FormGroup;

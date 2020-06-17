@@ -6,28 +6,28 @@ import { OrganisationUnitEditComponent } from './pages/organisation-unit-edit/or
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: "facilities",
+    redirectTo: 'facilities',
     pathMatch: 'full',
   },
 
   { path: 'facilities', component: OrganisationUnitsComponent },
   {
     path: 'organisationunit/:parentid',
-    component: OrganisationUnitsComponent
+    component: OrganisationUnitsComponent,
   },
   {
     path: 'organisationunit/:parentid/:childid',
-    component: OrganisationUnitEditComponent
-  }
+    component: OrganisationUnitEditComponent,
+  },
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
       useHash: true,
-      preloadingStrategy: PreloadAllModules
-    })
+      preloadingStrategy: PreloadAllModules,
+    }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class RoutingModule {}

@@ -1,44 +1,47 @@
-import { Component, OnInit, ViewChild, Input } from "@angular/core";
-import { Observable } from "rxjs";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 import {
   OrganisationUnit,
   OrganisationUnitChildren,
-} from "src/app/models/organisation-unit.model";
-import { Fn } from "@iapps/function-analytics";
+} from 'src/app/models/organisation-unit.model';
+import { Fn } from '@iapps/function-analytics';
 
-import { Store } from "@ngrx/store";
-import { State } from "src/app/store/reducers";
+import { Store } from '@ngrx/store';
+import { State } from 'src/app/store/reducers';
 import {
   getSelectedOrganisationUnit,
   getSelectedOrganisationUnitStatus,
   getOrganisationUnitChildren,
   getOrganisationUnitChildrenLoadedState,
   leafOrgunit,
-} from "src/app/store/selectors/organisation-unit.selectors";
-import { Router, ActivatedRoute, Params } from "@angular/router";
+} from 'src/app/store/selectors/organisation-unit.selectors';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   deleteOrganisationUnitChild,
   selectOrganisationUnitSuccess,
   clearOrganisationUnitChildren,
-} from "src/app/store/actions";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatDialog } from "@angular/material/dialog";
-import { OrganisationUnitDetailsComponent } from "../organisation-unit-details/organisation-unit-details.component";
-import { getCurrentUser } from "src/app/store/selectors";
-import { OrganisationUnitService } from "src/app/services/organisation-unit.service";
-import { OrganisationUnitEditComponent } from "../organisation-unit-edit/organisation-unit-edit.component";
-import { MatPaginator } from "@angular/material/paginator";
+} from 'src/app/store/actions';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { OrganisationUnitDetailsComponent } from '../organisation-unit-details/organisation-unit-details.component';
+import { getCurrentUser } from 'src/app/store/selectors';
+import { OrganisationUnitService } from 'src/app/services/organisation-unit.service';
+import { OrganisationUnitEditComponent } from '../organisation-unit-edit/organisation-unit-edit.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
-  selector: "app-organisation-units",
-  templateUrl: "./organisation-units.component.html",
-  styleUrls: ["./organisation-units.component.css"],
+  selector: 'app-organisation-units',
+  templateUrl: './organisation-units.component.html',
+  styleUrls: ['./organisation-units.component.css'],
 })
 export class OrganisationUnitsComponent implements OnInit {
   favoriteSeason: string;
   orgUnitFilterConfig: any;
   periodFilterConfig: any;
-  showStatus: boolean = true;
+  showStatus = true;
   test: boolean;
   selectedOrganisationUnit$: Observable<OrganisationUnit>;
   selectedOrganisationUnitStatus$: Observable<boolean>;
@@ -51,14 +54,14 @@ export class OrganisationUnitsComponent implements OnInit {
   omitcolumn: any;
   reportedAddos: MatTableDataSource<OrganisationUnit>;
   orgunitchildren: MatTableDataSource<OrganisationUnit>;
-  displayColumns: String[] = ["SN", "Name", "Code", "Owner", "Dispenser"];
-  showColumns: String[] = [
-    "SN",
-    "Name",
-    "Code",
-    "Owner",
-    "Dispenser",
-    "Update",
+  displayColumns: string[] = ['SN', 'Name', 'Code', 'Owner', 'Dispenser'];
+  showColumns: string[] = [
+    'SN',
+    'Name',
+    'Code',
+    'Owner',
+    'Dispenser',
+    'Update',
   ];
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   searchKey: string;
@@ -73,7 +76,7 @@ export class OrganisationUnitsComponent implements OnInit {
     this.currentUser$ = this.store.select(getCurrentUser);
     if (Fn) {
       Fn.init({
-        baseUrl: "../../../api/",
+        baseUrl: '../../../api/',
       });
     }
   }
@@ -98,9 +101,9 @@ export class OrganisationUnitsComponent implements OnInit {
     this.periodObject = periodObject;
     this.action = action;
 
-    //get details of orgunit when period is updated
+    // get details of orgunit when period is updated
     this.orgUnitService
-      .getOrgUnitDetails(this.route.snapshot.params["parentid"])
+      .getOrgUnitDetails(this.route.snapshot.params['parentid'])
       .subscribe((ouDetails) => {
         const orgunitData: {} = {
           items: [{ id: ouDetails.id, name: ouDetails.name }],
@@ -110,20 +113,20 @@ export class OrganisationUnitsComponent implements OnInit {
   }
 
   ngView() {
-    if (this.route.snapshot.params["parentid"]) {
+    if (this.route.snapshot.params['parentid']) {
       this.orgUnitService
-        .getOrgUnitDetails(this.route.snapshot.params["parentid"])
+        .getOrgUnitDetails(this.route.snapshot.params['parentid'])
         .subscribe((ouDetails) => {
           if (ouDetails) {
             const period = this.periodObject
-              ? this.periodObject["items"][0].id
-              : "LAST_MONTH";
+              ? this.periodObject['items'][0].id
+              : 'LAST_MONTH';
             this.selectedOrgUnitItems = [];
             this.selectedOrgUnitItems.push(ouDetails);
             this.router.navigate([
-              `organisationunit/${this.route.snapshot.params["parentid"]}`,
+              `organisationunit/${this.route.snapshot.params['parentid']}`,
             ]);
-            this.parentOrgunit = this.route.snapshot.params["parentid"];
+            this.parentOrgunit = this.route.snapshot.params['parentid'];
             this.store.dispatch(
               selectOrganisationUnitSuccess({
                 dimensions: {
@@ -134,7 +137,7 @@ export class OrganisationUnitsComponent implements OnInit {
               })
             );
             this.router.navigate([
-              `/organisationunit/${this.route.snapshot.params["parentid"]}`,
+              `/organisationunit/${this.route.snapshot.params['parentid']}`,
             ]);
             this.selectedOrganisationUnit$ = this.store.select(
               getSelectedOrganisationUnit
@@ -143,22 +146,22 @@ export class OrganisationUnitsComponent implements OnInit {
         });
     } else {
       this.currentUser$.subscribe((currentUser) => {
-        if (currentUser && currentUser["organisationUnits"]) {
+        if (currentUser && currentUser['organisationUnits']) {
           const period = this.periodObject
-            ? this.periodObject["items"][0].id
-            : "LAST_MONTH";
-          this.selectedOrgUnitItems = currentUser["organisationUnits"];
+            ? this.periodObject['items'][0].id
+            : 'LAST_MONTH';
+          this.selectedOrgUnitItems = currentUser['organisationUnits'];
           this.store.dispatch(
             selectOrganisationUnitSuccess({
               dimensions: {
-                id: currentUser["organisationUnits"][0].id,
+                id: currentUser['organisationUnits'][0].id,
                 pe: period,
-                name: currentUser["organisationUnits"][0].name,
+                name: currentUser['organisationUnits'][0].name,
               },
             })
           );
           this.router.navigate([
-            `/organisationunit/${currentUser["organisationUnits"][0].id}`,
+            `/organisationunit/${currentUser['organisationUnits'][0].id}`,
           ]);
         }
       });
@@ -183,10 +186,10 @@ export class OrganisationUnitsComponent implements OnInit {
   onOrgUnitUpdate(orgunitData) {
     const selectedOrganisationUnit = orgunitData.items[0];
     const period = this.periodObject
-      ? this.periodObject["items"][0].id
-      : "LAST_MONTH";
+      ? this.periodObject['items'][0].id
+      : 'LAST_MONTH';
     this.store.dispatch(clearOrganisationUnitChildren());
-    if (selectedOrganisationUnit.id !== "USER_ORGUNIT") {
+    if (selectedOrganisationUnit.id !== 'USER_ORGUNIT') {
       this.store.dispatch(
         selectOrganisationUnitSuccess({
           dimensions: {
@@ -203,7 +206,7 @@ export class OrganisationUnitsComponent implements OnInit {
     this.orgUnitService
       .getReportedFacilities(
         selectedOrganisationUnit.id,
-        period ? period : "LAST_MONTH"
+        period ? period : 'LAST_MONTH'
       )
       .subscribe((reportedOrgunits) => {
         this.reportedAddos = new MatTableDataSource<OrganisationUnit>(
@@ -217,8 +220,8 @@ export class OrganisationUnitsComponent implements OnInit {
     e.stopPropagation();
     this.dialog.open(OrganisationUnitEditComponent, {
       data: { organisationUnit: organisatioUnit },
-      height: "auto",
-      width: "auto",
+      height: 'auto',
+      width: 'auto',
     });
   }
 
@@ -227,10 +230,11 @@ export class OrganisationUnitsComponent implements OnInit {
     this.store.dispatch(deleteOrganisationUnitChild({ id: id }));
   }
   onSearchClear() {
-    this.searchKey = "";
-    if(this.reportedAddos){
+    this.searchKey = '';
+    if (this.reportedAddos) {
       this.reportedAddos.filter = this.searchKey.trim().toLowerCase();
-    }    this.orgunitchildren.filter = this.searchKey.trim().toLowerCase();
+    }
+    this.orgunitchildren.filter = this.searchKey.trim().toLowerCase();
   }
 
   applySearch() {
@@ -238,37 +242,37 @@ export class OrganisationUnitsComponent implements OnInit {
   }
 
   searchReported() {
-    if(this.reportedAddos){
-    this.reportedAddos.filter = this.searchKey.trim().toLowerCase();
-  }
+    if (this.reportedAddos) {
+      this.reportedAddos.filter = this.searchKey.trim().toLowerCase();
+    }
   }
   onOpenDetails(e, organisatioUnit) {
     e.stopPropagation();
     this.dialog.open(OrganisationUnitDetailsComponent, {
       data: { organisationUnit: organisatioUnit },
-      height: "370px",
-      width: "450px",
+      height: '370px',
+      width: '450px',
     });
   }
 
-  fileName = "addos.csv";
+  fileName = 'addos.csv';
 
   downloadCSV(): void {
-    //initialize check for when subscribed to an observable to prevent multiple csv file downloads
+    // initialize check for when subscribed to an observable to prevent multiple csv file downloads
     let subscribed = true;
 
     this.organisationUnitChildren$.subscribe((childrenGot) => {
-      //check for when subscribed to an observable
+      // check for when subscribed to an observable
       if (subscribed) {
         const tableHeader = [
-          "Name",
+          'Name',
           "Owner's Contact",
           "Dispenser's Contact",
-          "Code",
-          "Village",
-          "Ward",
-          "District",
-          "Region",
+          'Code',
+          'Village',
+          'Ward',
+          'District',
+          'Region',
         ];
         let csvRows = [];
 
@@ -276,7 +280,7 @@ export class OrganisationUnitsComponent implements OnInit {
           return [
             addo.name,
             addo.phoneNumber,
-            addo.attributeValues[0] ? addo.attributeValues[0].value : "",
+            addo.attributeValues[0] ? addo.attributeValues[0].value : '',
             addo.code,
             addo.parent.name,
             addo.parent.parent.name,
@@ -286,17 +290,17 @@ export class OrganisationUnitsComponent implements OnInit {
         });
 
         const row = [tableHeader, ...csvRows];
-        let csvContent = "data:text/csv;charset=utf-8,";
+        let csvContent = 'data:text/csv;charset=utf-8,';
         row.forEach(function (rowArray) {
-          const rowEntry = rowArray.join(",");
-          csvContent += rowEntry + "\r\n";
+          const rowEntry = rowArray.join(',');
+          csvContent += rowEntry + '\r\n';
         });
         const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "addos.csv");
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', 'addos.csv');
         link.click();
-        //unsubscribed from an observable
+        // unsubscribed from an observable
         subscribed = false;
       }
     });

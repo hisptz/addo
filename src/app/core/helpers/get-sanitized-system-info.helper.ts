@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SystemInfo } from '../models/system-info.model';
 
 export function getSanitizedSystemInfo(systemInfo: any): SystemInfo {
@@ -6,11 +8,17 @@ export function getSanitizedSystemInfo(systemInfo: any): SystemInfo {
   }
 
   return {
-    id: systemInfo.systemId, contextPath: systemInfo.contextPath, googleMapsApiKey: systemInfo.keyGoogleMapsApiKey,
-    analyticsFinancialYear: systemInfo.analyticsFinancialYearStart, calendar: systemInfo.calendar,
+    id: systemInfo.systemId,
+    contextPath: systemInfo.contextPath,
+    googleMapsApiKey: systemInfo.keyGoogleMapsApiKey,
+    analyticsFinancialYear: systemInfo.analyticsFinancialYearStart,
+    calendar: systemInfo.calendar,
     lastAnalyticsTableSuccess: systemInfo.lastAnalyticsTableSuccess,
-    analysisRelativePeriod: systemInfo.keyAnalysisRelativePeriod, version: systemInfo.version,
+    analysisRelativePeriod: systemInfo.keyAnalysisRelativePeriod,
+    version: systemInfo.version,
     dateFormat: systemInfo.dateFormat,
-    spacialSupport: systemInfo.databaseInfo ? systemInfo.databaseInfo.spatialSupport : false
+    spacialSupport: systemInfo.databaseInfo
+      ? systemInfo.databaseInfo.spatialSupport
+      : false,
   };
 }

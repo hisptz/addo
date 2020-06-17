@@ -8,9 +8,8 @@ describe('SmseditComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SmseditComponent ]
-    })
-    .compileComponents();
+      declarations: [SmseditComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

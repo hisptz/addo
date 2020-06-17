@@ -6,12 +6,12 @@ import { HttpClientModule } from '@angular/common/http';
 describe('OrganisationUnitService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [HttpClientModule]
+      imports: [HttpClientModule],
     })
   );
 
   it('should be created', () => {
-    const service: OrganisationUnitService = TestBed.get(
+    const service: OrganisationUnitService = TestBed.inject(
       OrganisationUnitService
     );
     expect(service).toBeTruthy();

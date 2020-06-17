@@ -7,7 +7,7 @@
     "build": "ng build --prod --aot && cd dist/addo-labs && zip -r -D addo-labs.zip .",
     "test": "ng test",
     "test:travis": "ng test -- --no-watch --no-progress --code-coverage --browsers=ChromeHeadlessCI",
-    "lint": "ng lint",
+    "lint": "eslint \"**/*.{js,ts}\" --quiet --fix",
     "e2e": "ng e2e",
     "e2e:travis": "ng e2e -- --protractor-config=e2e/protractor-ci.conf.js",
     "compodoc": "./node_modules/.bin/compodoc -p src/tsconfig.app.json",
