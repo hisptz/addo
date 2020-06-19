@@ -142,6 +142,19 @@ export class OrganisationUnitsComponent implements OnInit {
             this.selectedOrganisationUnit$ = this.store.select(
               getSelectedOrganisationUnit
             );
+            this.orgUnitService
+              .getReportedFacilities(
+                ouDetails.id,
+                this.periodObject
+                  ? this.periodObject['items'][0].id
+                  : 'LAST_MONTH'
+              )
+              .subscribe((reportedOrgunits) => {
+                this.reportedAddos = new MatTableDataSource<OrganisationUnit>(
+                  reportedOrgunits
+                );
+                this.reportedAddos.paginator = this.paginator;
+              });
           }
         });
     } else {
@@ -206,7 +219,7 @@ export class OrganisationUnitsComponent implements OnInit {
     this.orgUnitService
       .getReportedFacilities(
         selectedOrganisationUnit.id,
-        period ? period : 'LAST_MONTH'
+        this.periodObject ? this.periodObject['items'][0].id : 'LAST_MONTH'
       )
       .subscribe((reportedOrgunits) => {
         this.reportedAddos = new MatTableDataSource<OrganisationUnit>(
