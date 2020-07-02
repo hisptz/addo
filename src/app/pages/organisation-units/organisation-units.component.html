@@ -39,7 +39,7 @@
               ">
               <div class="div-tabl" style="margin-top: 20px;">
                 <button class="btn btn-primary" (click)="showAddoStatus()">
-                  Show {{ showStatus ? "Reported" : "Not Reported" }} Addos
+                  Showing {{ showStatus ? "Not Reported" : "Reported" }} Addos
                 </button>
                 <div class="col-sm-5" style="padding-bottom: 10px; display: flex;">
                   <input class="form-control" type="text" placeholder="Search" [(ngModel)]="searchKey"
@@ -175,7 +175,7 @@
                   ? (selectedOrganisationUnit$ | async).name +
                     " " +
                     "Addos Loading"
-                  : "Select Period and Organisationunit to see the reporting status"
+                  : "Select Period and Organisationunit to view the Reporting Status"
               }}
             </h2>
           </div>
