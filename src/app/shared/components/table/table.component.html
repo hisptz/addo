@@ -1,0 +1,66 @@
+<div class="table-container" *ngIf="columnsToDisplay && columnsEntities">
+  <div class="pt-2 d-flex justify-content-between">
+    <mat-form-field appearance="outline" class="w-25">
+      <mat-label>Search</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput (keyup)="onFilter($event)">
+    </mat-form-field>
+    <button class="add-button" mat-flat-button *ngIf="addButtonConfig" [color]="addButtonConfig.color"
+      (click)="onAdd($event)">
+      <mat-icon>{{addButtonConfig.icon}}</mat-icon>
+      <span class="ml-2">{{addButtonConfig.text}}</span>
+    </button>
+  </div>
+  <div class="table-responsive mat-elevation-z1">
+    <table class="table">
+      <tr class="text-muted">
+        <td *ngIf="showCountColumn">#</td>
+        <td *ngFor="let columnToDisplay of columnsToDisplay">
+          {{ columnsEntities[columnToDisplay] }}
+        </td>
+        <td *ngIf="showActionsButtons" class="pr-3"><span class="float-right">Actions</span></td>
+      </tr>
+      <tr *ngIf="loading">
+        <td [attr.colSpan]="noDataColSpan" class="p-0">
+          <mat-progress-bar mode="query"></mat-progress-bar>
+        </td>
+      </tr>
+      <tr *ngIf="data.length=== 0 && !loading">
+        <td [attr.colSpan]="noDataColSpan" class="text-center">
+          <span class="text-muted">
+            No data to display
+          </span>
+        </td>
+      </tr>
+      <tr class="data-row"
+        *ngFor="let dataItem of data | filterEntity: searchTerm | paginate:paginationConfig?.pageSize: paginationConfig?.page; let i = index;"
+        (click)="onSelectItem($event, dataItem)">
+        <td *ngIf="showCountColumn">{{i + 1}}</td>
+        <td *ngFor="let columnToDisplay of columnsToDisplay">
+          {{(dataItem[columnToDisplay] | readableField) || '-'}}</td>
+        <td *ngIf="showActionsButtons" class="p-2 pr-3">
+          <ng-container>
+            <button mat-icon-button class="float-right text-muted" (click)="$event.stopPropagation()"
+              [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item *ngFor="let actionOption of actionOptions"
+                (click)="onSelectAction($event, actionOption, dataItem)">
+                <div class="d-flex align-items-center">
+                  <mat-icon>{{actionOption.icon}}</mat-icon>
+                  <span class="ml-1">{{actionOption.name}}</span>
+                </div>
+              </button>
+            </mat-menu>
+          </ng-container>
+        </td>
+      </tr>
+    </table>
+    <mat-paginator *ngIf="!loading" [pageIndex]="paginationConfig?.page - 1"
+      [pageSizeOptions]="paginationConfig?.pageSizeOptions" [length]="paginationConfig?.total"
+      [pageSize]="paginationConfig?.pageSize" [hidePageSize]="true" showFirstLastButtons (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
+
+</div>

@@ -1,0 +1,11 @@
+<div class="pb-3" *ngIf="confirmationConfig">
+    <h2 class="font-weight-normal" mat-dialog-title>{{confirmationConfig.title}}</h2>
+    <mat-dialog-content>
+        <p>{{confirmationConfig.description}}</p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-stroked-button mat-dialog-close>CANCEL</button>
+        <button mat-flat-button color="warn" (click)="onClose($event)"
+            cdkFocusInitial>{{confirmationConfig.actionButtonText}}</button>
+    </mat-dialog-actions>
+</div>
