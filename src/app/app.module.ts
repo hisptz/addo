@@ -58,6 +58,7 @@ import { MatTableModule } from '@angular/material/table';
 import { NgxDhis2HttpClientModule } from '@iapps/ngx-dhis2-http-client';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { SharedModule } from './shared/shared.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -75,6 +76,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule,
     HttpClientModule,
     RoutingModule,
+    SharedModule,
     CoreModule.forRoot({
       namespace: 'iapps',
       version: 1,
