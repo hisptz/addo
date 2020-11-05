@@ -59,6 +59,8 @@ import { NgxDhis2HttpClientModule } from '@iapps/ngx-dhis2-http-client';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { SharedModule } from './shared/shared.module';
+import { NgxDhis2SelectionFiltersModule } from '@iapps/ngx-dhis2-selection-filters';
+import { DragulaModule } from 'ng2-dragula';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -98,11 +100,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatProgressBarModule,
     MatButtonToggleModule,
     Ng2SearchPipeModule,
+    NgxDhis2SelectionFiltersModule,
     NgxPaginationModule,
     MatRadioModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    DragulaModule,
+
     /**
      * Menu  module
      */
