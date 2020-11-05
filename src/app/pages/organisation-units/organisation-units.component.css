@@ -1,3 +1,6 @@
+.wrapper {
+  margin: 2rem;
+}
 .filter {
   position: fixed;
   width: 25vh;
@@ -107,13 +110,7 @@
   }
 }
 
-.loadSlider {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-input[type="text"] {
+input[type='text'] {
   box-shadow: none !important;
 }
 
@@ -145,7 +142,8 @@ mat-header-cell {
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-mat-cell, mat-footer-cell {
+mat-cell,
+mat-footer-cell {
   width: fit-content;
 }
 .mat-column-SN {

@@ -1,36 +1,36 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Fn } from '@iapps/function-analytics';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import {
   OrganisationUnit,
   OrganisationUnitChildren,
 } from 'src/app/models/organisation-unit.model';
-import { Fn } from '@iapps/function-analytics';
-
-import { Store } from '@ngrx/store';
-import { State } from 'src/app/store/reducers';
+import { OrganisationUnitService } from 'src/app/services/organisation-unit.service';
 import {
-  getSelectedOrganisationUnit,
-  getSelectedOrganisationUnitStatus,
-  getOrganisationUnitChildren,
-  getOrganisationUnitChildrenLoadedState,
-  leafOrgunit,
-} from 'src/app/store/selectors/organisation-unit.selectors';
-import { Router, ActivatedRoute } from '@angular/router';
-import {
+  clearOrganisationUnitChildren,
   deleteOrganisationUnitChild,
   selectOrganisationUnitSuccess,
-  clearOrganisationUnitChildren,
 } from 'src/app/store/actions';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
-import { OrganisationUnitDetailsComponent } from '../organisation-unit-details/organisation-unit-details.component';
+import { State } from 'src/app/store/reducers';
 import { getCurrentUser } from 'src/app/store/selectors';
-import { OrganisationUnitService } from 'src/app/services/organisation-unit.service';
+import {
+  getOrganisationUnitChildren,
+  getOrganisationUnitChildrenLoadedState,
+  getSelectedOrganisationUnit,
+  getSelectedOrganisationUnitStatus,
+  leafOrgunit,
+} from 'src/app/store/selectors/organisation-unit.selectors';
+import { TableActionOption } from '../../shared/models';
+import { OrganisationUnitDetailsComponent } from '../organisation-unit-details/organisation-unit-details.component';
 import { OrganisationUnitEditComponent } from '../organisation-unit-edit/organisation-unit-edit.component';
-import { MatPaginator } from '@angular/material/paginator';
+import { SelectionFilterConfig } from '@iapps/ngx-dhis2-selection-filters';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-organisation-units',
@@ -38,11 +38,6 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrls: ['./organisation-units.component.css'],
 })
 export class OrganisationUnitsComponent implements OnInit {
-  favoriteSeason: string;
-  orgUnitFilterConfig: any;
-  periodFilterConfig: any;
-  showStatus = true;
-  test: boolean;
   selectedOrganisationUnit$: Observable<OrganisationUnit>;
   selectedOrganisationUnitStatus$: Observable<boolean>;
   organisationUnitChildren$: Observable<OrganisationUnitChildren[]>;
@@ -51,20 +46,31 @@ export class OrganisationUnitsComponent implements OnInit {
   parentOrgunit: string;
   currentUser$: Observable<any>;
   selectedOrgUnitItems: Array<any> = [];
-  omitcolumn: any;
-  reportedAddos: MatTableDataSource<OrganisationUnit>;
-  orgunitchildren: MatTableDataSource<OrganisationUnit>;
-  displayColumns: string[] = ['SN', 'Name', 'Code', 'Owner', 'Dispenser'];
-  showColumns: string[] = [
-    'SN',
-    'Name',
-    'Code',
-    'Owner',
-    'Dispenser',
-    'Update',
-  ];
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  searchKey: string;
+  getSelections: unknown;
+  reportedAddos: any;
+  displayColumns: { ids: string[]; entities: { [id: string]: string } };
+  tableActionOptions: TableActionOption[];
+  dataSelections: any[];
+  orgunitchildren: OrganisationUnitChildren[];
+  selectionFilterConfig: SelectionFilterConfig = {
+    allowStepSelection: true,
+    showDynamicDimension: false,
+    showDataFilter: false,
+    showValidationRuleGroupFilter: false,
+    stepSelections: ['ou', 'pe'],
+    disablePeriodTypeSelection: true,
+    periodFilterConfig: {
+      singleSelection: true,
+      emitOnSelection: true,
+    },
+    orgUnitFilterConfig: {
+      showUserOrgUnitSection: false,
+      singleSelection: true,
+      showOrgUnitGroupSection: false,
+      showOrgUnitLevelSection: false,
+      showOrgUnitLevelGroupSection: false,
+    },
+  };
 
   constructor(
     private store: Store<State>,
@@ -80,46 +86,26 @@ export class OrganisationUnitsComponent implements OnInit {
       });
     }
   }
-  periodObject: any;
-  action: string;
   ngOnInit() {
-    this.test = true;
-    this.orgUnitFilterConfig = {
-      singleSelection: true,
-      showUserOrgUnitSection: false,
-      updateOnSelect: true,
-      showOrgUnitLevelGroupSection: false,
-    };
-    this.periodFilterConfig = {
-      singleSelection: true,
-      emitOnSelection: true,
-      updateOnSelect: true,
-    };
     this.ngView();
   }
-  onPeriodUpdate(periodObject, action) {
-    this.periodObject = periodObject;
-    this.action = action;
-
-    // get details of orgunit when period is updated
-    this.orgUnitService
-      .getOrgUnitDetails(this.route.snapshot.params['parentid'])
-      .subscribe((ouDetails) => {
-        const orgunitData: {} = {
-          items: [{ id: ouDetails.id, name: ouDetails.name }],
-        };
-        this.onOrgUnitUpdate(orgunitData);
-      });
-  }
-
   ngView() {
+    this.displayColumns = {
+      ids: ['name', 'code', 'phoneNumber', 'attributeValues'],
+      entities: {
+        name: 'Name',
+        code: 'Code',
+        phoneNumber: "Owner's Contact",
+        attributeValues: "Dispenser's Contact",
+      },
+    };
     if (this.route.snapshot.params['parentid']) {
       this.orgUnitService
         .getOrgUnitDetails(this.route.snapshot.params['parentid'])
         .subscribe((ouDetails) => {
           if (ouDetails) {
-            const period = this.periodObject
-              ? this.periodObject['items'][0].id
+            const period = this.getSelections
+              ? this.getSelections['items'][0].id
               : 'LAST_MONTH';
             this.selectedOrgUnitItems = [];
             this.selectedOrgUnitItems.push(ouDetails);
@@ -145,23 +131,20 @@ export class OrganisationUnitsComponent implements OnInit {
             this.orgUnitService
               .getReportedFacilities(
                 ouDetails.id,
-                this.periodObject
-                  ? this.periodObject['items'][0].id
+                this.getSelections
+                  ? this.getSelections['items'][0].id
                   : 'LAST_MONTH'
               )
               .subscribe((reportedOrgunits) => {
-                this.reportedAddos = new MatTableDataSource<OrganisationUnit>(
-                  reportedOrgunits
-                );
-                this.reportedAddos.paginator = this.paginator;
+                this.reportedAddos = reportedOrgunits;
               });
           }
         });
     } else {
       this.currentUser$.subscribe((currentUser) => {
         if (currentUser && currentUser['organisationUnits']) {
-          const period = this.periodObject
-            ? this.periodObject['items'][0].id
+          const period = this.getSelections
+            ? this.getSelections['items'][0].id
             : 'LAST_MONTH';
           this.selectedOrgUnitItems = currentUser['organisationUnits'];
           this.store.dispatch(
@@ -187,8 +170,8 @@ export class OrganisationUnitsComponent implements OnInit {
       getOrganisationUnitChildren
     );
     this.store.select(getOrganisationUnitChildren).subscribe((children) => {
-      this.orgunitchildren = new MatTableDataSource<OrganisationUnit>(children);
-      this.orgunitchildren.paginator = this.paginator;
+      console.log('Children', children);
+      this.orgunitchildren = children;
     });
     this.organisationUnitChildrenLoaded$ = this.store.select(
       getOrganisationUnitChildrenLoadedState
@@ -196,11 +179,20 @@ export class OrganisationUnitsComponent implements OnInit {
     this.isLeafOrganisation$ = this.store.select(leafOrgunit);
   }
 
-  onOrgUnitUpdate(orgunitData) {
-    const selectedOrganisationUnit = orgunitData.items[0];
-    const period = this.periodObject
-      ? this.periodObject['items'][0].id
-      : 'LAST_MONTH';
+  onSelectionFilterUpdate(dataSelections) {
+    const periodObject = { dimension: 'pe' };
+    const ouObject = { dimension: 'ou' };
+    const availablePeriod = _.find(dataSelections, (o) => {
+      return _.isMatch(o, periodObject);
+    });
+    const availableOu = _.find(dataSelections, (o) => {
+      return _.isMatch(o, ouObject);
+    });
+    this.getSelections = availablePeriod;
+    const selectedOrganisationUnit = availableOu
+      ? availableOu.items[0]
+      : { id: 'USER_ORGUNIT' };
+    const period = availablePeriod ? availablePeriod.items[0].id : 'LAST_MONTH';
     this.store.dispatch(clearOrganisationUnitChildren());
     if (selectedOrganisationUnit.id !== 'USER_ORGUNIT') {
       this.store.dispatch(
@@ -219,18 +211,14 @@ export class OrganisationUnitsComponent implements OnInit {
     this.orgUnitService
       .getReportedFacilities(
         selectedOrganisationUnit.id,
-        this.periodObject ? this.periodObject['items'][0].id : 'LAST_MONTH'
+        availablePeriod ? availablePeriod.items[0].id : 'LAST_MONTH'
       )
       .subscribe((reportedOrgunits) => {
-        this.reportedAddos = new MatTableDataSource<OrganisationUnit>(
-          reportedOrgunits
-        );
-        this.reportedAddos.paginator = this.paginator;
+        this.reportedAddos = reportedOrgunits;
       });
   }
 
-  onEditChild(e, organisatioUnit) {
-    e.stopPropagation();
+  onEditChild(organisatioUnit) {
     this.dialog.open(OrganisationUnitEditComponent, {
       data: { organisationUnit: organisatioUnit },
       height: 'auto',
@@ -241,23 +229,6 @@ export class OrganisationUnitsComponent implements OnInit {
   onDeleteChild(e, id: string) {
     e.stopPropagation();
     this.store.dispatch(deleteOrganisationUnitChild({ id: id }));
-  }
-  onSearchClear() {
-    this.searchKey = '';
-    if (this.reportedAddos) {
-      this.reportedAddos.filter = this.searchKey.trim().toLowerCase();
-    }
-    this.orgunitchildren.filter = this.searchKey.trim().toLowerCase();
-  }
-
-  applySearch() {
-    this.orgunitchildren.filter = this.searchKey.trim().toLowerCase();
-  }
-
-  searchReported() {
-    if (this.reportedAddos) {
-      this.reportedAddos.filter = this.searchKey.trim().toLowerCase();
-    }
   }
   onOpenDetails(e, organisatioUnit) {
     e.stopPropagation();
@@ -318,7 +289,7 @@ export class OrganisationUnitsComponent implements OnInit {
       }
     });
   }
-  showAddoStatus(): void {
-    this.showStatus = !this.showStatus;
+  onFilterUpdateAction(dataSelections) {
+    this.onSelectionFilterUpdate(dataSelections);
   }
 }
