@@ -46,12 +46,14 @@ export class OrganisationUnitsComponent implements OnInit {
   parentOrgunit: string;
   currentUser$: Observable<any>;
   selectedOrgUnitItems: Array<any> = [];
+  addos: Array<any> = [];
+  reportedFacilities: Array<any> = [];
   getSelections: unknown;
   reportedAddos: any;
   displayColumns: { ids: string[]; entities: { [id: string]: string } };
   tableActionOptions: TableActionOption[];
   dataSelections: any[];
-  orgunitchildren: OrganisationUnitChildren[];
+  orgunitchildren: unknown;
   selectionFilterConfig: SelectionFilterConfig = {
     allowStepSelection: true,
     showDynamicDimension: false,
@@ -87,18 +89,19 @@ export class OrganisationUnitsComponent implements OnInit {
     }
   }
   ngOnInit() {
-    this.ngView();
-  }
-  ngView() {
     this.displayColumns = {
-      ids: ['name', 'code', 'phoneNumber', 'attributeValues'],
+      ids: ['name', 'code', 'parent', 'phoneNumber', 'attributeValues'],
       entities: {
         name: 'Name',
         code: 'Code',
+        parent: 'Village',
         phoneNumber: "Owner's Contact",
         attributeValues: "Dispenser's Contact",
       },
     };
+    this.ngView();
+  }
+  ngView() {
     if (this.route.snapshot.params['parentid']) {
       this.orgUnitService
         .getOrgUnitDetails(this.route.snapshot.params['parentid'])
@@ -170,8 +173,25 @@ export class OrganisationUnitsComponent implements OnInit {
       getOrganisationUnitChildren
     );
     this.store.select(getOrganisationUnitChildren).subscribe((children) => {
-      console.log('Children', children);
-      this.orgunitchildren = children;
+      children.forEach((addo) => {
+        this.addos.push({
+          attributeValues: addo.attributeValues[0]
+            ? addo.attributeValues[0].value
+            : '',
+          displayName: addo.displayName,
+          code: addo.code,
+          id: addo.id,
+          lastUpdated: addo.lastUpdated,
+          level: addo.level,
+          name: addo.name,
+          openingDate: addo.openingDate,
+          parent: addo.parent.name,
+          path: addo.path,
+          phoneNumber: addo.phoneNumber,
+          shortName: addo.shortName,
+        });
+      });
+      this.orgunitchildren = this.addos;
     });
     this.organisationUnitChildrenLoaded$ = this.store.select(
       getOrganisationUnitChildrenLoadedState
@@ -214,7 +234,26 @@ export class OrganisationUnitsComponent implements OnInit {
         availablePeriod ? availablePeriod.items[0].id : 'LAST_MONTH'
       )
       .subscribe((reportedOrgunits) => {
-        this.reportedAddos = reportedOrgunits;
+        reportedOrgunits.forEach((addo) => {
+          this.reportedFacilities.push({
+            attributeValues: addo.attributeValues[0]
+              ? addo.attributeValues[0].value
+              : '',
+            displayName: addo.displayName,
+            code: addo.code,
+            id: addo.id,
+            lastUpdated: addo.lastUpdated,
+            level: addo.level,
+            name: addo.name,
+            openingDate: addo.openingDate,
+            parent: addo.parent.name,
+            path: addo.path,
+            phoneNumber: addo.phoneNumber,
+            shortName: addo.shortName,
+          });
+        });
+        console.log('Reported Addos', this.reportedFacilities);
+        this.reportedAddos = this.reportedFacilities;
       });
   }
 
@@ -289,7 +328,8 @@ export class OrganisationUnitsComponent implements OnInit {
       }
     });
   }
-  onFilterUpdateAction(dataSelections) {
+  onFilterUpdateAction(dataSelections: unknown) {
+    console.log('Dataselections', dataSelections);
     this.onSelectionFilterUpdate(dataSelections);
   }
 }

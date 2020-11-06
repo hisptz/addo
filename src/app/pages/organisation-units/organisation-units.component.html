@@ -34,7 +34,21 @@
               Save Excel
             </button>
           </div>
-          <div>
+          <div *ngIf="orgunitchildren">
+            <app-table [columnsToDisplay]="displayColumns.ids" [columnsEntities]="displayColumns.entities"
+              [actionOptions]="tableActionOptions" [data]="orgunitchildren" [showCountColumn]="true"
+              (selectAction)="onEditChild($event)">
+            </app-table>
+          </div>
+
+          <div *ngIf="reportedAddos">
+            <app-table [columnsToDisplay]="displayColumns.ids" [columnsEntities]="displayColumns.entities"
+              [actionOptions]="tableActionOptions" [data]="reportedAddos" [showCountColumn]="true"
+              (selectAction)="onEditChild($event)">
+            </app-table>
+          </div>
+
+          <div *ngIf="!orgunitchildren">
             <app-table [columnsToDisplay]="displayColumns.ids" [columnsEntities]="displayColumns.entities"
               [actionOptions]="tableActionOptions" [data]="orgunitchildren" [showCountColumn]="true"
               (selectAction)="onEditChild($event)">
