@@ -6,7 +6,7 @@ body {
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
   color: black;
 }
 
@@ -23,4 +23,19 @@ body {
     margin-left: 0px;
     font-size: small;
   }
+}
+
+.success-edit {
+  background: green;
+  color: black;
+}
+
+.fail-edit {
+  background: red;
+  color: black;
+}
+
+.editing {
+  background: yellow;
+  color: black;
 }

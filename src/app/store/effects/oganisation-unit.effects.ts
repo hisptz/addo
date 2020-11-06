@@ -64,19 +64,22 @@ export class OrganisationUnitEffects {
       switchMap((action) => {
         this._snackBar.open(`Editing ${action.child.name}`, '', {
           duration: 2000,
+          panelClass: ['editing'],
         });
         return this.orgunitService.editOrgunitChildren(action.child).pipe(
           map(() => {
             this._snackBar.open(`Edited Successfully`, '', {
               duration: 2000,
+              panelClass: ['success-edit'],
             });
             return editOrganisationUnitChildSuccess({
               child: { id: action.child.id, changes: action.child },
             });
           }),
           catchError((error) => {
-            this._snackBar.open(`Filed To Edit`, '', {
+            this._snackBar.open(`Failed To Edit`, '', {
               duration: 2000,
+              panelClass: ['fail-edit'],
             });
             return of(editOrganisationUnitChildFail({ error: error }));
           })
