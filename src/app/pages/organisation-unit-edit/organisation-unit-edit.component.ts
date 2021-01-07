@@ -48,17 +48,26 @@ export class OrganisationUnitEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log('Data', this.data);
     this.parentId = this.route.snapshot.params['parentid'];
-    this.currentOrgunit = this.data.organisationUnit.dataItem.id;
+    this.currentOrgunit = this.data.organisationUnit.dataItem
+      ? this.data.organisationUnit.dataItem.id
+      : this.data.organisationUnit.id;
     this.orgUnitService
-      .getOrgUnitDetails(this.data.organisationUnit.dataItem.id)
+      .getOrgUnitDetails(
+        this.data.organisationUnit.dataItem
+          ? this.data.organisationUnit.dataItem.id
+          : this.data.organisationUnit.id
+      )
       .subscribe((ouDetails) => {
         if (ouDetails) {
           this.parentOrgUnit = ouDetails['parent'];
         }
       });
     this.selectedOrgunitChild$ = this.orgUnitService.getAllOrgunitDetails(
-      this.data.organisationUnit.dataItem.id
+      this.data.organisationUnit.dataItem
+        ? this.data.organisationUnit.dataItem.id
+        : this.data.organisationUnit.id
     );
 
     this.selectedOrgunitChild$.subscribe((childInfo) => {
@@ -70,7 +79,9 @@ export class OrganisationUnitEditComponent implements OnInit {
   }
 
   generateForm() {
-    this.orgunitSubscription = this.data.organisationUnit.dataItem;
+    this.orgunitSubscription = this.data
+      ? this.data.organisationUnit.dataItem
+      : this.data;
     return this.fb.group({
       name: new FormControl(this.organisationUnit.name, Validators.required),
       shortName: new FormControl(this.organisationUnit.shortName),

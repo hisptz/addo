@@ -238,7 +238,7 @@ export class OrganisationUnitsComponent implements OnInit {
           this.reportedFacilities.push({
             attributeValues: addo.attributeValues[0]
               ? addo.attributeValues[0].value
-              : '',
+              : '-',
             displayName: addo.displayName,
             code: addo.code,
             id: addo.id,
@@ -248,11 +248,11 @@ export class OrganisationUnitsComponent implements OnInit {
             openingDate: addo.openingDate,
             parent: addo.parent.name,
             path: addo.path,
-            phoneNumber: addo.phoneNumber,
+            phoneNumber: addo.phoneNumber ? addo.phoneNumber : '-',
             shortName: addo.shortName,
           });
         });
-        console.log('Reported Addos', this.reportedFacilities);
+        console.log(this.reportedFacilities);
         this.reportedAddos = this.reportedFacilities;
       });
   }

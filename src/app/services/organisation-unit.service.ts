@@ -8,13 +8,13 @@ import { OrganisationUnitChildren } from '../models/organisation-unit.model';
 
 import * as _ from 'lodash';
 import { ErrorMessage } from '../core';
+import { generateUid } from '../core/helpers/generatedUid';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrganisationUnitService {
   constructor(private httpService: NgxDhis2HttpClientService) {}
-  s;
   getOrgunitChildren(orgunitId: string): Promise<any> {
     const fields = `id,name,lastUpdated,phoneNumber,level,displayName,code,shortName,openingDate,parent[id,name,
         parent[id,name,parent[id,name,parent[id,name]]]],path,coordinates,attributeValues[value,attribute[id,name]]`;
@@ -38,7 +38,7 @@ export class OrganisationUnitService {
     return new Promise((resolve, reject) => {
       this.httpService
         .get(
-          `analytics?dimension=dx:t6N3L1IElxb.ACTUAL_REPORTS&dimension=ou:LEVEL-6&dimension=pe:${pe}`
+          `analytics?dimension=dx:t6N3L1IElxb.ACTUAL_REPORTS&dimension=ou:LEVEL-6&dimension=pe:${pe}&version=${generateUid}`
         )
         .subscribe(
           (response: any) => {

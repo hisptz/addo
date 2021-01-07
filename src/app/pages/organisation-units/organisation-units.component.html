@@ -35,24 +35,59 @@
             </button>
           </div>
           <div *ngIf="orgunitchildren">
-            <app-table [columnsToDisplay]="displayColumns.ids" [columnsEntities]="displayColumns.entities"
-              [actionOptions]="tableActionOptions" [data]="orgunitchildren" [showCountColumn]="true"
-              (selectAction)="onEditChild($event)">
-            </app-table>
+            <table class="table table-bordered table-hover table-sm text-sm">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Addo</th>
+                  <th>Code</th>
+                  <th>Village</th>
+                  <th>Owner's Contact</th>
+                  <th>Dispenser's Contact</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let facility of orgunitchildren let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ facility.name }}</td>
+                  <td>{{ facility.code }}</td>
+                  <td>{{ facility.parent }}</td>
+                  <td (click)="onEditChild(facility)">{{ facility.phoneNumber }}</td>
+                  <td (click)="onEditChild(facility)">{{ facility.attributeValues }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-
-          <div *ngIf="reportedAddos">
-            <app-table [columnsToDisplay]="displayColumns.ids" [columnsEntities]="displayColumns.entities"
-              [actionOptions]="tableActionOptions" [data]="reportedAddos" [showCountColumn]="true"
-              (selectAction)="onEditChild($event)">
-            </app-table>
+          <div class="row mx-0 w-100 pt-2 d-flex justify-content-between">
+            <mat-form-field appearance="outline" class="w-25" autocomplete="false">
+              <mat-label>Search</mat-label>
+              <mat-icon matPrefix>search</mat-icon>
+              <input matInput (keyup)="($event)">
+            </mat-form-field>
           </div>
-
-          <div *ngIf="!orgunitchildren">
-            <app-table [columnsToDisplay]="displayColumns.ids" [columnsEntities]="displayColumns.entities"
-              [actionOptions]="tableActionOptions" [data]="orgunitchildren" [showCountColumn]="true"
-              (selectAction)="onEditChild($event)">
-            </app-table>
+          <div>
+            <table class="table table-hover table-sm text-sm">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Addo</th>
+                  <th>Code</th>
+                  <th>Village</th>
+                  <th>Owner's Contact</th>
+                  <th>Dispenser's Contact</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let facility of reportedAddos let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ facility.name }}</td>
+                  <td>{{ facility.code }}</td>
+                  <td>{{ facility.parent }}</td>
+                  <td (click)="onEditChild(facility)">{{ facility.phoneNumber }}</td>
+                  <td (click)="onEditChild(facility)">{{ facility.attributeValues }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <div class="loader" [hidden]="organisationUnitChildrenLoaded$ | async">
