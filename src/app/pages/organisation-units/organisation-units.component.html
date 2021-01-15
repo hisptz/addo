@@ -2,39 +2,42 @@
   <mat-tab-group>
     <mat-tab label="Addos Reporting Status">
       <div class="column">
-        <div class="col-sm-12" style="z-index: initial;">
+        <div class="col-sm-12" style="z-index: 100000;">
           <ngx-dhis2-selection-filters (filterUpdate)="onFilterUpdateAction($event)" [dataSelections]="dataSelections"
             [selectionFilterConfig]="selectionFilterConfig" (update)="onFilterUpdateAction($event)">
           </ngx-dhis2-selection-filters>
         </div>
         <div class="col-sm-12" *ngIf="(organisationUnitChildrenLoaded$ | async) && !(isLeafOrganisation$ | async)">
+          <div class="div-tabl" style="margin-top: 20px;">
+            <button class="btn btn-primary" (click)="showAddoStatus()">
+              Showing {{ showStatus ? "Not Reported" : "Reported" }} Addos
+            </button>
+          </div>
+          <div class="text-right" style="align-items: flex-end;">
+            <button *ngIf="(organisationUnitChildrenLoaded$ | async) && !(isLeafOrganisation$ | async)
+            " class="btn btn-outline-secondary" (click)="downloadCSV(showStatus)">
+              Save Excel
+            </button>
+          </div>
           <div *ngIf="selectedOrganisationUnitStatus$ | async">
-            <mat-card class="col-sm-12" style="margin: 20px 0px 5px 0px;">
-              <h4 class="header">
-                Addos Reporting Status in
+            <mat-card>
+              <h4 class="text-center">
+                Showing {{ showStatus ? "Not Reported" : "Reported" }} Addos
+                in
                 {{ (selectedOrganisationUnit$ | async) ? (selectedOrganisationUnit$ | async).name : "" }}
                 for
                 {{getSelections ? getSelections['items'][0].name: 'LAST_MONTH'}}
               </h4>
             </mat-card>
           </div>
-
-          <div class="row" style="margin: 20px 0px 5px 0px;">
-            <button class="btn btn-primary" style="margin-right: 10px;">
-              Showing Addos
-            </button>
-            <button class="btn btn-primary" style="margin-right: 10px;">
-              Showing Addos
-            </button>
-            <button class="btn btn-primary" style="margin-right: 10px;">
-              Showing Addos
-            </button>
-            <button *ngIf="(organisationUnitChildrenLoaded$ | async) && !(isLeafOrganisation$ | async)
-            " class="btn btn-outline-secondary" (click)="downloadCSV()">
-              Save Excel
-            </button>
+          <div class="row mx-0 w-100 pt-2 d-flex justify-content-between">
+            <mat-form-field appearance="outline" class="w-25">
+              <mat-label>Search</mat-label>
+              <mat-icon matPrefix>search</mat-icon>
+              <input matInput (keyup)="onAddos($event)" autocomplete="off" name="search">
+            </mat-form-field>
           </div>
-          <div *ngIf="orgunitchildren">
+          <div *ngIf="orgunitchildren && showStatus">
             <table class="table table-bordered table-hover table-sm text-sm">
               <thead>
                 <tr>
@@ -42,63 +45,101 @@
                   <th>Addo</th>
                   <th>Code</th>
                   <th>Village</th>
-                  <th>Owner's Contact</th>
-                  <th>Dispenser's Contact</th>
+                  <th class="text-center">Owner's Contact</th>
+                  <th class="text-center">Dispenser's Contact</th>
+                  <th class="text-center">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let facility of orgunitchildren let i = index">
+                <tr *ngFor="let facility of orgunitchildren | filterBy: ['code', 'name', 'parent.name', 'phoneNumber'] : searchText |  paginate: { itemsPerPage: itemsPerPage, currentPage: p }
+; let i = index
+">
                   <td>{{ i + 1 }}</td>
                   <td>{{ facility.name }}</td>
                   <td>{{ facility.code }}</td>
-                  <td>{{ facility.parent }}</td>
-                  <td (click)="onEditChild(facility)">{{ facility.phoneNumber }}</td>
-                  <td (click)="onEditChild(facility)">{{ facility.attributeValues }}</td>
+                  <td>{{ facility.parent.name }}</td>
+                  <td class="text-center">{{ facility.phoneNumber?facility.phoneNumber:'-' }}</td>
+                  <td class="text-center">{{
+                    facility.attributeValues[0]?facility.attributeValues[0].value:'-' }}</td>
+                  <td class="text-center" (click)="onEditChild(facility)">
+                    <button mat-button style="text-decoration: none;"><span class="material-icons">
+                        edit
+                      </span></button>
+                  </td>
                 </tr>
               </tbody>
+              <tfoot class="d-print-none" *ngIf="organisationUnitChildrenLoaded$ | async">
+                <tr *ngIf="orgunitchildren as elementsCounter">
+                  <td colspan="9">
+                    <!--Pagination Starts here -->
+                    <app-pagination [currentPage]="p" [pageInterval]="itemsPerPage" [pageIntervalFactor]="10"
+                      [itemsPerPage]="itemsPerPage"
+                      [dataArray]="(orgunitchildren | filterBy: ['code', 'name', 'parent.name', 'phoneNumber'] : searchText)"
+                      (changeCurrentPage)="onCurrentPageUpdate($event)" (updateItemsPerPage)="onUpdatePageSize($event)">
+                    </app-pagination>
+                    <!--Pagination Ends here -->
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
-          <div class="row mx-0 w-100 pt-2 d-flex justify-content-between">
-            <mat-form-field appearance="outline" class="w-25">
-              <mat-label>Search</mat-label>
-              <mat-icon matPrefix>search</mat-icon>
-              <input matInput (keyup)="($event)" autocomplete="off" name="search">
-            </mat-form-field>
+          <div *ngIf="!showStatus">
+            <div>
+              <table class="table table-hover table-sm text-sm">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Addo</th>
+                    <th>Code</th>
+                    <th>Village</th>
+                    <th class="text-center">Owner's Contact</th>
+                    <th class="text-center">Dispenser's Contact</th>
+                    <th class="text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let facility of reportedAddos | filterBy: ['code', 'name', 'parent.name', 'phoneNumber'] : searchText |  paginate: { itemsPerPage: itemsPerPage, currentPage: p };let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ facility.name }}</td>
+                    <td>{{ facility.code }}</td>
+                    <td>{{ facility.parent.name }}</td>
+                    <td class="text-center">{{ facility.phoneNumber?facility.phoneNumber:'-' }}</td>
+                    <td class="text-center">{{ facility.attributeValues[0]?facility.attributeValues[0].value:'-' }}</td>
+                    <td class="text-center" (click)="onEditChild(facility)">
+                      <button mat-button><span class="material-icons">
+                          edit
+                        </span></button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot class="d-print-none" *ngIf="reportedAddos">
+                  <tr *ngIf="reportedAddos as elementsCounter">
+                    <td colspan="9">
+                      <!--Pagination Starts here -->
+                      <app-pagination [currentPage]="p" [pageInterval]="itemsPerPage" [pageIntervalFactor]="10"
+                        [itemsPerPage]="itemsPerPage"
+                        [dataArray]="(reportedAddos | filterBy: ['code', 'name', 'parent.name', 'phoneNumber'] : searchText)"
+                        (changeCurrentPage)="onCurrentPageUpdate($event)"
+                        (updateItemsPerPage)="onUpdatePageSize($event)">
+                      </app-pagination>
+                      <!--Pagination Ends here -->
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
           </div>
-          <div>
-            <table class="table table-hover table-sm text-sm">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Addo</th>
-                  <th>Code</th>
-                  <th>Village</th>
-                  <th>Owner's Contact</th>
-                  <th>Dispenser's Contact</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let facility of reportedAddos let i = index">
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ facility.name }}</td>
-                  <td>{{ facility.code }}</td>
-                  <td>{{ facility.parent }}</td>
-                  <td (click)="onEditChild(facility)">{{ facility.phoneNumber }}</td>
-                  <td (click)="onEditChild(facility)">{{ facility.attributeValues }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="loader" [hidden]="organisationUnitChildrenLoaded$ | async">
-          <h3 [hidden]="!(selectedOrganisationUnitStatus$ | async)"> <img src="assets/icons/balls-3.svg" />
-          </h3>
-          <h2>
-            {{
-                (selectedOrganisationUnit$ | async) ? (selectedOrganisationUnit$ | async).name
-                + " " + "Addos Loading" : ""
+          <div class="loader" *ngIf="!(organisationUnitChildrenLoaded$ |async)">
+            <h3> <img src="assets/icons/balls-3.svg" />
+            </h3>
+            <h2>
+              {{
+              (selectedOrganisationUnit$ | async) ? (selectedOrganisationUnit$ | async).name
+              + " " + "Addos Loading" : ""
               }}
-          </h2>
+            </h2>
+          </div>
         </div>
       </div>
     </mat-tab>

@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Fn } from '@iapps/function-analytics';
+import { SelectionFilterConfig } from '@iapps/ngx-dhis2-selection-filters';
 import { Store } from '@ngrx/store';
+import * as _ from 'lodash';
+import { FilterByPipe } from 'ngx-pipes';
 import { Observable } from 'rxjs';
 import {
   OrganisationUnit,
@@ -29,15 +29,15 @@ import {
 import { TableActionOption } from '../../shared/models';
 import { OrganisationUnitDetailsComponent } from '../organisation-unit-details/organisation-unit-details.component';
 import { OrganisationUnitEditComponent } from '../organisation-unit-edit/organisation-unit-edit.component';
-import { SelectionFilterConfig } from '@iapps/ngx-dhis2-selection-filters';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'app-organisation-units',
   templateUrl: './organisation-units.component.html',
   styleUrls: ['./organisation-units.component.css'],
+  providers: [FilterByPipe],
 })
 export class OrganisationUnitsComponent implements OnInit {
+  showStatus = true;
   selectedOrganisationUnit$: Observable<OrganisationUnit>;
   selectedOrganisationUnitStatus$: Observable<boolean>;
   organisationUnitChildren$: Observable<OrganisationUnitChildren[]>;
@@ -46,6 +46,10 @@ export class OrganisationUnitsComponent implements OnInit {
   parentOrgunit: string;
   currentUser$: Observable<any>;
   selectedOrgUnitItems: Array<any> = [];
+  searchText = '';
+  itemsPerPage = 50;
+  p = 1;
+  loaded = false
   addos: Array<any> = [];
   reportedFacilities: Array<any> = [];
   getSelections: unknown;
@@ -173,25 +177,7 @@ export class OrganisationUnitsComponent implements OnInit {
       getOrganisationUnitChildren
     );
     this.store.select(getOrganisationUnitChildren).subscribe((children) => {
-      children.forEach((addo) => {
-        this.addos.push({
-          attributeValues: addo.attributeValues[0]
-            ? addo.attributeValues[0].value
-            : '',
-          displayName: addo.displayName,
-          code: addo.code,
-          id: addo.id,
-          lastUpdated: addo.lastUpdated,
-          level: addo.level,
-          name: addo.name,
-          openingDate: addo.openingDate,
-          parent: addo.parent.name,
-          path: addo.path,
-          phoneNumber: addo.phoneNumber,
-          shortName: addo.shortName,
-        });
-      });
-      this.orgunitchildren = this.addos;
+      this.orgunitchildren = children;
     });
     this.organisationUnitChildrenLoaded$ = this.store.select(
       getOrganisationUnitChildrenLoadedState
@@ -234,26 +220,8 @@ export class OrganisationUnitsComponent implements OnInit {
         availablePeriod ? availablePeriod.items[0].id : 'LAST_MONTH'
       )
       .subscribe((reportedOrgunits) => {
-        reportedOrgunits.forEach((addo) => {
-          this.reportedFacilities.push({
-            attributeValues: addo.attributeValues[0]
-              ? addo.attributeValues[0].value
-              : '-',
-            displayName: addo.displayName,
-            code: addo.code,
-            id: addo.id,
-            lastUpdated: addo.lastUpdated,
-            level: addo.level,
-            name: addo.name,
-            openingDate: addo.openingDate,
-            parent: addo.parent.name,
-            path: addo.path,
-            phoneNumber: addo.phoneNumber ? addo.phoneNumber : '-',
-            shortName: addo.shortName,
-          });
-        });
-        console.log(this.reportedFacilities);
-        this.reportedAddos = this.reportedFacilities;
+        this.reportedAddos = reportedOrgunits;
+        this.loaded = true;
       });
   }
 
@@ -280,56 +248,118 @@ export class OrganisationUnitsComponent implements OnInit {
 
   fileName = 'addos.csv';
 
-  downloadCSV(): void {
+  downloadCSV(status): void {
+    console.log('Show Status', status);
     // initialize check for when subscribed to an observable to prevent multiple csv file downloads
     let subscribed = true;
-
-    this.organisationUnitChildren$.subscribe((childrenGot) => {
-      // check for when subscribed to an observable
-      if (subscribed) {
-        const tableHeader = [
-          'Name',
-          "Owner's Contact",
-          "Dispenser's Contact",
-          'Code',
-          'Village',
-          'Ward',
-          'District',
-          'Region',
-        ];
-        let csvRows = [];
-
-        csvRows = childrenGot.map((addo) => {
-          return [
-            addo.name,
-            addo.phoneNumber,
-            addo.attributeValues[0] ? addo.attributeValues[0].value : '',
-            addo.code,
-            addo.parent.name,
-            addo.parent.parent.name,
-            addo.parent.parent.parent.name,
-            addo.parent.parent.parent.parent.name,
+    if (status) {
+      this.organisationUnitChildren$.subscribe((childrenGot) => {
+        // check for when subscribed to an observable
+        if (subscribed) {
+          const tableHeader = [
+            'Name',
+            "Owner's Contact",
+            "Dispenser's Contact",
+            'Code',
+            'Village',
+            'Ward',
+            'District',
+            'Region',
           ];
-        });
+          let csvRows = [];
 
-        const row = [tableHeader, ...csvRows];
-        let csvContent = 'data:text/csv;charset=utf-8,';
-        row.forEach(function (rowArray) {
-          const rowEntry = rowArray.join(',');
-          csvContent += rowEntry + '\r\n';
-        });
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement('a');
-        link.setAttribute('href', encodedUri);
-        link.setAttribute('download', 'addos.csv');
-        link.click();
-        // unsubscribed from an observable
-        subscribed = false;
-      }
-    });
+          csvRows = childrenGot.map((addo) => {
+            return [
+              addo.name,
+              addo.phoneNumber,
+              addo.attributeValues[0] ? addo.attributeValues[0].value : '',
+              addo.code,
+              addo.parent.name,
+              addo.parent.parent.name,
+              addo.parent.parent.parent.name,
+              addo.parent.parent.parent.parent.name,
+            ];
+          });
+
+          const row = [tableHeader, ...csvRows];
+          let csvContent = 'data:text/csv;charset=utf-8,';
+          row.forEach(function (rowArray) {
+            const rowEntry = rowArray.join(',');
+            csvContent += rowEntry + '\r\n';
+          });
+          const encodedUri = encodeURI(csvContent);
+          const link = document.createElement('a');
+          link.setAttribute('href', encodedUri);
+          link.setAttribute('download', 'addos.csv');
+          link.click();
+          // unsubscribed from an observable
+          subscribed = false;
+        }
+      });
+    }
+    if (!status) {
+      this.organisationUnitChildren$.subscribe((childrenGot) => {
+        // check for when subscribed to an observable
+        if (subscribed) {
+          const tableHeader = [
+            'Name',
+            "Owner's Contact",
+            "Dispenser's Contact",
+            'Code',
+            'Village',
+            'Ward',
+            'District',
+            'Region',
+          ];
+          let csvRows = [];
+
+          csvRows = childrenGot.map((addo) => {
+            return [
+              addo.name,
+              addo.phoneNumber,
+              addo.attributeValues[0] ? addo.attributeValues[0].value : '',
+              addo.code,
+              addo.parent.name,
+              addo.parent.parent.name,
+              addo.parent.parent.parent.name,
+              addo.parent.parent.parent.parent.name,
+            ];
+          });
+
+          const row = [tableHeader, ...csvRows];
+          let csvContent = 'data:text/csv;charset=utf-8,';
+          row.forEach(function (rowArray) {
+            const rowEntry = rowArray.join(',');
+            csvContent += rowEntry + '\r\n';
+          });
+          const encodedUri = encodeURI(csvContent);
+          const link = document.createElement('a');
+          link.setAttribute('href', encodedUri);
+          link.setAttribute('download', 'addos.csv');
+          link.click();
+          // unsubscribed from an observable
+          subscribed = false;
+        }
+      });
+    }
   }
   onFilterUpdateAction(dataSelections: unknown) {
-    console.log('Dataselections', dataSelections);
     this.onSelectionFilterUpdate(dataSelections);
+  }
+  showAddoStatus() {
+    this.showStatus = !this.showStatus;
+  }
+  onAddos(e) {
+    if (e) {
+      e.stopPropagation();
+    }
+    this.searchText = e ? e.target.value.trim() : this.searchText;
+  }
+  onUpdatePageSize(e) {
+    this.itemsPerPage = e;
+  }
+
+  onCurrentPageUpdate(e) {
+    this.p = e;
   }
 }
