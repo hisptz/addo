@@ -2,7 +2,7 @@
   <mat-tab-group>
     <mat-tab label="Addos Reporting Status">
       <div class="column">
-        <div class="col-sm-12">
+        <div class="col-sm-12" style="z-index: initial;">
           <ngx-dhis2-selection-filters (filterUpdate)="onFilterUpdateAction($event)" [dataSelections]="dataSelections"
             [selectionFilterConfig]="selectionFilterConfig" (update)="onFilterUpdateAction($event)">
           </ngx-dhis2-selection-filters>
@@ -59,10 +59,10 @@
             </table>
           </div>
           <div class="row mx-0 w-100 pt-2 d-flex justify-content-between">
-            <mat-form-field appearance="outline" class="w-25" autocomplete="false">
+            <mat-form-field appearance="outline" class="w-25">
               <mat-label>Search</mat-label>
               <mat-icon matPrefix>search</mat-icon>
-              <input matInput (keyup)="($event)">
+              <input matInput (keyup)="($event)" autocomplete="off" name="search">
             </mat-form-field>
           </div>
           <div>
