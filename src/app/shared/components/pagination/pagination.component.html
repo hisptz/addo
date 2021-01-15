@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-between">
+  <div class="text-sm">
+    <p *ngIf="!(itemsPerPage > maxSize)">
+      Showing {{ itemsPerPage }} out of {{ maxSize }} records
+    </p>
+    <p *ngIf="itemsPerPage > maxSize">
+      Showing {{ maxSize }} out of {{ maxSize }} records
+    </p>
+  </div>
+  <div *ngIf="dataArray">
+    <div class="row px-2">
+      <div style="width:80px">
+        <select
+          class="custom-select text-sm"
+          style="height: 30px;"
+          id="paginationInput"
+          (change)="onSetItemsPerPage($event)"
+        >
+          <option
+            [selected]="first"
+            *ngFor="let pageLength of pagingIntervals; let first = first"
+            value="{{ pageLength }}"
+          >
+            {{ pageLength }}
+          </option>
+          <option value="{{ maxSize }}"> View All</option>
+        </select>
+      </div>
+      <div>
+        <pagination-controls
+          class="custom-pagination"
+          (pageChange)="onChangeCurrentPage($event)"
+        >
+        </pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>
