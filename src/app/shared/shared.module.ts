@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { sharedComponents } from '.';
 import { materialModules } from './material.module';
 import { sharedPipes } from './pipes';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ...materialModules],
+  imports: [CommonModule, FormsModule, ...materialModules, NgxPaginationModule],
   exports: [...sharedComponents, ...sharedPipes],
   declarations: [...sharedComponents, ...sharedPipes],
 })

@@ -61,6 +61,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { SharedModule } from './shared/shared.module';
 import { NgxDhis2SelectionFiltersModule } from '@iapps/ngx-dhis2-selection-filters';
 import { DragulaModule } from 'ng2-dragula';
+import { NgPipesModule } from 'ngx-pipes';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -107,6 +108,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatPaginatorModule,
     MatSortModule,
     DragulaModule,
+    NgPipesModule,
 
     /**
      * Menu  module
